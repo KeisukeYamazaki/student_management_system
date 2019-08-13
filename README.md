@@ -22,4 +22,4 @@ This is an application for an educational institution(a cram school in Japan and
 
 ## Author
 
-[KeisukeYamazaki](https://github.com/KeisukeYamazaki)agement_system
+[KeisukeYamazaki](https://github.com/KeisukeYamazaki)
