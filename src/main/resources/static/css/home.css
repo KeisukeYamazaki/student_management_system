@@ -1,0 +1,22 @@
+body {
+    padding-top: 50px;
+}
+
+.main {
+    padding-top: 10px;
+    padding-left: 20px;
+    display: block;
+    top: 0px;
+    bottom: 0;
+}
+
+.page-header {
+    margin-top: 0px;
+}
+
+.content {
+    min-height: calc(100vh - 100px);
+}
+.footer {
+    height: 20px;
+}
