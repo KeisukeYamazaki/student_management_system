@@ -1,5 +1,6 @@
 package com.somei.student_management_system.login.domain.repository.jdbc;
 
+import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.repository.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
         String sql = "SELECT * FROM student WHERE student_id = ?";
 
         //RowMapperの生成
-        RowMapper<Student> rowMapper = new BeanPropertyRowMapper<Student>(Student.class);
+        RowMapper<Student> rowMapper = new BeanPropertyRowMapper<>(Student.class);
 
         //SQL実行
         return jdbc.queryForObject(sql, rowMapper, studentId);
@@ -99,13 +100,34 @@ public class StudentDaoJdbcImpl implements StudentDao {
     public List<Student> selectMany() {
 
         //studentテーブルのデータを全件取得するSQL
-        String sql = "SELECT * FROM student ORDER BY home_room, student_id";
+        String sql = "SELECT * FROM student ORDER BY home_room COLLATE \"C\", student_id";
 
         //RowMapperの生成
         RowMapper<Student> rowMapper = new BeanPropertyRowMapper<Student>(Student.class);
 
         //SQL実行
         return jdbc.query(sql, rowMapper);
+    }
+
+    @Override
+    public FuturePath selectPathOne(String studentId) throws DataAccessException {
+
+        try {
+
+            //future_pathテーブルのデータを全件取得するSQL
+            String sql = "SELECT * FROM future_path WHERE student_id = ?";
+
+            //RowMapperの生成
+            RowMapper<FuturePath> rowMapper = new BeanPropertyRowMapper<>(FuturePath.class);
+
+            //SQL実行
+            return jdbc.queryForObject(sql, rowMapper, studentId);
+
+        } catch (DataAccessException e) {
+
+            //データが無かった場合は、nullを返す
+            return null;
+        }
     }
 
     @Override
@@ -127,20 +149,51 @@ public class StudentDaoJdbcImpl implements StudentDao {
                         + " address = ?,"
                         + " info = ?"
                         + " WHERE student_id = ?"
-                ,student.getStudentName()
-                ,student.getNameRuby()
-                ,student.getGrade()
-                ,student.getSchool()
-                ,student.getHomeRoom()
-                ,student.getLocalSchool()
-                ,student.getEntryTime()
-                ,student.getBirthday()
-                ,student.getClub()
-                ,student.getParents()
-                ,student.getSiblings()
-                ,student.getAddress()
-                ,student.getInfo()
-                ,student.getStudentId());
+                , student.getStudentName()
+                , student.getNameRuby()
+                , student.getGrade()
+                , student.getSchool()
+                , student.getHomeRoom()
+                , student.getLocalSchool()
+                , student.getEntryTime()
+                , student.getBirthday()
+                , student.getClub()
+                , student.getParents()
+                , student.getSiblings()
+                , student.getAddress()
+                , student.getInfo()
+                , student.getStudentId());
+
+        return rowNumber;
+    }
+
+    @Override
+    public int updatePathOne(FuturePath futurePath) throws DataAccessException {
+        //１件更新
+        int rowNumber = jdbc.update("UPDATE future_path"
+                        + " SET"
+                        + " first_choice = ?,"
+                        + " second_choice = ?,"
+                        + " third_choice = ?,"
+                        + " public_school1 = ?,"
+                        + " public_school2 = ?,"
+                        + " public_school3 = ?,"
+                        + " private_school1 = ?,"
+                        + " private_school2 = ?,"
+                        + " private_school3 = ?,"
+                        + " information = ?"
+                        + " WHERE student_id = ?"
+                , futurePath.getFirstChoice()
+                , futurePath.getSecondChoice()
+                , futurePath.getThirdChoice()
+                , futurePath.getPublicSchool1()
+                , futurePath.getPublicSchool2()
+                , futurePath.getPublicSchool3()
+                , futurePath.getPrivateSchool1()
+                , futurePath.getPrivateSchool2()
+                , futurePath.getPrivateSchool3()
+                , futurePath.getInformation()
+                , futurePath.getStudentId());
 
         return rowNumber;
     }

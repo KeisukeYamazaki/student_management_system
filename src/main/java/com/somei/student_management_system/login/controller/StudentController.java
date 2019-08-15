@@ -1,5 +1,7 @@
 package com.somei.student_management_system.login.controller;
 
+import com.somei.student_management_system.login.domain.model.FuturePath;
+import com.somei.student_management_system.login.domain.model.FuturePathWithData;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
@@ -97,11 +99,15 @@ public class StudentController {
             // 模試一覧の生成
             List<PracticeExam> practiceExamList = numericDataService.selectPracticeOne(studentId);
 
+            // 進路データの生成
+            FuturePathWithData futurePathData = studentService.selectPathDataOne(studentId);
+
             // Modelに登録
             model.addAttribute("student", student);
             model.addAttribute("schoolRecordList", schoolRecordList);
             model.addAttribute("regularExamList", regularExamList);
             model.addAttribute("practiceExamList", practiceExamList);
+            model.addAttribute("futurePathData", futurePathData);
         }
 
         return "login/homeLayout";
@@ -112,6 +118,7 @@ public class StudentController {
      */
     @GetMapping("/studentEdit/{id:.+}")
     public String getStudentEdit(@ModelAttribute SignupForm form,
+                                 @ModelAttribute FuturePathWithData futurePathData,
                                  Model model,
                                  @PathVariable("id") String studentId) {
 
@@ -169,8 +176,25 @@ public class StudentController {
             form.setAddress(student.getAddress());
             form.setInfo(student.getInfo());
 
+            // 進路データを取得
+            FuturePathWithData data = studentService.selectPathDataOne(studentId);
+
+            // 進路データを dataクラスに変換
+            futurePathData.setStudentId(data.getStudentId());
+            futurePathData.setFirstChoice(data.getFirstChoice());
+            futurePathData.setSecondChoice(data.getSecondChoice());
+            futurePathData.setThirdChoice(data.getThirdChoice());
+            futurePathData.setPublicSchool1(data.getPublicSchool1());
+            futurePathData.setPublicSchool2(data.getPublicSchool2());
+            futurePathData.setPublicSchool3(data.getPublicSchool3());
+            futurePathData.setPrivateSchool1(data.getPrivateSchool1());
+            futurePathData.setPrivateSchool2(data.getPrivateSchool2());
+            futurePathData.setPrivateSchool3(data.getPrivateSchool3());
+            futurePathData.setInformation(data.getInformation());
+
             // Modelに登録
             model.addAttribute("signupForm", form);
+            model.addAttribute("futurePathData", futurePathData);
         }
 
         return "login/homeLayout";
@@ -182,6 +206,7 @@ public class StudentController {
      */
     @PostMapping(value = "/studentEdit", params = "update")
     public String postStudentDetailUpdate(@ModelAttribute @Validated SignupForm form,
+                                          @ModelAttribute FuturePathWithData futurePathData,
                                           BindingResult bindingResult,
                                           Model model) {
 
@@ -189,12 +214,13 @@ public class StudentController {
         if (bindingResult.hasErrors()) {
 
             // GET用のメソッドを呼び出して、生徒登録画面に戻る
-            return getStudentEdit(form, model, form.getStudentId());
+            return getStudentEdit(form, futurePathData, model, form.getStudentId());
         }
 
         System.out.println("更新処理");
 
-        //Studentインスタンスの生成
+        // Studentの更新
+        // Studentインスタンスの生成
         Student student = new Student();
 
         // 誕生日をフォーマット
@@ -226,6 +252,40 @@ public class StudentController {
 
             //更新実行
             boolean result = studentService.updateOne(student);
+
+            if (result == true) {
+                model.addAttribute("result", "生徒データを更新しました");
+            } else {
+                model.addAttribute("result", "生徒データ更新に失敗しました");
+            }
+
+        } catch (DataAccessException e) {
+
+            model.addAttribute("result", "更新失敗(トランザクションテスト)");
+
+        }
+
+        // FuturePath の更新
+        // FuturePathインスタンスの生成
+        FuturePath futurePath = new FuturePath();
+
+        // futurePathData を futurePathに変換
+        futurePath.setStudentId(futurePathData.getStudentId());
+        futurePath.setFirstChoice(futurePathData.getFirstChoice());
+        futurePath.setSecondChoice(futurePathData.getSecondChoice());
+        futurePath.setThirdChoice(futurePathData.getThirdChoice());
+        futurePath.setPublicSchool1(futurePathData.getPublicSchool1());
+        futurePath.setPublicSchool2(futurePathData.getPublicSchool2());
+        futurePath.setPublicSchool3(futurePathData.getPublicSchool3());
+        futurePath.setPrivateSchool1(futurePathData.getPrivateSchool1());
+        futurePath.setPrivateSchool2(futurePathData.getPrivateSchool2());
+        futurePath.setPrivateSchool3(futurePathData.getPrivateSchool3());
+        futurePath.setInformation(futurePathData.getInformation());
+
+        try {
+
+            // 更新実行
+            boolean result = studentService.updatePathOne(futurePath);
 
             if (result == true) {
                 model.addAttribute("result", "更新しました");

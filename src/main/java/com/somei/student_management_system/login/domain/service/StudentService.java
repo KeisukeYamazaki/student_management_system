@@ -1,5 +1,8 @@
 package com.somei.student_management_system.login.domain.service;
 
+import com.somei.student_management_system.login.bean.EntranceExamCalculation;
+import com.somei.student_management_system.login.domain.model.FuturePath;
+import com.somei.student_management_system.login.domain.model.FuturePathWithData;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.repository.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,9 @@ public class StudentService {
 
     @Autowired
     StudentDao dao;
+
+    @Autowired
+    EntranceExamCalculation entranceExamCalculation;
 
     /**
      * insert用メソッド.
@@ -49,7 +55,7 @@ public class StudentService {
     }
 
     /**
-     * １件取得用メソッド.
+     * 生徒データ１件取得用メソッド.
      */
     public Student selectOne(String studentId) {
         // selectOne実行
@@ -57,7 +63,16 @@ public class StudentService {
     }
 
     /**
-     * １件更新用メソッド.
+     * 進路データ１件取得用メソッド.
+     */
+    public FuturePathWithData selectPathDataOne(String studentId) {
+
+        // 計算した数値を含めて送る
+        return entranceExamCalculation.getFuturePathDate(studentId);
+    }
+
+    /**
+     * 生徒データ１件更新用メソッド.
      */
     public boolean updateOne(Student student) {
 
@@ -69,6 +84,25 @@ public class StudentService {
 
         if (rowNumber > 0) {
             //update成功
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
+     * 進路データ１件更新用メソッド.
+     */
+    public boolean updatePathOne(FuturePath futurePath) {
+
+        // 判定用変数
+        boolean result = false;
+
+        // １件更新
+        int rowNumber = dao.updatePathOne(futurePath);
+
+        if (rowNumber > 0) {
+            // update成功
             result = true;
         }
 

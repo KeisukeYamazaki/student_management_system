@@ -20,180 +20,292 @@
                         <ul class="cp_list">
                             <li>基本情報</li>
                         </ul>
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                <th class="info col-sm-2">生徒ID</th>
-                                <th class="info col-sm-2">名前</th>
-                                <th class="info col-sm-2">フリガナ</th>
-                                <th class="info col-sm-2">学年</th>
-                                <th class="info col-sm-2">校舎</th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" th:field="*{studentId}"
-                                               readonly="readonly"/>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group"
-                                         th:classappend="${#fields.hasErrors('studentName')}?'has-error'">
-                                        <input type="text" class="form-control" th:field="*{studentName}"/>
-                                        <small id="NameHelpBlock" class="form-text text-muted">姓と名の間は１つの半角スペース
-                                        </small>
-                                        </br>
-                                        <span class="text-danger" th:if="${#fields.hasErrors('studentName')}"
-                                              th:errors="*{studentName}">studentName error</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group"
-                                         th:classappend="${#fields.hasErrors('nameRuby')}?'has-error'">
-                                        <input type="text" class="form-control" th:field="*{nameRuby}"/>
-                                        <small id="RubyHelpBlock" class="form-text text-muted">姓と名の間は１つの半角スペース
-                                        </small>
-                                        </br>
-                                        <span class="text-danger" th:if="${#fields.hasErrors('nameRuby')}"
-                                              th:errors="*{nameRuby}">nameRuby error</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <select id="grade" name="grade" class="form-control">
-                                            <option th:each="grade : ${grades}" th:value="${grade.value}"
-                                                    th:text="${grade.key}" th:selected="${grade.value} == *{grade}">
-                                            </option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <select id="school" name="school" class="form-control">
-                                            <option th:each="school : ${schools}" th:value="${school.value}"
-                                                    th:text="${school.key}" th:selected="${school.value} == *{school}">
-                                            </option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="row col-sm-12">
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                <th class="info col-sm-2">クラス</th>
-                                <th class="info col-sm-2">学校</th>
-                                <th class="info col-sm-2">入塾時期</th>
-                                <th class="info col-sm-4">誕生日</th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <select id="homeRoom" name="homeRoom" class="form-control">
-                                            <option value="">クラス</option>
-                                            <option th:each="homeRoom : ${homeRooms}" th:value="${homeRoom.value}"
-                                                    th:text="${homeRoom.key}"
-                                                    th:selected="${homeRoom.value} == *{homeRoom}"></option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" th:field="*{localSchool}"/>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <select id="entryTime" name="entryTime" class="form-control">
-                                            <option value="">入塾時期</option>
-                                            <option th:each="entryTime : ${entryTimes}" th:value="${entryTime.value}"
-                                                    th:text="${entryTime.key}"
-                                                    th:selected="${entryTime.value} == *{entryTime}"></option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-inline">
-                                        <select id="birthdayYear" name="birthdayYear" class="form-control"
-                                                style="width: 40%">
-                                            <option value="">年</option>
-                                            <option th:each="year : ${years}" th:value="${year.value}"
-                                                    th:text="${year.key}"
-                                                    th:selected="${year.value} == *{birthdayYear}"></option>
-                                        </select>
-                                        <select id="birthdayMonth" name="birthdayMonth" class="form-control"
-                                                style="width: 28%">
-                                            <option value="">月</option>
-                                            <option th:each="month : ${months}" th:value="${month.value}"
-                                                    th:text="${month.key}"
-                                                    th:selected="${month.value} == *{birthdayMonth}"></option>
-                                        </select>
-                                        <select id="birthdayDay" name="birthdayDay" class="form-control"
-                                                style="width: 28%">
-                                            <option value="">日</option>
-                                            <option th:each="day : ${days}" th:value="${day.value}"
-                                                    th:text="${day.key}"
-                                                    th:selected="${day.value} == *{birthdayDay}"></option>
-                                        </select>
-                                        <small id="BirthdayHelpBlock" class="form-text text-muted">
-                                            分からない場合は「年」「月」「日」のまま登録してください
-                                        </small>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="row col-sm-12">
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                <th class="info col-sm-2">部活</th>
-                                <th class="info col-sm-2">両親</th>
-                                <th class="info col-sm-2">兄弟姉妹</th>
-                                <th class="info col-sm-2">住所</th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" th:field="*{club}"/>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" th:field="*{parents}"/>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" th:field="*{siblings}"/>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" th:field="*{address}"/>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th class="info col-sm-2">生徒ID</th>
+                                    <th class="info col-sm-2">名前</th>
+                                    <th class="info col-sm-2">フリガナ</th>
+                                    <th class="info col-sm-2">学年</th>
+                                    <th class="info col-sm-2">校舎</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" th:field="*{studentId}"
+                                                   readonly="readonly"/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group"
+                                             th:classappend="${#fields.hasErrors('studentName')}?'has-error'">
+                                            <input type="text" class="form-control" th:field="*{studentName}"/>
+                                            <small id="NameHelpBlock" class="form-text text-muted">姓と名の間は１つの半角スペース
+                                            </small>
+                                            </br>
+                                            <span class="text-danger" th:if="${#fields.hasErrors('studentName')}"
+                                                  th:errors="*{studentName}">studentName error</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group"
+                                             th:classappend="${#fields.hasErrors('nameRuby')}?'has-error'">
+                                            <input type="text" class="form-control" th:field="*{nameRuby}"/>
+                                            <small id="RubyHelpBlock" class="form-text text-muted">姓と名の間は１つの半角スペース
+                                            </small>
+                                            </br>
+                                            <span class="text-danger" th:if="${#fields.hasErrors('nameRuby')}"
+                                                  th:errors="*{nameRuby}">nameRuby error</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="grade" name="grade" class="form-control">
+                                                <option th:each="grade : ${grades}" th:value="${grade.value}"
+                                                        th:text="${grade.key}" th:selected="${grade.value} == *{grade}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="school" name="school" class="form-control">
+                                                <option th:each="school : ${schools}" th:value="${school.value}"
+                                                        th:text="${school.key}"
+                                                        th:selected="${school.value} == *{school}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th class="info col-sm-2">クラス</th>
+                                    <th class="info col-sm-2">学校</th>
+                                    <th class="info col-sm-2">入塾時期</th>
+                                    <th class="info col-sm-4">誕生日</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="homeRoom" name="homeRoom" class="form-control">
+                                                <option value="">クラス</option>
+                                                <option th:each="homeRoom : ${homeRooms}" th:value="${homeRoom.value}"
+                                                        th:text="${homeRoom.key}"
+                                                        th:selected="${homeRoom.value} == *{homeRoom}"></option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" th:field="*{localSchool}"/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select id="entryTime" name="entryTime" class="form-control">
+                                                <option value="">入塾時期</option>
+                                                <option th:each="entryTime : ${entryTimes}"
+                                                        th:value="${entryTime.value}"
+                                                        th:text="${entryTime.key}"
+                                                        th:selected="${entryTime.value} == *{entryTime}"></option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-inline">
+                                            <select id="birthdayYear" name="birthdayYear" class="form-control"
+                                                    style="width: 40%">
+                                                <option value="">年</option>
+                                                <option th:each="year : ${years}" th:value="${year.value}"
+                                                        th:text="${year.key}"
+                                                        th:selected="${year.value} == *{birthdayYear}"></option>
+                                            </select>
+                                            <select id="birthdayMonth" name="birthdayMonth" class="form-control"
+                                                    style="width: 28%">
+                                                <option value="">月</option>
+                                                <option th:each="month : ${months}" th:value="${month.value}"
+                                                        th:text="${month.key}"
+                                                        th:selected="${month.value} == *{birthdayMonth}"></option>
+                                            </select>
+                                            <select id="birthdayDay" name="birthdayDay" class="form-control"
+                                                    style="width: 28%">
+                                                <option value="">日</option>
+                                                <option th:each="day : ${days}" th:value="${day.value}"
+                                                        th:text="${day.key}"
+                                                        th:selected="${day.value} == *{birthdayDay}"></option>
+                                            </select>
+                                            <small id="BirthdayHelpBlock" class="form-text text-muted">
+                                                分からない場合は「年」「月」「日」のまま登録してください
+                                            </small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th class="info col-sm-2">部活</th>
+                                    <th class="info col-sm-2">両親</th>
+                                    <th class="info col-sm-2">兄弟姉妹</th>
+                                    <th class="info col-sm-2">住所</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" th:field="*{club}"/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" th:field="*{parents}"/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" th:field="*{siblings}"/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" th:field="*{address}"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th class="info">生徒情報</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="5" th:field="*{info}"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                     <br/>
-                    <div class="row col-sm-8">
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                <th class="info">生徒情報</th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <textarea class="form-control" rows="5" th:field="*{info}"/>
+                    <form method="post" th:action="@{/studentEdit}" th:object="${futurePathData}">
+                        <div class="row col-sm-12">
+                            <ul class="cp_list">
+                                <li>進路関係</li>
+                            </ul>
+                            <div class="col-sm-12">
+                                <div class="row col-sm-6">
+                                    <p style="font-size: medium">＜志望校＞</p>
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <tr>
+                                            <th class="info col-sm-2 col-xs-3">第１志望</th>
+                                            <td class="col-sm-4">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" th:field="*{firstChoice}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <tr>
+                                            <th class="info col-sm-2 col-xs-3">第２志望</th>
+                                            <td class="col-sm-4">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" th:field="*{secondChoice}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <tr>
+                                            <th class="info col-sm-2 col-xs-3">第３志望</th>
+                                            <td class="col-sm-4">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" th:field="*{thirdChoice}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="row col-sm-12 align">
+                                        <p style="font-size: medium">＜その他の候補となる高校＞</p>
+                                        <table class="table table-bordered table-hover table-condensed">
+                                            <tr>
+                                                <th class="info col-sm-2 col-xs-3" rowspan="3">公立高校</th>
+                                                <td class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"
+                                                               th:field="*{publicSchool1}"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"
+                                                               th:field="*{publicSchool2}"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"
+                                                               th:field="*{publicSchool3}"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table class="table table-bordered table-hover table-condensed">
+                                            <tr>
+                                                <th class="info col-sm-2 col-xs-3" rowspan="3">私立高校</th>
+                                                <td class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"
+                                                               th:field="*{privateSchool1}"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"
+                                                               th:field="*{privateSchool2}"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"
+                                                               th:field="*{privateSchool3}"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- 更新ボタン -->
-                    <div class="row col-sm-12">
-                        <button class="btn btn-primary btn-lg" type="submit" name="update">更新</button>
-                    </div>
+                                </div>
+                                <div class="row col-sm-6 col-xs-12"
+                                     style="margin: 5px 0px 0px 30px; float: right; padding: 0px">
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <tr>
+                                            <th class="info">その他</th>
+                                        </tr>
+                                        <tr>
+                                            <td height="440px">
+                                                <div class="form-group">
+                                                    <textarea class="form-control" rows="20" th:field="*{information}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- 更新ボタン -->
+                                <div class="row col-sm-12">
+                                    <button class="btn btn-primary btn-lg" type="submit" name="update">更新</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </form>
             </div>
         </div>

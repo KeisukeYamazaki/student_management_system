@@ -194,7 +194,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row col-sm-12 ">
+                    <div class="row col-sm-12"  th:if="*{grade == '中１' or grade == '中２' or grade == '中３'}">
                         <ul class="cp_list">
                             <li>定期試験</li>
                         </ul>
@@ -300,7 +300,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row col-sm-12 ">
+                    <div class="row col-sm-12"  th:if="*{grade == '中１' or grade == '中２' or grade == '中３'}">
                         <ul class="cp_list">
                             <li>模擬試験</li>
                         </ul>
@@ -423,7 +423,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row col-sm-12">
+                        <div class="row col-sm-12" th:object="${futurePathData}">
                             <ul class="cp_list">
                                 <li>進路関係</li>
                             </ul>
@@ -440,65 +440,59 @@
                                         <th class="info col-sm-1">/30</th>
                                     </tr>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td th:text="*{fortyFive}"></td>
+                                        <td th:text="*{hundredThirtyFive}"></td>
+                                        <td th:text="*{twentyFive}"></td>
+                                        <td th:text="*{fifty}"></td>
+                                        <td th:text="*{seventyFive}"></td>
+                                        <td th:text="*{fifteen}"></td>
+                                        <td th:text="*{thirty}"></td>
                                     </tr>
                                 </table>
                                 <div class="row col-sm-6">
                                     <p style="font-size: medium">＜志望校＞</p>
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
-                                            <th class="info col-sm-1 col-xs-3">第１志望</th>
-                                            <td class="col-sm-4"></td>
+                                            <th class="info col-sm-2 col-xs-3">第１志望</th>
+                                            <td class="col-sm-4" th:text="*{firstChoice}"></td>
                                         </tr>
                                     </table>
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
-                                            <th class="info col-sm-1 col-xs-3">第２志望</th>
-                                            <td class="col-sm-4"></td>
+                                            <th class="info col-sm-2 col-xs-3">第２志望</th>
+                                            <td class="col-sm-4" th:text="*{secondChoice}"></td>
                                         </tr>
                                     </table>
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
-                                            <th class="info col-sm-1 col-xs-3">第３志望</th>
-                                            <td class="col-sm-4"></td>
+                                            <th class="info col-sm-2 col-xs-3">第３志望</th>
+                                            <td class="col-sm-4" th:text="*{thirdChoice}"></td>
                                         </tr>
                                     </table>
                                     <div class="row col-sm-12 align">
                                         <p style="font-size: medium">＜その他の候補となる高校＞</p>
                                         <table class="table table-bordered table-hover table-condensed">
                                             <tr>
-                                                <th class="info col-sm-1 col-xs-3 td_vertical_align_middle"
-                                                    rowspan="3">
-                                                    公立高校
-                                                </th>
-                                                <td class="col-sm-4">&nbsp;</td>
+                                                <th class="info col-sm-2 col-xs-3" rowspan="3">公立高校</th>
+                                                <td class="col-sm-4" style="height: 27px" th:text="*{publicSchool1}"></td>
                                             </tr>
                                             <tr>
-                                                <td>&nbsp;</td>
+                                                <td style="height: 27px" th:text="*{publicSchool2}"></td>
                                             </tr>
                                             <tr>
-                                                <td>&nbsp;</td>
+                                                <td style="height: 27px" th:text="*{publicSchool3}"></td>
                                             </tr>
                                         </table>
                                         <table class="table table-bordered table-hover table-condensed">
                                             <tr>
-                                                <th class="info col-sm-1 col-xs-3 td_vertical_align_middle"
-                                                    rowspan="3">
-                                                    私立高校
-                                                </th>
-                                                <td class="col-sm-4">&nbsp;</td>
+                                                <th class="info col-sm-2 col-xs-3" rowspan="3">私立高校</th>
+                                                <td class="col-sm-4" style="height: 27px" th:text="*{privateSchool1}"></td>
                                             </tr>
                                             <tr>
-                                                <td>&nbsp;</td>
+                                                <td style="height: 27px" th:text="*{privateSchool2}"></td>
                                             </tr>
                                             <tr>
-                                                <td>&nbsp;</td>
+                                                <td style="height: 27px" th:text="*{privateSchool3}"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -510,7 +504,7 @@
                                             <th class="info">その他</th>
                                         </tr>
                                         <tr>
-                                            <td height="440px"></td>
+                                            <td height="440px" th:text="*{information}"></td>
                                         </tr>
                                     </table>
                                 </div>
