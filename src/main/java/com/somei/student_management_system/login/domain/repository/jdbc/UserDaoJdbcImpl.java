@@ -42,7 +42,7 @@ public class UserDaoJdbcImpl implements UserDao {
         int rowNumber = jdbc.update("INSERT INTO s_user(user_id,"
                         + " password,"
                         + " user_name,"
-                        + " role"
+                        + " role,"
                         + " really_pass)"
                         + " VALUES(?, ?, ?, ?, ?)",
                 user.getUserId(),

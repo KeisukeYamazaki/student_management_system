@@ -48,7 +48,7 @@ public class UserController {
      * ユーザー編集画面のGETメソッド用処理.
      */
     @GetMapping("/userEdit/{id:.+}")
-    public String getStudentEdit(@ModelAttribute UserForm form,
+    public String getUserEdit(@ModelAttribute UserForm form,
                                  Model model,
                                  @PathVariable("id") String userId) {
 
@@ -128,7 +128,7 @@ public class UserController {
         }
 
         //ユーザー一覧画面を表示
-        return "/admin";
+        return getUserList(model);
     }
 
 
