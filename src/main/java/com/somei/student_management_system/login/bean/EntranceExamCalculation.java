@@ -125,8 +125,8 @@ public class EntranceExamCalculation {
         numList.add(twentyFive);
         numList.add(fifty);
         numList.add(seventyFive);
-        numList.add(thirty);
         numList.add(fifteen);
+        numList.add(thirty);
 
         return numList;
     }

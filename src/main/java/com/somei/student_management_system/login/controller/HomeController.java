@@ -2,6 +2,8 @@ package com.somei.student_management_system.login.controller;
 
 import com.somei.student_management_system.login.domain.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +21,18 @@ public class HomeController {
     @GetMapping("/home")
     public String getHome(Model model) {
 
-        //コンテンツ部分に生徒詳細を表示するための文字列を登録
+        // ユーザー名を取得
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+
+        // ログ出力
+        System.out.println("ログイン中：" + userName);
+
+        //コンテンツ部分にホーム画面を表示するための文字列を登録
         model.addAttribute("contents", "login/home :: home_contents");
+
+        // ユーザーを表示
+        //model.addAttribute("user", userName);
 
         return "login/homeLayout";
     }

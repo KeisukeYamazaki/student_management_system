@@ -114,8 +114,10 @@ public class signupController {
         // 生徒登録結果の判定
         if (result == true) {
             System.out.println("insert成功");
+            model.addAttribute("result", "登録しました");
         } else {
             System.out.println("insert失敗");
+            model.addAttribute("result", "登録できませんでした");
         }
 
         //生徒一覧画面を表示

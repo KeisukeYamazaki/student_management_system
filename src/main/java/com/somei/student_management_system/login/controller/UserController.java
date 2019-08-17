@@ -115,6 +115,7 @@ public class UserController {
         user.setPassword(form.getPassword());
         user.setUserName(form.getUserName());
         user.setRole(form.getRole());
+        user.setReallyPass(form.getReallyPass());
 
         // 登録処理
         boolean result = userService.insert(user);
@@ -148,6 +149,7 @@ public class UserController {
         user.setPassword(form.getPassword());
         user.setUserName(form.getUserName());
         user.setRole(form.getRole());
+        user.setReallyPass(form.getReallyPass());
 
         try {
 

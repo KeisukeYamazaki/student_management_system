@@ -194,7 +194,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row col-sm-12"  th:if="*{grade == '中１' or grade == '中２' or grade == '中３'}">
+                    <div class="row col-sm-12" th:if="*{grade == '中１' or grade == '中２' or grade == '中３'}">
                         <ul class="cp_list">
                             <li>定期試験</li>
                         </ul>
@@ -300,7 +300,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row col-sm-12"  th:if="*{grade == '中１' or grade == '中２' or grade == '中３'}">
+                    <div class="row col-sm-12" th:if="*{grade == '中１' or grade == '中２' or grade == '中３'}">
                         <ul class="cp_list">
                             <li>模擬試験</li>
                         </ul>
@@ -474,7 +474,8 @@
                                         <table class="table table-bordered table-hover table-condensed">
                                             <tr>
                                                 <th class="info col-sm-2 col-xs-3" rowspan="3">公立高校</th>
-                                                <td class="col-sm-4" style="height: 27px" th:text="*{publicSchool1}"></td>
+                                                <td class="col-sm-4" style="height: 27px"
+                                                    th:text="*{publicSchool1}"></td>
                                             </tr>
                                             <tr>
                                                 <td style="height: 27px" th:text="*{publicSchool2}"></td>
@@ -486,7 +487,8 @@
                                         <table class="table table-bordered table-hover table-condensed">
                                             <tr>
                                                 <th class="info col-sm-2 col-xs-3" rowspan="3">私立高校</th>
-                                                <td class="col-sm-4" style="height: 27px" th:text="*{privateSchool1}"></td>
+                                                <td class="col-sm-4" style="height: 27px"
+                                                    th:text="*{privateSchool1}"></td>
                                             </tr>
                                             <tr>
                                                 <td style="height: 27px" th:text="*{privateSchool2}"></td>
@@ -510,22 +512,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row col-sm-10">
-                            <form method="post" th:action="@{/studentDetail}">
-                                <!-- 編集ボタン -->
-                                <a class="btn btn-primary btn-lg" style="margin-left: 15px"
-                                   th:href="@{'/studentEdit/' + ${student.studentId}}">編集</a>
-                                <!-- 削除ボタン -->
-                                <input type="hidden" th:field="*{studentId}"/>
-                                <button class="btn btn-danger btn-lg pull-right"
-                                        type="submit" name="delete">削除
-                                </button>
-                            </form>
-                        </div>
+                    </div>
+                    <div class="row col-sm-10">
+                        <form method="post" th:action="@{/studentDetail}">
+                            <!-- 編集ボタン -->
+                            <a class="btn btn-primary btn-lg" style="margin-left: 15px"
+                               th:href="@{'/studentEdit/' + ${student.studentId}}">編集</a>
+                            <!-- 削除ボタン -->
+                            <input type="hidden" th:field="*{studentId}"/>
+                            <button class="btn btn-danger btn-lg pull-right"
+                                    onclick="return confirm('本当に削除してもいいですか？')" type="submit" name="delete">削除
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

@@ -78,8 +78,6 @@ public class StudentController {
                                    Model model,
                                    @PathVariable("id") String studentId) {
 
-        // 生徒ID確認（デバッグ）
-        System.out.println("Detail_studentId = " + studentId);
 
         // コンテンツ部分に生徒詳細を表示するための文字列を登録
         model.addAttribute("contents", "login/studentDetail :: studentDetail_contents");
@@ -89,6 +87,9 @@ public class StudentController {
 
             // 生徒情報を取得
             Student student = studentService.selectOne(studentId);
+
+            // 生徒ID確認（デバッグ）
+            System.out.println("Detail_student = " + student.getStudentName());
 
             // 成績一覧の生成
             List<SchoolRecord> schoolRecordList = numericDataService.selectRecordOne(studentId);
@@ -122,9 +123,6 @@ public class StudentController {
                                  Model model,
                                  @PathVariable("id") String studentId) {
 
-        // ユーザーID確認（デバッグ）
-        System.out.println("Edit_studentId = " + studentId);
-
         // コンテンツ部分に生徒詳細を表示するための文字列を登録
         model.addAttribute("contents", "login/studentEdit :: studentEdit_contents");
 
@@ -157,6 +155,9 @@ public class StudentController {
                 month = 0;
                 day = 0;
             }
+
+            // 生徒名確認（デバッグ）
+            System.out.println("Edit_student = " + student.getStudentName());
 
             // Studentクラスをフォームクラスに変換
             form.setStudentId(student.getStudentId());
@@ -216,8 +217,6 @@ public class StudentController {
             // GET用のメソッドを呼び出して、生徒登録画面に戻る
             return getStudentEdit(form, futurePathData, model, form.getStudentId());
         }
-
-        System.out.println("更新処理");
 
         // Studentの更新
         // Studentインスタンスの生成
@@ -289,6 +288,10 @@ public class StudentController {
 
             if (result == true) {
                 model.addAttribute("result", "更新しました");
+
+                //ログ出力
+                System.out.println("更新処理：" + form.getStudentName());
+
             } else {
                 model.addAttribute("result", "更新に失敗しました");
             }
@@ -310,7 +313,7 @@ public class StudentController {
     public String postStudentDetailDelete(@ModelAttribute SignupForm form,
                                           Model model) {
 
-        System.out.println("削除処理");
+        String name = form.getStudentName();
 
         //削除実行
         boolean result = studentService.deleteOne(form.getStudentId());
@@ -318,6 +321,9 @@ public class StudentController {
         if (result == true) {
 
             model.addAttribute("result", "削除しました");
+
+            // ログ出力
+            System.out.println("削除処理：" + name);
 
         } else {
 

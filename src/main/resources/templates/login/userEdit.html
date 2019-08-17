@@ -20,6 +20,7 @@
                             <th class="info col-sm-2">ユーザー名</th>
                             <th class="info col-sm-2">パスワード</th>
                             <th class="info col-sm-2">権限</th>
+                            <th class="info col-sm-2">表示用パス</th>
                         </tr>
                         <tr>
                             <td>
@@ -43,6 +44,11 @@
                                             th:text="${role.key}"
                                             th:selected="${role.value} == *{role}"></option>
                                 </select>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" th:field="*{reallyPass}"/>
+                                </div>
                             </td>
                         </tr>
                     </table>

@@ -60,7 +60,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
                         + " parents,"
                         + " siblings,"
                         + " address,"
-                        + " address)"
+                        + " info)"
                         + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 student.getStudentId(),
                 student.getStudentName(),

@@ -42,12 +42,14 @@ public class UserDaoJdbcImpl implements UserDao {
         int rowNumber = jdbc.update("INSERT INTO s_user(user_id,"
                         + " password,"
                         + " user_name,"
-                        + " role)"
-                        + " VALUES(?, ?, ?, ?)",
+                        + " role"
+                        + " really_pass)"
+                        + " VALUES(?, ?, ?, ?, ?)",
                 user.getUserId(),
                 password,
                 user.getUserName(),
-                user.getRole());
+                user.getRole(),
+                user.getReallyPass());
 
         return rowNumber;
     }
@@ -59,6 +61,24 @@ public class UserDaoJdbcImpl implements UserDao {
         // １件取得
         Map<String, Object> map = jdbc.queryForMap("SELECT * FROM s_user"
                 + " WHERE user_id = ?", userId);
+
+        // 結果返却用の変数
+        User user = new User();
+
+        // 取得したデータを結果返却用の変数にセットしていく
+        user.setUserId((String) map.get("user_id")); //ユーザーID
+        user.setPassword((String) map.get("password")); //パスワード
+        user.setUserName((String) map.get("user_name")); //ユーザー名
+        user.setRole((String) map.get("role")); //ロール
+        user.setReallyPass((String) map.get("really_pass"));  // 打ち込みパスワード
+
+        return user;
+    }
+
+    @Override
+    public User selectOneByName(String userName) throws DataAccessException {
+        Map<String, Object> map = jdbc.queryForMap("SELECT * FROM s_user"
+                + " WHERE user_name = ?", userName);
 
         // 結果返却用の変数
         User user = new User();
@@ -115,9 +135,13 @@ public class UserDaoJdbcImpl implements UserDao {
                         + " SET"
                         + " password = ?,"
                         + " user_name = ?,"
+                        + " role = ?,"
+                        + " really_pass = ?"
                         + " WHERE user_id = ?",
                 password,
                 user.getUserName(),
+                user.getRole(),
+                user.getReallyPass(),
                 user.getUserId());
 
         return rowNumber;

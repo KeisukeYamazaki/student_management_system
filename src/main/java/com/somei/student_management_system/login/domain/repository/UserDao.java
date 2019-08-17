@@ -16,6 +16,9 @@ public interface UserDao {
     // Userテーブルのデータを１件取得
     public User selectOne(String userId) throws DataAccessException;
 
+    // Userテーブルのデータを名前を引数にして１件取得
+    public User selectOneByName(String userName) throws DataAccessException;
+
     // Userテーブルの全データを取得.
     public List<User> selectMany() throws DataAccessException;
 
