@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 public class HomeController {
 
@@ -25,8 +28,11 @@ public class HomeController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userName = auth.getName();
 
+        // 時間の取得
+        LocalDateTime time = LocalDateTime.now();
+
         // ログ出力
-        System.out.println("ログイン中：" + userName);
+        System.out.println("ログイン中：" + DateTimeFormatter.ofPattern("yyyy/M/d HH:mm").format(time) + ' ' + userName);
 
         //コンテンツ部分にホーム画面を表示するための文字列を登録
         model.addAttribute("contents", "login/home :: home_contents");

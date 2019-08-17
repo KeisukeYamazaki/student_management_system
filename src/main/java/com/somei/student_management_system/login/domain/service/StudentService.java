@@ -55,6 +55,14 @@ public class StudentService {
     }
 
     /**
+     * 指定学年全件取得メソッド.
+     */
+    public List<Student> selectManyByGrade(String grade) {
+        // 指定学年を全件取得
+        return dao.selectManyByGrade(grade);
+    }
+
+    /**
      * 生徒データ１件取得用メソッド.
      */
     public Student selectOne(String studentId) {
@@ -89,6 +97,35 @@ public class StudentService {
 
         return result;
     }
+
+    /**
+     * 生徒のクラス複数更新メソッド
+     */
+    public boolean updateHomeRoom(List<Student> list) {
+
+        //判定用変数
+        boolean result = false;
+
+        // 複数更新
+        List<Integer> rowNumbers = dao.updateHomeRoom(list);
+
+        for(Integer rowNumber : rowNumbers) {
+
+            if (rowNumber > 0) {
+
+                //update成功
+                result = true;
+
+            } else {
+                // もし更新できない行があったら、falseを返す
+                return false;
+            }
+
+        }
+
+        return result;
+    }
+
 
     /**
      * 進路データ１件更新用メソッド.

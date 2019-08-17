@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -333,5 +335,91 @@ public class StudentController {
 
         //生徒一覧画面を表示
         return getStudentList(model);
+    }
+
+    /**
+     * クラス管理画面のGETメソッド.
+     */
+    @GetMapping("/classManagement")
+    public String getClassManagement(Model model) {
+
+        //コンテンツ部分に生徒一覧を表示するための文字列を登録
+        model.addAttribute("contents", "login/classManagement :: classManagement_contents");
+
+        return "login/homeLayout";
+    }
+
+    /**
+     * クラス編集画面の表示メソッド.
+     */
+    @PostMapping("/classManagement")
+    public String postClassManagement(@ModelAttribute SignupForm form,
+                                      @RequestParam("grade") String grade,
+                                      Model model) {
+
+        // 学年のリストを生成
+        List<Student> gradeList = studentService.selectManyByGrade(grade);
+
+        //コンテンツ部分に生徒一覧を表示するための文字列を登録
+        model.addAttribute("contents", "login/classManagement :: classManagement_contents");
+
+        // ドロップダウンリストにクラスを表示
+        model.addAttribute("homeRooms", signupController.getSelectedHomeRooms());
+
+        //Modelに生徒リストを登録
+        model.addAttribute("gradeList", gradeList);
+
+        return "login/homeLayout";
+    }
+
+    /**
+     * クラス編集処理.
+     */
+    @PostMapping(value = "/classManagement", params = "change")
+    public String changeClassManagement(@ModelAttribute Student student, Model model) {
+
+
+        // 送られてきたchangeの値をリストに格納
+        List<String> idList = Arrays.asList(student.getStudentId().split(","));
+        List<String> classList = Arrays.asList(student.getHomeRoom().split(","));
+
+        // 渡すためのリストを作成
+        List<Student> classChangeList = new ArrayList<>();
+
+        if (idList.size() == classList.size()) {
+            for (int i = 0; i < idList.size(); i++) {
+                Student inList = new Student();
+
+                // studentクラスにidとhomeRomeのデータを代入してリストに格納
+                inList.setStudentId(idList.get(i));
+                inList.setHomeRoom(classList.get(i));
+
+                classChangeList.add(inList);
+            }
+
+        } else {
+
+            System.out.println("クラス替え失敗");
+
+            model.addAttribute("result", "全員のクラスが指定されているか確認してください");
+        }
+
+        try {
+
+            // 更新実行
+            boolean result = studentService.updateHomeRoom(classChangeList);
+
+            if (result == true) {
+                model.addAttribute("result", "クラスを変更しました");
+            } else {
+                model.addAttribute("result", "クラスを変更できませんでした");
+            }
+        } catch (DataAccessException e) {
+
+            model.addAttribute("result", "更新失敗(トランザクションテスト)");
+        }
+
+        //クラス管理画面を表示
+        return getClassManagement(model);
     }
 }

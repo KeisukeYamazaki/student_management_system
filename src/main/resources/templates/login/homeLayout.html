@@ -56,6 +56,7 @@
         <li role="presentation"><a th:href="@{'/home'}"><i class="fa fa-home"></i>&nbsp; HOME</a></li>
         <li role="presentation"><a th:href="@{'/studentList'}"><i class="fa fa-list-alt"></i>&nbsp; 生徒一覧</a></li>
         <li role="presentation"><a th:href="@{'/signup'}"><i class="fa fa-edit"></i>&nbsp; 新規登録</a></li>
+        <li role="presentation"><a th:href="@{'/classManagement'}"><i class="fa fa-users"></i>&nbsp; クラス管理</a></li>
         <li role="presentation" sec:authorize="hasRole('ADMIN')">
             <a th:href="@{'/admin'}"><i class="fa fa-user"></i>&nbsp; ユーザー管理</a>
         </li>

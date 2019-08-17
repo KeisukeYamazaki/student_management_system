@@ -21,11 +21,17 @@ public interface StudentDao {
     // studentテーブルの全データを取得.
     public List<Student> selectMany() throws DataAccessException;
 
+    // studentテーブルの指定学年の全データを取得
+    public List<Student> selectManyByGrade(String grade) throws DataAccessException;
+
     // future_pathテーブルのデータを１件取得
     public FuturePath selectPathOne(String studentId) throws DataAccessException;
 
     // studentテーブルを１件更新.
     public int updateOne(Student student) throws DataAccessException;
+
+    // studentテーブルを複数件更新
+    public List<Integer> updateHomeRoom(List<Student> list) throws DataAccessException;
 
     // future_pathテーブルのデータを１件更新
     public int updatePathOne(FuturePath futurePath) throws DataAccessException;

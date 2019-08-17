@@ -81,7 +81,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
 
     }
 
-    //ユーザー１件取得
+    //生徒１件取得
     @Override
     public Student selectOne(String studentId) {
 
@@ -95,7 +95,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
         return jdbc.queryForObject(sql, rowMapper, studentId);
     }
 
-    //ユーザー全件取得
+    //生徒全件取得
     @Override
     public List<Student> selectMany() {
 
@@ -107,6 +107,20 @@ public class StudentDaoJdbcImpl implements StudentDao {
 
         //SQL実行
         return jdbc.query(sql, rowMapper);
+    }
+
+    // studentテーブルの指定学年の全データを取得
+    @Override
+    public List<Student> selectManyByGrade(String grade) throws DataAccessException {
+
+        //studentテーブルの指定学年のデータを全件取得するSQL
+        String sql = "SELECT * FROM student  WHERE grade = ? ORDER BY home_room COLLATE \"C\", student_id";
+
+        //RowMapperの生成
+        RowMapper<Student> rowMapper = new BeanPropertyRowMapper<Student>(Student.class);
+
+        //SQL実行
+        return jdbc.query(sql, rowMapper, grade);
     }
 
     @Override
@@ -130,6 +144,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
         }
     }
 
+    // 生徒１件更新
     @Override
     public int updateOne(Student student) throws DataAccessException {
         //１件更新
@@ -168,6 +183,30 @@ public class StudentDaoJdbcImpl implements StudentDao {
     }
 
     @Override
+    public List<Integer> updateHomeRoom(List<Student> list) throws DataAccessException {
+
+        // 結果返却用のリストを生成
+        List<Integer> resultList = new ArrayList<>();
+
+        // リストの数の分のupdateを行う
+        for (int i = 0; i < list.size(); i++) {
+
+            int rowNumber = jdbc.update("UPDATE student"
+                            + " SET"
+                            + " home_room = ?"
+                            + " WHERE student_id = ?"
+                    , list.get(i).getHomeRoom()
+                    , list.get(i).getStudentId());
+
+            resultList.add(rowNumber);
+        }
+
+        return resultList;
+
+    }
+
+    // 生徒の進路データを１件更新
+    @Override
     public int updatePathOne(FuturePath futurePath) throws DataAccessException {
         //１件更新
         int rowNumber = jdbc.update("UPDATE future_path"
@@ -198,6 +237,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
         return rowNumber;
     }
 
+    // 生徒データ１件削除
     @Override
     public int deleteOne(String studentId) throws DataAccessException {
         //１件削除
