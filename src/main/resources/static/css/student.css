@@ -68,3 +68,8 @@ ul.cp_list li:after {
 .btn-margin10 {
     margin-left: 10px;
 }
+
+.must-label {
+    margin-left: 10px;
+    vertical-align: middle;
+}

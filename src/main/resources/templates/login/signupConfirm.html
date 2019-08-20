@@ -29,8 +29,8 @@
                             <tr>
                             <tr>
                                 <td th:text="*{studentId}"></td>
-                                <td th:text="*{studentName}"></td>
-                                <td th:text="*{nameRuby}"></td>
+                                <td th:text="|${signupForm.lastName}　${signupForm.firstName}|"></td>
+                                <td th:text="|${signupForm.lastRuby}　${signupForm.firstRuby}|"></td>
                                 <td th:text="*{grade}"></td>
                                 <td th:text="*{school}"></td>
                             </tr>
@@ -75,8 +75,10 @@
                     <div class="row">
                         <form method="post" th:action="@{/signupConfirm}" th:object="${signupForm}">
                             <input type="hidden" th:field="*{studentId}"/>
-                            <input type="hidden" th:field="*{studentName}"/>
-                            <input type="hidden" th:field="*{nameRuby}"/>
+                            <input type="hidden" th:field="*{lastName}"/>
+                            <input type="hidden" th:field="*{firstName}"/>
+                            <input type="hidden" th:field="*{lastRuby}"/>
+                            <input type="hidden" th:field="*{firstRuby}"/>
                             <input type="hidden" th:field="*{grade}"/>
                             <input type="hidden" th:field="*{school}"/>
                             <input type="hidden" th:field="*{homeRoom}"/>

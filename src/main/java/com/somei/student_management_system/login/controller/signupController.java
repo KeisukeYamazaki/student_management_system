@@ -93,10 +93,13 @@ public class signupController {
             birthday = null;
         }
 
+        String name = form.getLastName() + "　" + form.getFirstName();
+        String ruby = form.getLastRuby() + "　" + form.getFirstRuby();
+
         //フォームクラスをUserクラスに変換
         student.setStudentId(form.getStudentId());
-        student.setStudentName(form.getStudentName());
-        student.setNameRuby(form.getNameRuby());
+        student.setStudentName(name);
+        student.setNameRuby(ruby);
         student.setGrade(form.getGrade());
         student.setSchool(form.getSchool());
         student.setHomeRoom(form.getHomeRoom());

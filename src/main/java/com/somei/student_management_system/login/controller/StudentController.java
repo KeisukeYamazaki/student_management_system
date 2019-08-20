@@ -161,10 +161,20 @@ public class StudentController {
             // 生徒名確認（デバッグ）
             System.out.println("Edit_student = " + student.getStudentName());
 
+            // 姓と名を分ける
+            String[] name = student.getStudentName().split("[ 　]");
+            String lastName = name[0];
+            String firstName = name[1];
+            String[] ruby = student.getNameRuby().split("[ 　]");
+            String lastRuby = ruby[0];
+            String firstRuby = ruby[1];
+
             // Studentクラスをフォームクラスに変換
             form.setStudentId(student.getStudentId());
-            form.setStudentName(student.getStudentName());
-            form.setNameRuby(student.getNameRuby());
+            form.setLastName(lastName);
+            form.setFirstName(firstName);
+            form.setLastRuby(lastRuby);
+            form.setFirstRuby(firstRuby);
             form.setGrade(student.getGrade());
             form.setSchool(student.getSchool());
             form.setHomeRoom(student.getHomeRoom());
@@ -233,10 +243,14 @@ public class StudentController {
             birthday = null;
         }
 
+        // 名前を結合
+        String name = form.getLastName() + "　" + form.getFirstName();
+        String ruby = form.getLastRuby() + "　" + form.getFirstRuby();
+
         //フォームクラスをStudentクラスに変換
         student.setStudentId(form.getStudentId());
-        student.setStudentName(form.getStudentName());
-        student.setNameRuby(form.getNameRuby());
+        student.setStudentName(name);
+        student.setNameRuby(ruby);
         student.setGrade(form.getGrade());
         student.setSchool(form.getSchool());
         student.setHomeRoom(form.getHomeRoom());
@@ -292,7 +306,7 @@ public class StudentController {
                 model.addAttribute("result", "更新しました");
 
                 //ログ出力
-                System.out.println("更新処理：" + form.getStudentName());
+                System.out.println("更新処理：" + form.getLastName() + form.getFirstName());
 
             } else {
                 model.addAttribute("result", "更新に失敗しました");
@@ -315,7 +329,7 @@ public class StudentController {
     public String postStudentDetailDelete(@ModelAttribute SignupForm form,
                                           Model model) {
 
-        String name = form.getStudentName();
+        String name = form.getLastName() + form.getFirstName();
 
         //削除実行
         boolean result = studentService.deleteOne(form.getStudentId());

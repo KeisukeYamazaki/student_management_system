@@ -14,11 +14,18 @@ public class SignupForm {
     private String studentId;
 
     @NotBlank
-    private String studentName;
+    private String lastName;
+
+    @NotBlank
+    private String firstName;
 
     @NotBlank
     @Pattern(regexp = "^[ァ-ヶー 　]*$")
-    private String nameRuby;
+    private String lastRuby;
+
+    @NotBlank
+    @Pattern(regexp = "^[ァ-ヶー 　]*$")
+    private String firstRuby;
 
     @NotBlank
     private String grade;

@@ -23,11 +23,12 @@
                         <div class="col-sm-12">
                             <table class="table table-bordered table-hover">
                                 <tr>
-                                    <th class="info col-sm-2">生徒ID</th>
-                                    <th class="info col-sm-2">名前</th>
-                                    <th class="info col-sm-2">フリガナ</th>
-                                    <th class="info col-sm-2">学年</th>
-                                    <th class="info col-sm-2">校舎</th>
+                                    <th class="info col-sm-2">生徒ID<span class="label label-danger must-label">必須</span>
+                                    </th>
+                                    <th class="info col-sm-4">名前<span class="label label-danger must-label">必須</span>
+                                    </th>
+                                    <th class="info col-sm-4">フリガナ<span class="label label-danger must-label">必須</span>
+                                    </th>
                                 </tr>
                                 <tr>
                                     <td>
@@ -38,26 +39,51 @@
                                     </td>
                                     <td>
                                         <div class="form-group"
-                                             th:classappend="${#fields.hasErrors('studentName')}?'has-error'">
-                                            <input type="text" class="form-control" th:field="*{studentName}"/>
-                                            <small id="NameHelpBlock" class="form-text text-muted">姓と名の間は１つの半角スペース
-                                            </small>
-                                            </br>
-                                            <span class="text-danger" th:if="${#fields.hasErrors('studentName')}"
-                                                  th:errors="*{studentName}">studentName error</span>
+                                             th:classappend="${#fields.hasErrors('lastName')}?'has-error'">
+                                            <label style="display: inline; font-weight: normal">姓</label>
+                                            <input type="text" class="form-control"
+                                                   style="width: 40%; display: inline; margin-left: 5px;"
+                                                   th:field="*{lastName}"/>
+                                            <label style="display: inline; margin-left: 15px;  font-weight: normal">名</label>
+                                            <input type="text" class="form-control"
+                                                   style="width: 40%; display: inline; margin-left: 5px"
+                                                   th:field="*{firstName}"/>
+                                            <span class="text-danger" th:if="${#fields.hasErrors('lastName')}"
+                                                  th:errors="*{lastName}">studentName error</span>
+                                            <span class="text-danger" th:if="${#fields.hasErrors('firstName')}"
+                                                  th:errors="*{firstName}">studentName error</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group"
-                                             th:classappend="${#fields.hasErrors('nameRuby')}?'has-error'">
-                                            <input type="text" class="form-control" th:field="*{nameRuby}"/>
-                                            <small id="RubyHelpBlock" class="form-text text-muted">姓と名の間は１つの半角スペース
-                                            </small>
-                                            </br>
-                                            <span class="text-danger" th:if="${#fields.hasErrors('nameRuby')}"
-                                                  th:errors="*{nameRuby}">nameRuby error</span>
+                                             th:classappend="${#fields.hasErrors('lastRuby')}?'has-error'">
+                                            <label style="display: inline; font-weight: normal">姓</label>
+                                            <input type="text" class="form-control"
+                                                   style="width: 40%; display: inline; margin-left: 5px;"
+                                                   th:field="*{lastRuby}"/>
+                                            <label style="display: inline; margin-left: 15px;  font-weight: normal">名</label>
+                                            <input type="text" class="form-control"
+                                                   style="width: 40%; display: inline; margin-left: 5px"
+                                                   th:field="*{firstRuby}"/>
+                                            <span class="text-danger" th:if="${#fields.hasErrors('lastRuby')}"
+                                                  th:errors="*{lastRuby}">nameRuby error</span>
+                                            <span class="text-danger" th:if="${#fields.hasErrors('firstRuby')}"
+                                                  th:errors="*{firstRuby}">nameRuby error</span>
                                         </div>
                                     </td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th class="info col-sm-2">学年<span class="label label-danger must-label">必須</span>
+                                    </th>
+                                    <th class="info col-sm-2">校舎<span class="label label-danger must-label">必須</span>
+                                    </th>
+                                    <th class="info col-sm-2">クラス</th>
+                                    <th class="info col-sm-2">学校</th>
+                                    <th class="info col-sm-2">入塾時期</th>
+                                </tr>
+                                <tr>
                                     <td>
                                         <div class="form-group">
                                             <select id="grade" name="grade" class="form-control">
@@ -77,16 +103,6 @@
                                             </select>
                                         </div>
                                     </td>
-                                </tr>
-                            </table>
-                            <table class="table table-bordered table-hover">
-                                <tr>
-                                    <th class="info col-sm-2">クラス</th>
-                                    <th class="info col-sm-2">学校</th>
-                                    <th class="info col-sm-2">入塾時期</th>
-                                    <th class="info col-sm-4">誕生日</th>
-                                </tr>
-                                <tr>
                                     <td>
                                         <div class="form-group">
                                             <select id="homeRoom" name="homeRoom" class="form-control">
@@ -113,6 +129,17 @@
                                             </select>
                                         </div>
                                     </td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th class="info col-sm-4">誕生日</th>
+                                    <th class="info col-sm-2">部活</th>
+                                    <th class="info col-sm-2">両親</th>
+                                    <th class="info col-sm-2">兄弟姉妹</th>
+                                    <th class="info col-sm-2">住所</th>
+                                </tr>
+                                <tr>
                                     <td>
                                         <div class="form-inline">
                                             <select id="birthdayYear" name="birthdayYear" class="form-control"
@@ -141,16 +168,6 @@
                                             </small>
                                         </div>
                                     </td>
-                                </tr>
-                            </table>
-                            <table class="table table-bordered table-hover">
-                                <tr>
-                                    <th class="info col-sm-2">部活</th>
-                                    <th class="info col-sm-2">両親</th>
-                                    <th class="info col-sm-2">兄弟姉妹</th>
-                                    <th class="info col-sm-2">住所</th>
-                                </tr>
-                                <tr>
                                     <td>
                                         <div class="form-group">
                                             <input type="text" class="form-control" th:field="*{club}"/>
