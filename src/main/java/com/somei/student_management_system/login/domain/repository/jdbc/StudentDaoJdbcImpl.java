@@ -183,6 +183,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
     }
 
     @Override
+    // studentテーブルのクラスを複数件更新
     public List<Integer> updateHomeRoom(List<Student> list) throws DataAccessException {
 
         // 結果返却用のリストを生成

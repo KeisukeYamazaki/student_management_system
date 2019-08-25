@@ -19,9 +19,13 @@
                 <form method="post" th:action="@{/signupConfirm}" th:object="${signupForm}">
                     <table class="table table-bordered table-hover table-striped">
                         <tr>
-                            <th class="info active col-sm-2">生徒ID<span class="label label-danger must-label">必須</span></th>
-                            <th class="info active col-sm-4">名前<span class="label label-danger must-label">必須</span></th>
-                            <th class="info active col-sm-4">フリガナ<span class="label label-danger must-label">必須</span></th>
+                            <th class="info active col-sm-2">生徒ID<span class="label label-danger must-label">必須</span>
+                            </th>
+                            <th class="info active col-sm-4">名前<span class="label label-danger must-label">必須</span>
+                            </th>
+                            <th class="info active col-sm-4">フリガナ<span class="label label-danger must-label">必須</span>
+                                <span style="font-size: x-small; font-weight: normal; margin-left: 5px">※ 全角カタカナで入力</span>
+                            </th>
                         </tr>
                         <tr>
                             <td>
@@ -34,7 +38,7 @@
                             </td>
                             <td>
                                 <div class="form-group"
-                                     th:classappend="${#fields.hasErrors('lastName')}?'has-error'">
+                                     th:classappend="${#fields.hasErrors('lastName') || #fields.hasErrors('firstName') }?'has-error'">
                                     <label style="display: inline; font-weight: normal">姓</label>
                                     <input type="text" class="form-control"
                                            style="width: 40%; display: inline; margin-left: 5px;"
@@ -45,13 +49,14 @@
                                            th:field="*{firstName}"/>
                                     <span class="text-danger" th:if="${#fields.hasErrors('lastName')}"
                                           th:errors="*{lastName}">studentName error</span>
-                                    <span class="text-danger" th:if="${#fields.hasErrors('firstName')}"
+                                    <span class="text-danger" style="margin-left: 20px"
+                                          th:if="${#fields.hasErrors('firstName')}"
                                           th:errors="*{firstName}">studentName error</span>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group"
-                                     th:classappend="${#fields.hasErrors('lastRuby')}?'has-error'">
+                                     th:classappend="${#fields.hasErrors('lastRuby') || #fields.hasErrors('firstRuby') }?'has-error'">
                                     <label style="display: inline; font-weight: normal">姓</label>
                                     <input type="text" class="form-control"
                                            style="width: 40%; display: inline; margin-left: 5px;"
@@ -70,8 +75,10 @@
                     </table>
                     <table class="table table-bordered table-hover table-striped">
                         <tr>
-                            <th class="info active col-sm-2">学年<span class="label label-danger must-label">必須</span></th>
-                            <th class="info active col-sm-2">校舎<span class="label label-danger must-label">必須</span></th>
+                            <th class="info active col-sm-2">学年<span class="label label-danger must-label">必須</span>
+                            </th>
+                            <th class="info active col-sm-2">校舎<span class="label label-danger must-label">必須</span>
+                            </th>
                             <th class="info active col-sm-2">クラス</th>
                             <th class="info active col-sm-2">学校</th>
                             <th class="info active col-sm-2">入塾時期</th>
@@ -163,7 +170,8 @@
                                                 th:selected="${day.value} == *{birthdayDay}"></option>
                                     </select>
                                     <small id="BirthdayHelpBlock" class="form-text text-muted">
-                                        分からない場合は「年」「月」「日」のまま登録してください</small>
+                                        分からない場合は「年」「月」「日」のまま登録してください
+                                    </small>
                                 </div>
                             </td>
                             <td>
@@ -192,7 +200,7 @@
                         </tr>
                     </table>
                     <br/>
-                    <!-- 編集ボタン -->
+                    <!-- 確認ボタン -->
                     <button class="btn btn-primary btn-lg" type="submit">確認</button>
                 </form>
             </div>

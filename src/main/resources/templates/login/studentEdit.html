@@ -39,12 +39,12 @@
                                     </td>
                                     <td>
                                         <div class="form-group"
-                                             th:classappend="${#fields.hasErrors('lastName')}?'has-error'">
+                                             th:classappend="${#fields.hasErrors('lastName') || #fields.hasErrors('firstName') }?'has-error'">
                                             <label style="display: inline; font-weight: normal">姓</label>
                                             <input type="text" class="form-control"
                                                    style="width: 40%; display: inline; margin-left: 5px;"
                                                    th:field="*{lastName}"/>
-                                            <label style="display: inline; margin-left: 15px;  font-weight: normal">名</label>
+                                            <label style="display: inline; margin-left: 15px; font-weight: normal">名</label>
                                             <input type="text" class="form-control"
                                                    style="width: 40%; display: inline; margin-left: 5px"
                                                    th:field="*{firstName}"/>
@@ -56,12 +56,12 @@
                                     </td>
                                     <td>
                                         <div class="form-group"
-                                             th:classappend="${#fields.hasErrors('lastRuby')}?'has-error'">
+                                             th:classappend="${#fields.hasErrors('lastRuby') || #fields.hasErrors('firstRuby') }?'has-error'">
                                             <label style="display: inline; font-weight: normal">姓</label>
                                             <input type="text" class="form-control"
                                                    style="width: 40%; display: inline; margin-left: 5px;"
                                                    th:field="*{lastRuby}"/>
-                                            <label style="display: inline; margin-left: 15px;  font-weight: normal">名</label>
+                                            <label style="display: inline; margin-left: 15px; font-weight: normal">名</label>
                                             <input type="text" class="form-control"
                                                    style="width: 40%; display: inline; margin-left: 5px"
                                                    th:field="*{firstRuby}"/>

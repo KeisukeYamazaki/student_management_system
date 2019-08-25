@@ -16,6 +16,9 @@ public interface NumericDataDao {
     // school_recordテーブルの1人分の成績データを取得.
     public List<SchoolRecord> selectRecordOne(String studentId) throws DataAccessException;
 
+    // school_recordテーブルの複数人の成績データを取得.
+    public List<SchoolRecord> selectRecordMany(String school, String grade) throws DataAccessException;
+
     // テーブルを１件以上更新.
     public int updateSome(Student student) throws DataAccessException;
 
@@ -27,6 +30,8 @@ public interface NumericDataDao {
 
     // regular_examテーブルの1人分の定期試験データを取得.
     public List<RegularExam> selectRegularOne(String studentId) throws DataAccessException;
+
+
 
 }
 

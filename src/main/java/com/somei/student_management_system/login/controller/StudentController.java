@@ -9,6 +9,7 @@ import com.somei.student_management_system.login.domain.model.SignupForm;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.service.NumericDataService;
 import com.somei.student_management_system.login.domain.service.StudentService;
+import com.somei.student_management_system.login.domain.service.ZenkenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,9 @@ public class StudentController {
 
     @Autowired
     NumericDataService numericDataService;
+
+    @Autowired
+    ZenkenService zenkenService;
 
     @Autowired
     HomeController homeController;
@@ -331,10 +335,13 @@ public class StudentController {
 
         String name = form.getLastName() + form.getFirstName();
 
-        //削除実行
+        //Student削除実行
         boolean result = studentService.deleteOne(form.getStudentId());
 
-        if (result == true) {
+        //Zenken削除実行
+        boolean zenkenResult = zenkenService.deleteOne(form.getStudentId());
+
+        if (result == true && zenkenResult == true) {
 
             model.addAttribute("result", "削除しました");
 

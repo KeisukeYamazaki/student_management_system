@@ -57,6 +57,40 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
     }
 
     @Override
+    public List<SchoolRecord> selectRecordMany(String school, String grade) throws DataAccessException {
+
+        String startNum = grade.equals("中３") ? "2201" : grade.equals("中２") ? "2301" : "2401";
+        String endNum = grade.equals("中３") ? "2299" : grade.equals("中２") ? "2399" : "2499";
+
+        // school_recordテーブルのデータ複数人分取得するSQL
+        String sql = "SELECT school_record.student_id,"
+                + " school_record.grade,"
+                + " term_name,"
+                + " english,"
+                + " math,"
+                + " japanese,"
+                + " science,"
+                + " social_studies,"
+                + " music,"
+                + " art,"
+                + " pe,"
+                + " tech_home"
+                + " FROM school_record"
+                + " JOIN record_group"
+                + " ON school_record.record_id = record_group.id"
+                + " JOIN student"
+                + " ON school_record.student_id = student.student_id"
+                + " WHERE school = ? and school_record.student_id between ? and ?"
+                + " ORDER BY term_name COLLATE \"C\"";
+
+        // RowMapperの生成
+        RowMapper<SchoolRecord> rowMapper = new BeanPropertyRowMapper<>(SchoolRecord.class);
+
+        // SQL実行
+        return jdbc.query(sql, rowMapper, school, startNum, endNum);
+    }
+
+    @Override
     public int updateSome(Student student) throws DataAccessException {
         return 0;
     }

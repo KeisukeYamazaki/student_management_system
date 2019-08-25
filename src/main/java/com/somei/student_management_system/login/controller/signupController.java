@@ -2,7 +2,9 @@ package com.somei.student_management_system.login.controller;
 
 import com.somei.student_management_system.login.domain.model.SignupForm;
 import com.somei.student_management_system.login.domain.model.Student;
+import com.somei.student_management_system.login.domain.model.Zenken;
 import com.somei.student_management_system.login.domain.service.StudentService;
+import com.somei.student_management_system.login.domain.service.ZenkenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,9 @@ public class signupController {
 
     @Autowired
     StudentController studentController;
+
+    @Autowired
+    ZenkenService zenkenService;
 
     /**
      * 生徒登録用のGETメソッド.
@@ -96,7 +101,7 @@ public class signupController {
         String name = form.getLastName() + "　" + form.getFirstName();
         String ruby = form.getLastRuby() + "　" + form.getFirstRuby();
 
-        //フォームクラスをUserクラスに変換
+        //フォームクラスをStudentクラスに変換
         student.setStudentId(form.getStudentId());
         student.setStudentName(name);
         student.setNameRuby(ruby);
@@ -111,11 +116,22 @@ public class signupController {
         student.setSiblings(form.getSiblings());
         student.setAddress(form.getAddress());
 
+        // Zenken インスタンスの生成
+        Zenken zenken = new Zenken();
+
+        //フォームクラスを Zenkenインスタンスに変換
+        zenken.setId(form.getStudentId());
+        zenken.setEnrollment("1");
+        zenken.setPrefecture("14");
+
         // 生徒登録処理
         boolean result = studentService.insert(student);
 
+        // 全県登録処理
+        boolean zenkenResult = zenkenService.insertOne(zenken);
+
         // 生徒登録結果の判定
-        if (result == true) {
+        if (result == true && zenkenResult == true) {
             System.out.println("insert成功");
             model.addAttribute("result", "登録しました");
         } else {

@@ -14,7 +14,7 @@
 <body>
 <!-- コンテンツ部分 -->
 <div th:fragment="classManagement_contents">
-    <div class="page-header">
+    <div class="page-header" style="margin-bottom: 5px">
         <h1>クラス管理ページ</h1>
         <p style="margin-left: 3px">このページでクラスの変更ができます</p>
     </div>
@@ -33,7 +33,7 @@
             </div>
         </form>
     </div>
-    <div class="panel panel-container col-sm-12" style="margin-top: 15px">
+    <div th:if="${gradeList}" class="panel panel-container col-sm-12" style="margin-top: 15px">
         <!-- 結果表示用 -->
         <span class="text-info" th:if="${result}" th:text="${result}"
               style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
@@ -56,7 +56,6 @@
                                             th:text="${homeRoom.key}"
                                             th:selected="${homeRoom.value} == ${student.homeRoom}"></option>
                                 </select>
-                                <!--<input type="hidden" th:field="*{studentId}">-->
                             </div>
                             <input type="hidden" name="studentId" th:value="${student.studentId}">
                         </td>

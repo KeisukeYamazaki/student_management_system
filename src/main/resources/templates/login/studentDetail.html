@@ -77,7 +77,7 @@
                                 <th class="info col-sm-8">生徒情報</th>
                             </tr>
                             <tr>
-                                <td>
+                                <td style="vertical-align: top; text-align: left">
                                     <th:block th:if="*{info}">
                                         <th:block th:each="str, stat : *{info.split('\r\n|\r|\n', -1)}">
                                             <th:block th:text="${str}"/>
@@ -506,7 +506,14 @@
                                             <th class="info">その他</th>
                                         </tr>
                                         <tr>
-                                            <td height="440px" th:text="*{information}"></td>
+                                            <td height="440px" style="vertical-align: top; text-align: left">
+                                                <th:block th:if="*{information}">
+                                                    <th:block th:each="str, stat : *{information.split('\r\n|\r|\n', -1)}">
+                                                        <th:block th:text="${str}"/>
+                                                        <br th:if="${!stat.last}"/>
+                                                    </th:block>
+                                                </th:block>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
