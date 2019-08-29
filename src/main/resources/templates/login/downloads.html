@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <!--Bootstrapに必要なCSSとJavaScriptを読み込み-->
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.slim.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.css}"></script>
+</head>
+<body>
+<!-- コンテンツ部分 -->
+<div th:fragment="downloads_contents">
+    <div class="page-header" style="margin-bottom: 15px">
+        <h1>ダウンロードページ</h1>
+        <p style="margin-left: 3px">このページでは各種書類をダウンロードできます</p>
+    </div>
+    <div class="row col-sm-10">
+        <div class="btn-group btn-group-justified" role="group">
+            <a type="button" class="btn btn-primary" th:href="@{'/downloads/nameListJunior'}"
+               style="width: 20%; border-color: white">中学生名簿
+            </a>
+            <a type="button" class="btn btn-primary" th:href="@{'/downloads/nameListElementary'}"
+               style="width: 20%; border-color: white">小学生名簿
+            </a>
+        </div>
+    </div>
+    <div th:if="${class3A}" class="panel panel-container col-sm-12" style="margin-top: 15px">
+        <div class="col-sm-12">
+            <form method="post" th:action="@{/downloads}" name="form">
+                <div class="row col-sm-12">
+                    <div class="row col-sm-12">
+                        <p style="color: #444444; margin: 5px 0 0 16px">ダウンロードするクラスにチェックしてください。
+                            クラスの生徒がちがう場合はクラス変更を行ってください。</p>
+                        <label class="checkbox_text" style="margin: 10px 0 0 16px">
+                            <input type="checkbox" name="all" onClick="AllChecked()" >&nbsp;&nbsp;すべて選択
+                        </label>
+                    </div>
+                    <div class="col-sm-3" style="margin-top: 10px">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="３Ａ" onClick="DisChecked()">　３Ａ
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${class3A}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-3" style="margin-top: 10px">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="３Ｂ" onClick="DisChecked()">　３Ｂ
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${class3B}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-3" style="margin-top: 10px">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="３Ｃ" onClick="DisChecked()">　３Ｃ
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${class3C}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr class="row col-sm-12 style-one">
+                <div class="row col-sm-12">
+                    <div class="col-sm-3">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="２Ａ" onClick="DisChecked()">　２Ａ
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${class2A}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="２Ｂ" onClick="DisChecked()">　２Ｂ
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${class2B}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="２Ｃ" onClick="DisChecked()">　２Ｃ
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${class2C}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr class="row col-sm-12 style-one">
+                <div class="row col-sm-12">
+                    <div class="col-sm-3">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="１Ａ" onClick="DisChecked()">　１Ａ
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${class1A}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="１Ｂ" onClick="DisChecked()">　１Ｂ
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${class1B}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">ダウンロード</button>
+                <p style="font-size: small; margin-top: 10px">ZIP形式ファイルがダウンロードされます</p>
+            </form>
+        </div>
+    </div>
+    <div th:if="${classE6h}" class="panel panel-container col-sm-12" style="margin-top: 15px">
+        <div class="col-sm-12">
+            <form method="post" th:action="@{/downloads}" name="form">
+                <div class="row col-sm-12">
+                    <div class="row col-sm-12">
+                        <p style="color: #444444; margin: 5px 0 0 16px">ダウンロードするクラスにチェックしてください。
+                            クラスの生徒がちがう場合はクラス変更を行ってください。</p>
+                        <label class="checkbox_text" style="margin: 10px 0 0 16px">
+                            <input type="checkbox" name="all" onClick="AllChecked()" >&nbsp;&nbsp;すべて選択
+                        </label>
+                    </div>
+                    <div class="col-sm-4" style="margin-top: 10px">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="小６橋戸" onClick="DisChecked()">　小６橋戸
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${classE6h}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-4" style="margin-top: 10px">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="小６瀬谷" onClick="DisChecked()">　小６瀬谷
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${classE6s}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr class="row col-sm-12 style-one">
+                <div class="row col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="小５橋戸" onClick="DisChecked()">　小５橋戸
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${classE5h}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="小５瀬谷" onClick="DisChecked()">　小５瀬谷
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${classE5s}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr class="row col-sm-12 style-one">
+                <div class="row col-sm-12">
+                    <div class="col-sm-3">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="小４橋戸" onClick="DisChecked()">　小４橋戸
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${classE4h}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="小４瀬谷" onClick="DisChecked()">　小４瀬谷
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${classE4s}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="小３橋戸" onClick="DisChecked()">　小３橋戸
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${classE3s}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="checkbox text-center">
+                            <label class="checkbox_text">
+                                <input type="checkbox" name="className" value="小３瀬谷" onClick="DisChecked()">　小３瀬谷
+                            </label>
+                        </div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">番号</th>
+                                <th class="info">名前</th>
+                            </tr>
+                            <tr th:each="student, studentStat : ${classE3s}">
+                                <td th:text="${studentStat.count}" style="font-size: small"></td>
+                                <td th:text="${student.studentName}" style="font-size: small"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">ダウンロード</button>
+                <p style="font-size: small; margin-top: 10px">ZIP形式ファイルがダウンロードされます</p>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -3,12 +3,19 @@ package com.somei.student_management_system.login.domain.service;
 import com.somei.student_management_system.login.bean.EntranceExamCalculation;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.FuturePathWithData;
+import com.somei.student_management_system.login.domain.model.NameList;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.repository.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -109,7 +116,7 @@ public class StudentService {
         // 複数更新
         List<Integer> rowNumbers = dao.updateHomeRoom(list);
 
-        for(Integer rowNumber : rowNumbers) {
+        for (Integer rowNumber : rowNumbers) {
 
             if (rowNumber > 0) {
 
@@ -126,6 +133,38 @@ public class StudentService {
         return result;
     }
 
+    /**
+     * クラスメンバー取得メソッド
+     */
+    public List<NameList> selectManyByHomeRoom(String homeRoom) {
+
+        return dao.selectManyByHomeRoom(homeRoom);
+    }
+
+
+    /**
+     * クラス別名簿作成メソッド
+     */
+    public List<List<NameList>> makeClassNameList() {
+
+        // 返却用のリスト
+        List<List<NameList>> returnList = new ArrayList<>();
+
+        // 全クラスのリストを作る（forで回す用）
+        List<String> classList = Arrays.asList("３Ａ", "３Ｂ", "３Ｃ", "２Ａ", "２Ｂ", "２Ｃ", "１Ａ", "１Ｂ",
+                "小６", "小６橋戸", "小６瀬谷", "小５", "小５橋戸", "小５瀬谷", "小４橋戸", "小４瀬谷", "小３橋戸", "小３瀬谷");
+
+        for(String className : classList) {
+
+            // クラスのリストを取得
+            List<NameList> list = dao.selectManyByHomeRoom(className);
+
+            // 返却用リストに格納
+            returnList.add(list);
+        }
+
+        return returnList;
+    }
 
     /**
      * 進路データ１件更新用メソッド.

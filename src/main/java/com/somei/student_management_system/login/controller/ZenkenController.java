@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -180,12 +181,22 @@ public class ZenkenController {
             e.printStackTrace();
         }
 
-        //HTTPヘッダーの設定
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "text/csv; charset=UTF-8");
-        headers.setContentDispositionFormData("filename", fileName);
+        try {
 
-        // CSVファイルを戻す
-        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+            //HTTPヘッダーの設定
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Type", "text/csv; charset=UTF-8");
+            headers.setContentDispositionFormData("filename", fileName);
+
+            // CSVファイルを戻す
+            return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+
+        } finally {
+
+            // 作成したファイルを削除する
+            File file = new File(fileName);
+            file.delete();
+
+        }
     }
 }

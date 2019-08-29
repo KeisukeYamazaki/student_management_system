@@ -111,4 +111,15 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>maven.jasper.org</id>
+            <name>Jasper Maven Repository</name>
+            <url>http://jasperreports.sourceforge.net/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
 </project>

@@ -1,5 +1,6 @@
 package com.somei.student_management_system.login.controller;
 
+import com.somei.student_management_system.login.bean.PdfView;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.FuturePathWithData;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
@@ -10,6 +11,7 @@ import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.service.NumericDataService;
 import com.somei.student_management_system.login.domain.service.StudentService;
 import com.somei.student_management_system.login.domain.service.ZenkenService;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -443,4 +446,24 @@ public class StudentController {
         //クラス管理画面を表示
         return getClassManagement(model);
     }
+
+    /**
+     * PDFダウンロード
+     *
+     * @param filename
+     * @return
+     */
+    @GetMapping(path = "/download/{filename:.+\\.pdf}")
+    public ModelAndView downloadPdf(@PathVariable String filename) {
+
+        // 全件取得する
+
+
+        // 帳票レイアウト、データ、ダウンロード時のファイル名を指定する
+        //val view = new PdfView("jaspertmpl/name_list.jrxml", users.getData(), filename);
+
+        //return new ModelAndView(view);
+        return null;
+    }
+
 }

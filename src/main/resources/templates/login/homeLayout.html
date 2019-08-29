@@ -20,6 +20,7 @@
     <script src="/js/html5shiv.min.js" th:src="@{/js/html5shiv.min.js}"></script>
     <script src="/js/respond.min.js" th:src="@{/js/html5shiv.min.js}"></script>
     <![endif]-->
+    <script src="/js/allcheck.js" th:src="@{/js/allcheck.js}"></script>
 </head>
 <body>
 <!-- ===== ヘッダー（ナビゲーションバー） =====  -->
@@ -58,6 +59,7 @@
         <li role="presentation"><a th:href="@{'/signup'}"><i class="fa fa-edit"></i>&nbsp; 新規登録</a></li>
         <li role="presentation"><a th:href="@{'/classManagement'}"><i class="fa fa-users"></i>&nbsp; クラス管理</a></li>
         <li role="presentation"><a th:href="@{'/zenken'}"><i class="fa fa-file-text-o"></i>&nbsp; 全県模試一括</a></li>
+        <li role="presentation"><a th:href="@{'/downloads'}"><i class="fa fa-download"></i>&nbsp; ダウンロード</a></li>
         <li role="presentation" sec:authorize="hasRole('ADMIN')">
             <a th:href="@{'/admin'}"><i class="fa fa-user"></i>&nbsp; ユーザー管理</a>
         </li>

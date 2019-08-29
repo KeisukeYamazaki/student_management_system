@@ -3,7 +3,6 @@ package com.somei.student_management_system.login.domain.service;
 import com.somei.student_management_system.login.bean.ZenkenProcessing;
 import com.somei.student_management_system.login.domain.model.RecordExistence;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
-import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.model.Zenken;
 import com.somei.student_management_system.login.domain.repository.NumericDataDao;
 import com.somei.student_management_system.login.domain.repository.ZenkenDao;

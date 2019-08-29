@@ -1,6 +1,7 @@
 package com.somei.student_management_system.login.domain.repository.jdbc;
 
 import com.somei.student_management_system.login.domain.model.FuturePath;
+import com.somei.student_management_system.login.domain.model.NameList;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.repository.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,6 +122,59 @@ public class StudentDaoJdbcImpl implements StudentDao {
 
         //SQL実行
         return jdbc.query(sql, rowMapper, grade);
+    }
+
+    @Override
+    public List<NameList> selectManyByHomeRoom(String homeRoom) throws DataAccessException {
+
+        try {
+
+            // クラスが３Ａだった場合（３特と合併クラス）
+            if (homeRoom.equals("３Ａ")) {
+
+                // ビューを作成する
+                String sqlCreateView = "CREATE VIEW nameList_3A AS"
+                        + " SELECT student_id, student_name, home_room FROM student WHERE home_room = '３特'"
+                        + " UNION"
+                        + " SELECT student_id, student_name, home_room FROM student WHERE home_room = '３Ａ'";
+
+                String sql = "SELECT student_id, student_name, home_room from namelist_3a"
+                        + " ORDER BY home_room COLLATE \"C\", student_id";
+
+
+                //RowMapperの生成
+                RowMapper<NameList> rowMapper = new BeanPropertyRowMapper<>(NameList.class);
+
+                //SQL実行
+                jdbc.execute(sqlCreateView);
+                return jdbc.query(sql, rowMapper);
+
+            } else {
+
+                //studentテーブルの指定クラスのデータを全件取得するSQL
+                String sql = "SELECT student_id, student_name, home_room FROM student"
+                        + " WHERE home_room = ? ORDER BY home_room COLLATE \"C\", student_id";
+
+                //RowMapperの生成
+                RowMapper<NameList> rowMapper = new BeanPropertyRowMapper<>(NameList.class);
+
+                //SQL実行
+                return jdbc.query(sql, rowMapper, homeRoom);
+            }
+
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+
+            // もし当該クラスのデータが無かった場合は null を返す
+            return null;
+
+        } finally {
+
+            // ビューを削除する
+            String sqlDropView = "DROP VIEW IF EXISTS nameList_3A";
+            jdbc.execute(sqlDropView);
+
+        }
     }
 
     @Override

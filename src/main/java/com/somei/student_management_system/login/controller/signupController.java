@@ -229,9 +229,15 @@ public class signupController {
         selectMap.put("１Ａ", "１Ａ");
         selectMap.put("１Ｂ", "１Ｂ");
         selectMap.put("小６", "小６");
+        selectMap.put("小６橋戸", "小６橋戸");
+        selectMap.put("小６瀬谷", "小６瀬谷");
         selectMap.put("小５", "小５");
-        selectMap.put("小４", "小４");
-        selectMap.put("小３", "小３");
+        selectMap.put("小５橋戸", "小５橋戸");
+        selectMap.put("小５瀬谷", "小５瀬谷");
+        selectMap.put("小４橋戸", "小４橋戸");
+        selectMap.put("小４瀬谷", "小４瀬谷");
+        selectMap.put("小３橋戸", "小３橋戸");
+        selectMap.put("小３瀬谷", "小３瀬谷");
         return selectMap;
     }
 

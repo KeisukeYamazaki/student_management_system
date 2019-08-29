@@ -28,6 +28,8 @@
                         <option value="中３">中３</option>
                         <option value="中２">中２</option>
                         <option value="中１">中１</option>
+                        <option value="小６">小６</option>
+                        <option value="小５">小５</option>
                     </select>
                 </div>
             </div>
@@ -58,6 +60,7 @@
                                 </select>
                             </div>
                             <input type="hidden" name="studentId" th:value="${student.studentId}">
+                            <input type="hidden" name="studentName" th:value="${student.studentName}">
                         </td>
                     </tr>
                 </table>

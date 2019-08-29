@@ -1,6 +1,7 @@
 package com.somei.student_management_system.login.domain.repository;
 
 import com.somei.student_management_system.login.domain.model.FuturePath;
+import com.somei.student_management_system.login.domain.model.NameList;
 import com.somei.student_management_system.login.domain.model.Student;
 import org.springframework.dao.DataAccessException;
 
@@ -23,6 +24,9 @@ public interface StudentDao {
 
     // studentテーブルの指定学年の全データを取得
     public List<Student> selectManyByGrade(String grade) throws DataAccessException;
+
+    // studentテーブルの指定クラスの全データを取得
+    public List<NameList> selectManyByHomeRoom(String homeRoom) throws DataAccessException;
 
     // future_pathテーブルのデータを１件取得
     public FuturePath selectPathOne(String studentId) throws DataAccessException;
