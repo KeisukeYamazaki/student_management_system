@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <!--Bootstrapに必要なCSSとJavaScriptを読み込み-->
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.slim.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.css}"></script>
+</head>
+<body>
+<!-- コンテンツ部分 -->
+<div th:fragment="classManagement_contents">
+    <div class="page-header" style="margin-bottom: 5px">
+        <h1>クラス管理ページ</h1>
+        <p style="margin-left: 3px">このページでクラスの変更ができます</p>
+    </div>
+    <div class="row col-sm-12">
+        <form method="post" th:action="@{/classManagement}">
+            <div class="form-group">
+                <label for="grade" class="control-label col-xs-2" style="width: 120px; margin-top: 5px">学年を選択：</label>
+                <div class="col-sm-2 col-xs-4">
+                    <select class="form-control" id="grade" name="grade" onchange="this.form.submit()">
+                        <option value="">学年</option>
+                        <option value="中３">中３</option>
+                        <option value="中２">中２</option>
+                        <option value="中１">中１</option>
+                        <option value="小６">小６</option>
+                        <option value="小５">小５</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div th:if="${gradeList}" class="panel panel-container col-sm-12" style="margin-top: 15px">
+        <!-- 結果表示用 -->
+        <span class="text-info" th:if="${result}" th:text="${result}"
+              style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
+        <div class="col-sm-8">
+            <form method="post" th:action="@{/classManagement}" th:object="${Student}">
+                <table class="table table-bordered table-condensed table-hover table-striped" style="margin-top: 15px">
+                    <tr>
+                        <th class="info col-sm-2">名前</th>
+                        <th class="info col-sm-2">校舎</th>
+                        <th class="info col-sm-2">クラス</th>
+                    </tr>
+                    <tr th:each="student : ${gradeList}">
+                        <td th:text="${student.studentName}"></td>
+                        <td th:text="${student.school}"></td>
+                        <td>
+                            <div class="form-group">
+                                <select id="homeRoom" name="homeRoom" class="form-control">
+                                    <option value="">クラス</option>
+                                    <option th:each="homeRoom : ${homeRooms}" th:value="${homeRoom.value}"
+                                            th:text="${homeRoom.key}"
+                                            th:selected="${homeRoom.value} == ${student.homeRoom}"></option>
+                                </select>
+                            </div>
+                            <input type="hidden" name="studentId" th:value="${student.studentId}">
+                            <input type="hidden" name="studentName" th:value="${student.studentName}">
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <button th:if="${gradeList}" type="submit" class="btn btn-primary" name="change">変更</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

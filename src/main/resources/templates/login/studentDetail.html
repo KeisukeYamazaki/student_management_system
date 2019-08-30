@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.slim.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.css}"></script>
+
+</head>
+<body>
+<div th:fragment="studentDetail_contents">
+    <div class="container-fluid" th:object="${student}">
+        <div class="row">
+            <div class="page-header">
+                <h1>生徒詳細</h1>
+            </div>
+            <div class="container-fluid panel panel-container">
+                <div class="row col-sm-12">
+                    <ul class="cp_list">
+                        <li>基本情報</li>
+                    </ul>
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th class="info col-sm-2">生徒ID</th>
+                                <th class="info col-sm-2">名前</th>
+                                <th class="info col-sm-2">フリガナ</th>
+                                <th class="info col-sm-2">学年</th>
+                                <th class="info col-sm-2">校舎</th>
+                            </tr>
+                            <tr>
+                                <td th:text="*{studentId}"></td>
+                                <td th:text="*{studentName}"></td>
+                                <td th:text="*{nameRuby}"></td>
+                                <td th:text="*{grade}"></td>
+                                <td th:text="*{school}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th class="info col-sm-2">クラス</th>
+                                <th class="info col-sm-2">学校</th>
+                                <th class="info col-sm-2">入塾時期</th>
+                                <th class="info col-sm-4">誕生日</th>
+                            </tr>
+                            <tr>
+                                <td th:text="*{homeRoom}"></td>
+                                <td th:text="*{localSchool}"></td>
+                                <td th:text="*{entryTime}"></td>
+                                <td th:text="${#dates.format(student.birthday,'YYYY/M/d')}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th class="info col-sm-2">部活</th>
+                                <th class="info col-sm-2">両親</th>
+                                <th class="info col-sm-2">兄弟姉妹</th>
+                                <th class="info col-sm-2">住所</th>
+                            </tr>
+                            <tr>
+                                <td th:text="*{club}"></td>
+                                <td th:text="*{parents}"></td>
+                                <td th:text="*{siblings}"></td>
+                                <td th:text="*{address}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-8">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th class="info col-sm-8">生徒情報</th>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top; text-align: left">
+                                    <th:block th:if="*{info}">
+                                        <th:block th:each="str, stat : *{info.split('\r\n|\r|\n', -1)}">
+                                            <th:block th:text="${str}"/>
+                                            <br th:if="${!stat.last}"/>
+                                        </th:block>
+                                    </th:block>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row col-sm-12" th:if="*{grade == '中１' or grade == '中２' or grade == '中３'}">
+                        <ul class="cp_list">
+                            <li>内申</li>
+                        </ul>
+                        <div class="col-sm-10">
+                            <div th:if="*{entryTime != '中２' and entryTime != '中３'}">
+                                <p style="font-size: medium">＜中学１年＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-2">時期</th>
+                                        <th class="info col">英語</th>
+                                        <th class="info col">数学</th>
+                                        <th class="info col">国語</th>
+                                        <th class="info col">理科</th>
+                                        <th class="info col">社会</th>
+                                        <th class="info col">５科</th>
+                                        <th class="info col">音楽</th>
+                                        <th class="info col">美術</th>
+                                        <th class="info col">保体</th>
+                                        <th class="info col">技家</th>
+                                        <th class="info col">９科</th>
+                                    </tr>
+                                    <tr th:each="record : ${schoolRecordList}" th:if="${record.grade == 1}">
+                                        <td th:text="${record.termName}"></td>
+                                        <td th:text="${record.english}"></td>
+                                        <td th:text="${record.math}"></td>
+                                        <td th:text="${record.japanese}"></td>
+                                        <td th:text="${record.science}"></td>
+                                        <td th:text="${record.socialStudies}"></td>
+                                        <td th:text="${record.sumFive}"></td>
+                                        <td th:text="${record.music}"></td>
+                                        <td th:text="${record.art}"></td>
+                                        <td th:text="${record.pe}"></td>
+                                        <td th:text="${record.techHome}"></td>
+                                        <td th:text="${record.sumAll}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div th:if="*{entryTime != '中３'}">
+                                <p style="font-size: medium">＜中学２年＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-2">時期</th>
+                                        <th class="info col">英語</th>
+                                        <th class="info col">数学</th>
+                                        <th class="info col">国語</th>
+                                        <th class="info col">理科</th>
+                                        <th class="info col">社会</th>
+                                        <th class="info col">５科</th>
+                                        <th class="info col">音楽</th>
+                                        <th class="info col">美術</th>
+                                        <th class="info col">保体</th>
+                                        <th class="info col">技家</th>
+                                        <th class="info col">９科</th>
+                                    </tr>
+                                    <tr th:each="record : ${schoolRecordList}" th:if="${record.grade == 2}">
+                                        <td th:text="${record.termName}"></td>
+                                        <td th:text="${record.english}"></td>
+                                        <td th:text="${record.math}"></td>
+                                        <td th:text="${record.japanese}"></td>
+                                        <td th:text="${record.science}"></td>
+                                        <td th:text="${record.socialStudies}"></td>
+                                        <td th:text="${record.sumFive}"></td>
+                                        <td th:text="${record.music}"></td>
+                                        <td th:text="${record.art}"></td>
+                                        <td th:text="${record.pe}"></td>
+                                        <td th:text="${record.techHome}"></td>
+                                        <td th:text="${record.sumAll}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div th:if="*{grade == '中３'}">
+                                <p style="font-size: medium">＜中学３年＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-2">時期</th>
+                                        <th class="info col">英語</th>
+                                        <th class="info col">数学</th>
+                                        <th class="info col">国語</th>
+                                        <th class="info col">理科</th>
+                                        <th class="info col">社会</th>
+                                        <th class="info col">５科</th>
+                                        <th class="info col">音楽</th>
+                                        <th class="info col">美術</th>
+                                        <th class="info col">保体</th>
+                                        <th class="info col">技家</th>
+                                        <th class="info col">９科</th>
+                                    </tr>
+                                    <tr th:each="record : ${schoolRecordList}" th:if="${record.grade == 3}">
+                                        <td th:text="${record.termName}"></td>
+                                        <td th:text="${record.english}"></td>
+                                        <td th:text="${record.math}"></td>
+                                        <td th:text="${record.japanese}"></td>
+                                        <td th:text="${record.science}"></td>
+                                        <td th:text="${record.socialStudies}"></td>
+                                        <td th:text="${record.sumFive}"></td>
+                                        <td th:text="${record.music}"></td>
+                                        <td th:text="${record.art}"></td>
+                                        <td th:text="${record.pe}"></td>
+                                        <td th:text="${record.techHome}"></td>
+                                        <td th:text="${record.sumAll}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-sm-12" th:if="*{grade == '中１' or grade == '中２' or grade == '中３'}">
+                        <ul class="cp_list">
+                            <li>定期試験</li>
+                        </ul>
+                        <div class="col-sm-10">
+                            <div th:if="*{entryTime != '中２' and entryTime != '中３'}">
+                                <p style="font-size: medium">＜中学１年＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-2">時期</th>
+                                        <th class="info col">英語</th>
+                                        <th class="info col">数学</th>
+                                        <th class="info col">国語</th>
+                                        <th class="info col">理科</th>
+                                        <th class="info col">社会</th>
+                                        <th class="info col">５科</th>
+                                        <th class="info col">音楽</th>
+                                        <th class="info col">美術</th>
+                                        <th class="info col">保体</th>
+                                        <th class="info col">技術</th>
+                                        <th class="info col">家庭</th>
+                                    </tr>
+                                    <tr th:each="regular : ${regularExamList}" th:if="${regular.grade == 1}">
+                                        <td th:text="${regular.examName}"></td>
+                                        <td th:text="${regular.english}"></td>
+                                        <td th:text="${regular.math}"></td>
+                                        <td th:text="${regular.japanese}"></td>
+                                        <td th:text="${regular.science}"></td>
+                                        <td th:text="${regular.socialStudies}"></td>
+                                        <td th:text="${regular.sumFive}"></td>
+                                        <td th:text="${regular.music}"></td>
+                                        <td th:text="${regular.art}"></td>
+                                        <td th:text="${regular.pe}"></td>
+                                        <td th:text="${regular.tech}"></td>
+                                        <td th:text="${regular.home}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div th:if="*{entryTime != '中３'}">
+                                <p style="font-size: medium">＜中学２年＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-2">時期</th>
+                                        <th class="info col">英語</th>
+                                        <th class="info col">数学</th>
+                                        <th class="info col">国語</th>
+                                        <th class="info col">理科</th>
+                                        <th class="info col">社会</th>
+                                        <th class="info col">５科</th>
+                                        <th class="info col">音楽</th>
+                                        <th class="info col">美術</th>
+                                        <th class="info col">保体</th>
+                                        <th class="info col">技術</th>
+                                        <th class="info col">家庭</th>
+                                    </tr>
+                                    <tr th:each="regular : ${regularExamList}" th:if="${regular.grade == 2}">
+                                        <td th:text="${regular.examName}"></td>
+                                        <td th:text="${regular.english}"></td>
+                                        <td th:text="${regular.math}"></td>
+                                        <td th:text="${regular.japanese}"></td>
+                                        <td th:text="${regular.science}"></td>
+                                        <td th:text="${regular.socialStudies}"></td>
+                                        <td th:text="${regular.sumFive}"></td>
+                                        <td th:text="${regular.music}"></td>
+                                        <td th:text="${regular.art}"></td>
+                                        <td th:text="${regular.pe}"></td>
+                                        <td th:text="${regular.tech}"></td>
+                                        <td th:text="${regular.home}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div th:if="*{grade == '中３'}">
+                                <p style="font-size: medium">＜中学３年＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-2">時期</th>
+                                        <th class="info col">英語</th>
+                                        <th class="info col">数学</th>
+                                        <th class="info col">国語</th>
+                                        <th class="info col">理科</th>
+                                        <th class="info col">社会</th>
+                                        <th class="info col">５科</th>
+                                        <th class="info col">音楽</th>
+                                        <th class="info col">美術</th>
+                                        <th class="info col">保体</th>
+                                        <th class="info col">技術</th>
+                                        <th class="info col">家庭</th>
+                                    </tr>
+                                    <tr th:each="regular : ${regularExamList}" th:if="${regular.grade == 3}">
+                                        <td th:text="${regular.examName}"></td>
+                                        <td th:text="${regular.english}"></td>
+                                        <td th:text="${regular.math}"></td>
+                                        <td th:text="${regular.japanese}"></td>
+                                        <td th:text="${regular.science}"></td>
+                                        <td th:text="${regular.socialStudies}"></td>
+                                        <td th:text="${regular.sumFive}"></td>
+                                        <td th:text="${regular.music}"></td>
+                                        <td th:text="${regular.art}"></td>
+                                        <td th:text="${regular.pe}"></td>
+                                        <td th:text="${regular.tech}"></td>
+                                        <td th:text="${regular.home}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-sm-12" th:if="*{grade == '中１' or grade == '中２' or grade == '中３'}">
+                        <ul class="cp_list">
+                            <li>模擬試験</li>
+                        </ul>
+                        <div class="col-sm-10">
+                            <div th:if="*{entryTime != '中２' and entryTime != '中３'}">
+                                <p style="font-size: medium">＜中学１年＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr class="align-middle">
+                                        <th class="info col-sm-1">実施月</th>
+                                        <th class="info col">英語</th>
+                                        <th class="info col">数学</th>
+                                        <th class="info col">国語</th>
+                                        <th class="info col">理科</th>
+                                        <th class="info col">社会</th>
+                                        <th class="info col">３科</th>
+                                        <th class="info col">５科</th>
+                                        <th class="info col">３科<br/>偏差</th>
+                                        <th class="info col">５科<br/>偏差</th>
+                                        <th class="info col">英語<br/>偏差</th>
+                                        <th class="info col">数学<br/>偏差</th>
+                                        <th class="info col">国語<br/>偏差</th>
+                                        <th class="info col">理科<br/>偏差</th>
+                                        <th class="info col">社会<br/>偏差</th>
+                                    </tr>
+                                    <tr th:each="practice : ${practiceExamList}" th:if="${practice.grade == 1}">
+                                        <td th:text="${practice.monthName}"></td>
+                                        <td th:text="${practice.englishScore}"></td>
+                                        <td th:text="${practice.mathScore}"></td>
+                                        <td th:text="${practice.japaneseScore}"></td>
+                                        <td th:text="${practice.scienceScore}"></td>
+                                        <td th:text="${practice.socialScore}"></td>
+                                        <td th:text="${practice.sumThree}"></td>
+                                        <td th:text="${practice.sumAll}"></td>
+                                        <td th:text="${practice.devThree}"></td>
+                                        <td th:text="${practice.devFive}"></td>
+                                        <td th:text="${practice.englishDeviation}"></td>
+                                        <td th:text="${practice.mathDeviation}"></td>
+                                        <td th:text="${practice.japaneseDeviation}"></td>
+                                        <td th:text="${practice.scienceDeviation}"></td>
+                                        <td th:text="${practice.socialDeviation}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div th:if="*{entryTime != '中３'}">
+                                <p style="font-size: medium">＜中学２年＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-1">実施月</th>
+                                        <th class="info col">英語</th>
+                                        <th class="info col">数学</th>
+                                        <th class="info col">国語</th>
+                                        <th class="info col">理科</th>
+                                        <th class="info col">社会</th>
+                                        <th class="info col">３科</th>
+                                        <th class="info col">５科</th>
+                                        <th class="info col">３科<br/>偏差</th>
+                                        <th class="info col">５科<br/>偏差</th>
+                                        <th class="info col">英語<br/>偏差</th>
+                                        <th class="info col">数学<br/>偏差</th>
+                                        <th class="info col">国語<br/>偏差</th>
+                                        <th class="info col">理科<br/>偏差</th>
+                                        <th class="info col">社会<br/>偏差</th>
+                                    </tr>
+                                    <tr th:each="practice : ${practiceExamList}" th:if="${practice.grade == 2}">
+                                        <td th:text="${practice.monthName}"></td>
+                                        <td th:text="${practice.englishScore}"></td>
+                                        <td th:text="${practice.mathScore}"></td>
+                                        <td th:text="${practice.japaneseScore}"></td>
+                                        <td th:text="${practice.scienceScore}"></td>
+                                        <td th:text="${practice.socialScore}"></td>
+                                        <td th:text="${practice.sumThree}"></td>
+                                        <td th:text="${practice.sumAll}"></td>
+                                        <td th:text="${practice.devThree}"></td>
+                                        <td th:text="${practice.devFive}"></td>
+                                        <td th:text="${practice.englishDeviation}"></td>
+                                        <td th:text="${practice.mathDeviation}"></td>
+                                        <td th:text="${practice.japaneseDeviation}"></td>
+                                        <td th:text="${practice.scienceDeviation}"></td>
+                                        <td th:text="${practice.socialDeviation}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div th:if="*{grade == '中３'}">
+                                <p style="font-size: medium">＜中学３年＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-1">実施月</th>
+                                        <th class="info col">英語</th>
+                                        <th class="info col">数学</th>
+                                        <th class="info col">国語</th>
+                                        <th class="info col">理科</th>
+                                        <th class="info col">社会</th>
+                                        <th class="info col">３科</th>
+                                        <th class="info col">５科</th>
+                                        <th class="info col">３科<br/>偏差</th>
+                                        <th class="info col">５科<br/>偏差</th>
+                                        <th class="info col">英語<br/>偏差</th>
+                                        <th class="info col">数学<br/>偏差</th>
+                                        <th class="info col">国語<br/>偏差</th>
+                                        <th class="info col">理科<br/>偏差</th>
+                                        <th class="info col">社会<br/>偏差</th>
+                                    </tr>
+                                    <tr th:each="practice : ${practiceExamList}" th:if="${practice.grade == 3}">
+                                        <td th:text="${practice.monthName}"></td>
+                                        <td th:text="${practice.englishScore}"></td>
+                                        <td th:text="${practice.mathScore}"></td>
+                                        <td th:text="${practice.japaneseScore}"></td>
+                                        <td th:text="${practice.scienceScore}"></td>
+                                        <td th:text="${practice.socialScore}"></td>
+                                        <td th:text="${practice.sumThree}"></td>
+                                        <td th:text="${practice.sumAll}"></td>
+                                        <td th:text="${practice.devThree}"></td>
+                                        <td th:text="${practice.devFive}"></td>
+                                        <td th:text="${practice.englishDeviation}"></td>
+                                        <td th:text="${practice.mathDeviation}"></td>
+                                        <td th:text="${practice.japaneseDeviation}"></td>
+                                        <td th:text="${practice.scienceDeviation}"></td>
+                                        <td th:text="${practice.socialDeviation}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row col-sm-12" th:object="${futurePathData}">
+                            <ul class="cp_list">
+                                <li>進路関係</li>
+                            </ul>
+                            <div class="col-sm-10">
+                                <p style="font-size: medium">＜入試内申＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-1">/45</th>
+                                        <th class="info col-sm-1">/135</th>
+                                        <th class="info col-sm-1">/25</th>
+                                        <th class="info col-sm-1">/50</th>
+                                        <th class="info col-sm-1">/75</th>
+                                        <th class="info col-sm-1">/15</th>
+                                        <th class="info col-sm-1">/30</th>
+                                    </tr>
+                                    <tr>
+                                        <td th:text="*{fortyFive}"></td>
+                                        <td th:text="*{hundredThirtyFive}"></td>
+                                        <td th:text="*{twentyFive}"></td>
+                                        <td th:text="*{fifty}"></td>
+                                        <td th:text="*{seventyFive}"></td>
+                                        <td th:text="*{fifteen}"></td>
+                                        <td th:text="*{thirty}"></td>
+                                    </tr>
+                                </table>
+                                <div class="row col-sm-6">
+                                    <p style="font-size: medium">＜志望校＞</p>
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <tr>
+                                            <th class="info col-sm-2 col-xs-3">第１志望</th>
+                                            <td class="col-sm-4" th:text="*{firstChoice}"></td>
+                                        </tr>
+                                    </table>
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <tr>
+                                            <th class="info col-sm-2 col-xs-3">第２志望</th>
+                                            <td class="col-sm-4" th:text="*{secondChoice}"></td>
+                                        </tr>
+                                    </table>
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <tr>
+                                            <th class="info col-sm-2 col-xs-3">第３志望</th>
+                                            <td class="col-sm-4" th:text="*{thirdChoice}"></td>
+                                        </tr>
+                                    </table>
+                                    <div class="row col-sm-12 align">
+                                        <p style="font-size: medium">＜その他の候補となる高校＞</p>
+                                        <table class="table table-bordered table-hover table-condensed">
+                                            <tr>
+                                                <th class="info col-sm-2 col-xs-3" rowspan="3">公立高校</th>
+                                                <td class="col-sm-4" style="height: 27px"
+                                                    th:text="*{publicSchool1}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 27px" th:text="*{publicSchool2}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 27px" th:text="*{publicSchool3}"></td>
+                                            </tr>
+                                        </table>
+                                        <table class="table table-bordered table-hover table-condensed">
+                                            <tr>
+                                                <th class="info col-sm-2 col-xs-3" rowspan="3">私立高校</th>
+                                                <td class="col-sm-4" style="height: 27px"
+                                                    th:text="*{privateSchool1}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 27px" th:text="*{privateSchool2}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="height: 27px" th:text="*{privateSchool3}"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row col-sm-6 col-xs-12"
+                                     style="margin: 5px 0px 0px 30px; float: right; padding: 0px">
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <tr>
+                                            <th class="info">その他</th>
+                                        </tr>
+                                        <tr>
+                                            <td height="440px" style="vertical-align: top; text-align: left">
+                                                <th:block th:if="*{information}">
+                                                    <th:block th:each="str, stat : *{information.split('\r\n|\r|\n', -1)}">
+                                                        <th:block th:text="${str}"/>
+                                                        <br th:if="${!stat.last}"/>
+                                                    </th:block>
+                                                </th:block>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-sm-10">
+                        <form method="post" th:action="@{/studentDetail}">
+                            <!-- 編集ボタン -->
+                            <a class="btn btn-primary btn-lg" style="margin-left: 15px"
+                               th:href="@{'/studentEdit/' + ${student.studentId}}">編集</a>
+                            <!-- 削除ボタン -->
+                            <input type="hidden" th:field="*{studentId}"/>
+                            <button class="btn btn-danger btn-lg pull-right"
+                                    onclick="return confirm('本当に削除してもいいですか？')" type="submit" name="delete">削除
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
