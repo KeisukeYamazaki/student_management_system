@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <!--Bootstrapに必要なCSSとJavaScriptを読み込み-->
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.slim.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.css}"></script>
+</head>
+<body>
+<!-- コンテンツ部分 -->
+<div th:fragment="registryPracticeExam_contents">
+    <div class="page-header" style="margin-bottom: 15px">
+        <h1>各種登録</h1>
+        <p style="margin-left: 3px">このページで成績、試験結果などを登録できます</p>
+    </div>
+    <div class="row col-sm-10">
+        <div class="btn-group btn-group-justified" role="group">
+            <a type="button" class="btn btn-primary" th:href="@{'/registry/schoolRecord'}"
+               style="border-color: white">成績
+            </a>
+            <a type="button" class="btn btn-primary" th:href="@{'/registry/regularExam'}"
+               style="border-color: white">定期試験
+            </a>
+            <a type="button" class="btn btn-primary" th:href="@{'/registry/practiceExam'}"
+               style="border-color: white">模擬試験
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

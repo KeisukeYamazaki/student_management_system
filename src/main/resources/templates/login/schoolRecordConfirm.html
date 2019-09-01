@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <!--Bootstrapに必要なCSSとJavaScriptを読み込み-->
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.slim.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.css}"></script>
+</head>
+<body>
+<!-- コンテンツ部分 -->
+<div th:fragment="schoolRecordConfirm_contents">
+    <div class="page-header" style="margin-bottom: 15px">
+        <h1>各種登録</h1>
+        <p style="margin-left: 3px">このページで成績、試験結果などを登録できます</p>
+    </div>
+    <div class="row col-sm-10">
+        <div class="btn-group btn-group-justified" role="group">
+            <a type="button" class="btn btn-primary" th:href="@{'/registry/schoolRecord'}"
+               style="border-color: white">成績
+            </a>
+            <a type="button" class="btn btn-primary" th:href="@{'/registry/regularExam'}"
+               style="border-color: white">定期試験
+            </a>
+            <a type="button" class="btn btn-primary" th:href="@{'/registry/practiceExam'}"
+               style="border-color: white">模擬試験
+            </a>
+        </div>
+        <!-- 結果表示用 -->
+        <span class="text-info" th:if="${result}" th:text="${result}"
+              style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
+    </div>
+    <div class="panel panel-container col-sm-12" style="margin-top: 15px; padding-top: 7px; padding-left: 5px">
+        <div class="col-sm-12">
+            <h4>以下の内容で登録しますか？</h4>
+            <div class="container-fluid col-sm-12">
+                <form method="post" th:action="@{/schoolRecordConfirm}" th:object="${SchoolRecordWithName}">
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th class="info" style="font-size: small">生徒ID</th>
+                            <th class="info" style="font-size: small">生徒名</th>
+                            <th class="info" style="font-size: small">学年</th>
+                            <th class="info" style="font-size: small">登録学期</th>
+                            <th class="info" style="font-size: small">英語</th>
+                            <th class="info" style="font-size: small">国語</th>
+                            <th class="info" style="font-size: small">数学</th>
+                            <th class="info" style="font-size: small">理科</th>
+                            <th class="info" style="font-size: small">社会</th>
+                            <th class="info" style="font-size: small">音楽</th>
+                            <th class="info" style="font-size: small">美術</th>
+                            <th class="info" style="font-size: small">保体</th>
+                            <th class="info" style="font-size: small">技家</th>
+                        </tr>
+                        <tr th:each="SchoolRecordWithName : ${schoolRecordList}">
+                            <td th:text="${SchoolRecordWithName.studentId}"></td>
+                            <td th:text="${SchoolRecordWithName.studentName}"></td>
+                            <td th:switch="${SchoolRecordWithName.grade}">
+                                <div th:case="3" th:text="'中３'"></div>
+                                <div th:case="2" th:text="'中２'"></div>
+                                <div th:case="1" th:text="'中１'"></div>
+                            </td>
+                            <td th:text="${SchoolRecordWithName.termName}"></td>
+                            <td th:text="${SchoolRecordWithName.english}"></td>
+                            <td th:text="${SchoolRecordWithName.math}"></td>
+                            <td th:text="${SchoolRecordWithName.japanese}"></td>
+                            <td th:text="${SchoolRecordWithName.science}"></td>
+                            <td th:text="${SchoolRecordWithName.socialStudies}"></td>
+                            <td th:text="${SchoolRecordWithName.music}"></td>
+                            <td th:text="${SchoolRecordWithName.art}"></td>
+                            <td th:text="${SchoolRecordWithName.pe}"></td>
+                            <td th:text="${SchoolRecordWithName.techHome}"></td>
+
+                            <input type="hidden" name="studentId" th:value="${SchoolRecordWithName.studentId}">
+                            <input type="hidden" name="studentName" th:value="${SchoolRecordWithName.studentName}">
+                            <input type="hidden" name="grade" th:value="${SchoolRecordWithName.grade}">
+                            <input type="hidden" name="recordYear" th:value="${SchoolRecordWithName.recordYear}">
+                            <input type="hidden" name="termName" th:value="${SchoolRecordWithName.termName}">
+                            <input type="hidden" name="english" th:value="${SchoolRecordWithName.english}">
+                            <input type="hidden" name="math" th:value="${SchoolRecordWithName.math}">
+                            <input type="hidden" name="japanese" th:value="${SchoolRecordWithName.japanese}">
+                            <input type="hidden" name="science" th:value="${SchoolRecordWithName.science}">
+                            <input type="hidden" name="socialStudies" th:value="${SchoolRecordWithName.socialStudies}">
+                            <input type="hidden" name="music" th:value="${SchoolRecordWithName.music}">
+                            <input type="hidden" name="art" th:value="${SchoolRecordWithName.art}">
+                            <input type="hidden" name="pe" th:value="${SchoolRecordWithName.pe}">
+                            <input type="hidden" name="techHome" th:value="${SchoolRecordWithName.techHome}">
+                            <input type="hidden" name="sumFive" th:value="${SchoolRecordWithName.sumFive}">
+                            <input type="hidden" name="sumAll" th:value="${SchoolRecordWithName.sumAll}">
+                        </tr>
+                    </table>
+                    <!-- 登録ボタン -->
+                    <button class="btn btn-primary" type="submit" name="register" style="margin-top: 15px">登録</button>
+                    <!-- 戻るボタン -->
+                    <button class="btn btn-default btn-margin" type="submit" name="back"style="margin: 15px 0 0 10px; border-color: #9d9d9d">戻る</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

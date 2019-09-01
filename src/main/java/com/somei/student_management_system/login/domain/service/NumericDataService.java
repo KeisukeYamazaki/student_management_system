@@ -3,6 +3,7 @@ package com.somei.student_management_system.login.domain.service;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
+import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.repository.NumericDataDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,36 @@ public class NumericDataService {
     /**
      * １件以上更新用メソッド.
      */
+
+    /**
+     * 複数の成績を挿入
+     * @param list 成績のリスト
+     * @return 更新の結果
+     */
+    public boolean updateRecordMany(List<SchoolRecordWithName> list) {
+
+        //判定用変数
+        boolean result = false;
+
+        // 複数更新
+        List<Integer> rowNumbers = dao.insertRecordMany(list);
+
+        for (Integer rowNumber : rowNumbers) {
+
+            if (rowNumber > 0) {
+
+                //update成功
+                result = true;
+
+            } else {
+                // もし更新できない行があったら、falseを返す
+                return false;
+            }
+
+        }
+
+        return result;
+    }
 
     /**
      * １件削除用メソッド.

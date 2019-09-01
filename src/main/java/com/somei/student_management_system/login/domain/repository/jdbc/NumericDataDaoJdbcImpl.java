@@ -3,6 +3,7 @@ package com.somei.student_management_system.login.domain.repository.jdbc;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
+import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.repository.NumericDataDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository("NumericDataDaoJdbcImpl")
@@ -88,6 +90,83 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
 
         // SQL実行
         return jdbc.query(sql, rowMapper, school, startNum, endNum);
+    }
+
+    /**
+     * 複数の成績を挿入.
+     *
+     * @param list 成績のリスト
+     * @return 実行結果のリスト
+     * @exception
+     */
+    @Override
+    public List<Integer> insertRecordMany(List<SchoolRecordWithName> list) throws DataAccessException {
+
+        // 結果返却用のリストを生成
+        List<Integer> resultList = new ArrayList<>();
+
+        // リストの数の分のinsertを行う
+        for (int i = 0; i < list.size(); i++) {
+
+            SchoolRecordWithName srwn = list.get(i);
+
+            // 学期名をを数値に変換
+            int recordId = 0;
+            switch (srwn.getTermName()) {
+                case "１学期":
+                    recordId = 1;
+                    break;
+                case "前期":
+                    recordId = 2;
+                    break;
+                case "２学期":
+                    recordId = 3;
+                    break;
+                case "後期":
+                    recordId = 4;
+                    break;
+                case "３学期":
+                    recordId = 5;
+                    break;
+            }
+
+            // クエリーを実行
+            int rowNumber = jdbc.update("INSERT INTO school_record(student_id,"
+                            + " grade,"
+                            + " record_year,"
+                            + " record_id,"
+                            + " english,"
+                            + " math,"
+                            + " japanese,"
+                            + " science,"
+                            + " social_studies,"
+                            + " music,"
+                            + " art,"
+                            + " pe,"
+                            + " tech_home,"
+                            + " sum_five,"
+                            + " sum_all)"
+                            + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    , Integer.parseInt(srwn.getStudentId())
+                    , Integer.parseInt(srwn.getGrade())
+                    , Integer.parseInt(srwn.getRecordYear())
+                    , recordId
+                    , Integer.parseInt(srwn.getEnglish())
+                    , Integer.parseInt(srwn.getMath())
+                    , Integer.parseInt(srwn.getJapanese())
+                    , Integer.parseInt(srwn.getScience())
+                    , Integer.parseInt(srwn.getSocialStudies())
+                    , Integer.parseInt(srwn.getMusic())
+                    , Integer.parseInt(srwn.getArt())
+                    , Integer.parseInt(srwn.getPe())
+                    , Integer.parseInt(srwn.getTechHome())
+                    , Integer.parseInt(srwn.getSumFive())
+                    , Integer.parseInt(srwn.getSumAll()));
+
+            resultList.add(rowNumber);
+        }
+
+        return resultList;
     }
 
     @Override

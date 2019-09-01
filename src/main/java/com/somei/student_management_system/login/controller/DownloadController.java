@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -162,6 +162,12 @@ public class DownloadController {
             zipFile.delete();
 
         }
+    }
+
+    @PostMapping(value = "downloads", params = "spreadsheet")
+    public String writeNameListInSpreadsheet() throws GeneralSecurityException, IOException{
+
+        return null;
     }
 
 }

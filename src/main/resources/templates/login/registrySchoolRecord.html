@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <!--Bootstrapに必要なCSSとJavaScriptを読み込み-->
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.slim.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.css}"></script>
+</head>
+<body>
+<!-- コンテンツ部分 -->
+<div th:fragment="registrySchoolRecord_contents">
+    <div class="page-header" style="margin-bottom: 15px">
+        <h1>各種登録</h1>
+        <p style="margin-left: 3px">このページで成績、試験結果などを登録できます</p>
+    </div>
+    <div class="row col-sm-10">
+        <div class="btn-group btn-group-justified" role="group">
+            <a type="button" class="btn btn-primary" th:href="@{'/registry/schoolRecord'}"
+               style="border-color: white">成績
+            </a>
+            <a type="button" class="btn btn-primary" th:href="@{'/registry/regularExam'}"
+               style="border-color: white">定期試験
+            </a>
+            <a type="button" class="btn btn-primary" th:href="@{'/registry/practiceExam'}"
+               style="border-color: white">模擬試験
+            </a>
+        </div>
+        <!-- 結果表示用 -->
+        <span class="text-info" th:if="${result}" th:text="${result}"
+              style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
+    </div>
+    <div class="row col-sm-10" style="margin-top: 5px">
+        <div>【登録方法の選択】 どちらの方法で登録しますか？</div>
+        <form method="post" th:action="@{/registry/schoolRecord/way}" style="margin-top: 5px">
+            <label class="radio-inline radio_text" style="margin-left: 7px">
+                <input type="radio" name="radioName" value="ByGrade" th:checked="${ByGrade}"
+                       onchange="this.form.submit()"> 学年別登録
+            </label>
+            <label class="radio-inline radio_text" style="margin-left: 5px">
+                <input type="radio" name="radioName" value="AllatOnece" th:checked="${AllatOnece}"
+                       onchange="this.form.submit()"> 一括登録（スプレッドシート、エクセルによる登録）
+            </label>
+        </form>
+    </div>
+    <div th:if="${ByGrade}" class="panel panel-container col-sm-12" style="margin-top: 15px">
+        <form method="post" th:action="@{/}">
+            <button type="submit" class="btn btn-primary" name="change">登録</button>
+        </form>
+    </div>
+    <div th:if="${AllatOnece}" class="panel panel-container col-sm-12"
+         style="margin-top: 15px; padding-top: 7px; padding-left: 5px">
+        <div class="col-sm-10">
+            <ol class="defaultlist list10">
+                <li class="list10-count">Googleスプレッドシートでの登録
+                    <p style="color: #444444; margin: 10px 0 10px 0px">
+                        下記のリンクからシートにアクセスして必要事項を入力後、下の「登録」ボタンを押してください。</p>
+                    <a href="https://docs.google.com/spreadsheets/d/1mo_zeobRayVBhKC9MZbozQa5OPs6C9npsIyn0jQqkiA/edit?usp=sharing"
+                       class="btn-link" target="_blank" style="margin-left: 2px">成績登録シート</a>
+                </li>
+                <li class="list10-count">エクセルでの登録
+                    <p style="color: #444444; margin: 10px 0 10px 0px">
+                        <strong>１</strong>．登録用のエクセルシートを下記のリンクからダウンロードして必要事項を記入してください。</p>
+                    <a class="btn-link" th:href="@{'/excelSheetDownload'}" style="padding-left: 30px">エクセルシートのダウンロード</a>
+                    <p style="color: #444444; margin: 10px 0 10px 0px">
+                        <strong>２</strong>．作成したファイルを下のボックスにアップロードしてください。</p>
+                    <p style="color: #444444; margin: 10px 0 30px 0px">
+                        <strong>３</strong>．登録ボタンを押してください。
+                    </p>
+                    <form method="post" enctype="multipart/form-data" th:action="@{/upload}">
+                        <div class="input-group col-sm-5">
+                            <input id="upload" type="file" name="file" style="display:none">
+                            <input type="text" id="upload_file" name="upload_file" class="form-control"
+                                   placeholder="select file..." readonly>
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-sm" id="button"
+                                    style="height: 34px; border-color: #9d9d9d">ファイル選択</button>
+                            </span>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin: 40px 0 0 0px">登録
+                        </button>
+                    </form>
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
+</body>
+</html>

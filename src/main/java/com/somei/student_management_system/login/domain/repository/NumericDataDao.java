@@ -3,6 +3,7 @@ package com.somei.student_management_system.login.domain.repository;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
+import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.model.Student;
 import org.springframework.dao.DataAccessException;
 
@@ -18,6 +19,9 @@ public interface NumericDataDao {
 
     // school_recordテーブルの複数人の成績データを取得.
     public List<SchoolRecord> selectRecordMany(String school, String grade) throws DataAccessException;
+
+    // school_recordテーブルの複数人の成績データを挿入.
+    public List<Integer> insertRecordMany(List<SchoolRecordWithName> list) throws DataAccessException;
 
     // テーブルを１件以上更新.
     public int updateSome(Student student) throws DataAccessException;

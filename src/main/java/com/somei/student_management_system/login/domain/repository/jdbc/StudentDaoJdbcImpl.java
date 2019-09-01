@@ -141,7 +141,6 @@ public class StudentDaoJdbcImpl implements StudentDao {
                 String sql = "SELECT student_id, student_name, home_room from namelist_3a"
                         + " ORDER BY home_room COLLATE \"C\", student_id";
 
-
                 //RowMapperの生成
                 RowMapper<NameList> rowMapper = new BeanPropertyRowMapper<>(NameList.class);
 
