@@ -19,8 +19,4 @@ public interface ZenkenDao {
     // Zenkenテーブルを複数件更新.
     public List<Integer> updateMany(List<Zenken> list) throws DataAccessException;
 
-    // Zenkenテーブルを１件削除.
-    public int deleteOne(String id) throws DataAccessException;
-
-
 }

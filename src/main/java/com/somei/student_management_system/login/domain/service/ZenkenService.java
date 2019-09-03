@@ -121,24 +121,6 @@ public class ZenkenService {
     }
 
     /**
-     * 模試データ１件削除メソッド
-     */
-    public boolean deleteOne(String id) {
-
-        //１件削除
-        int rowNumber = zenkendao.deleteOne(id);
-
-        //判定用変数
-        boolean result = false;
-
-        if (rowNumber > 0) {
-            //delete成功
-            result = true;
-        }
-        return result;
-    }
-
-    /**
      * CSVファイル作成メソッド.
      */
     public String makeCsv(String school, String grade) throws SQLException {

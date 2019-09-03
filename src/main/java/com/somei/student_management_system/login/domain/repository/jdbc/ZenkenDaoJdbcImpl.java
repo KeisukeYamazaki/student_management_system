@@ -52,7 +52,7 @@ public class ZenkenDaoJdbcImpl implements ZenkenDao {
                 + " FROM practice_registry"
                 + " JOIN student"
                 + " ON practice_registry.id = student.student_id"
-                + " WHERE school = ? and grade = ? "
+                + " WHERE school = ? and grade = ? AND char_length(student.student_id) = 4"
                 + " ORDER BY number";
 
         //RowMapperの生成
@@ -92,14 +92,5 @@ public class ZenkenDaoJdbcImpl implements ZenkenDao {
         }
 
         return resultList;
-    }
-
-    @Override
-    public int deleteOne(String id) throws DataAccessException {
-
-        //１件削除
-        int rowNumber = jdbc.update("DELETE FROM practice_registry WHERE id = ?", id);
-
-        return rowNumber;
     }
 }

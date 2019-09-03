@@ -1,5 +1,6 @@
 package com.somei.student_management_system.login.domain.repository.jdbc;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.NameList;
 import com.somei.student_management_system.login.domain.model.Student;
@@ -27,19 +28,19 @@ public class StudentDaoJdbcImpl implements StudentDao {
         ArrayList<Integer> counts = new ArrayList<>();
 
         // 全件取得してカウント
-        int count = jdbc.queryForObject("SELECT COUNT(*) FROM student", Integer.class);
+        int count = jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE char_length(student_id) = 4", Integer.class);
 
         // 全件取得の結果を加える
         counts.add(count);
 
         // 各学年をカウントしてリストに入れる
-        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '中３'", Integer.class));
-        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '中２'", Integer.class));
-        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '中１'", Integer.class));
-        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '小６'", Integer.class));
-        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '小５'", Integer.class));
-        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '小４'", Integer.class));
-        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '小３'", Integer.class));
+        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '中３' AND char_length(student_id) = 4", Integer.class));
+        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '中２' AND char_length(student_id) = 4", Integer.class));
+        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '中１' AND char_length(student_id) = 4", Integer.class));
+        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '小６' AND char_length(student_id) = 4", Integer.class));
+        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '小５' AND char_length(student_id) = 4", Integer.class));
+        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '小４' AND char_length(student_id) = 4", Integer.class));
+        counts.add(jdbc.queryForObject("SELECT COUNT(*) FROM student WHERE grade = '小３' AND char_length(student_id) = 4", Integer.class));
 
         return counts;
     }
@@ -101,7 +102,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
     public List<Student> selectMany() {
 
         //studentテーブルのデータを全件取得するSQL
-        String sql = "SELECT * FROM student ORDER BY home_room COLLATE \"C\", student_id";
+        String sql = "SELECT * FROM student WHERE char_length(student_id) = 4 ORDER BY home_room COLLATE \"C\", student_id ";
 
         //RowMapperの生成
         RowMapper<Student> rowMapper = new BeanPropertyRowMapper<Student>(Student.class);
@@ -115,7 +116,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
     public List<Student> selectManyByGrade(String grade) throws DataAccessException {
 
         //studentテーブルの指定学年のデータを全件取得するSQL
-        String sql = "SELECT * FROM student  WHERE grade = ? ORDER BY home_room COLLATE \"C\", student_id";
+        String sql = "SELECT * FROM student  WHERE grade = ? AND char_length(student_id) = 4 ORDER BY home_room COLLATE \"C\", student_id";
 
         //RowMapperの生成
         RowMapper<Student> rowMapper = new BeanPropertyRowMapper<Student>(Student.class);
@@ -152,7 +153,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
 
                 //studentテーブルの指定クラスのデータを全件取得するSQL
                 String sql = "SELECT student_id, student_name, home_room FROM student"
-                        + " WHERE home_room = ? ORDER BY home_room COLLATE \"C\", student_id";
+                        + " WHERE home_room = ? AND char_length(student_id) = 4 ORDER BY home_room COLLATE \"C\", student_id";
 
                 //RowMapperの生成
                 RowMapper<NameList> rowMapper = new BeanPropertyRowMapper<>(NameList.class);
@@ -182,7 +183,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
         try {
 
             //future_pathテーブルのデータを全件取得するSQL
-            String sql = "SELECT * FROM future_path WHERE student_id = ?";
+            String sql = "SELECT * FROM future_path WHERE student_id = ? AND char_length(student_id) = 4";
 
             //RowMapperの生成
             RowMapper<FuturePath> rowMapper = new BeanPropertyRowMapper<>(FuturePath.class);
@@ -291,11 +292,50 @@ public class StudentDaoJdbcImpl implements StudentDao {
         return rowNumber;
     }
 
-    // 生徒データ１件削除
+    // 生徒データ１件削除（IDの前に-をつけて、一覧に表示させないようにする）
     @Override
     public int deleteOne(String studentId) throws DataAccessException {
+
+        String deleteId = "-" + studentId ;
+
+        int rowNumber = 0;
         //１件削除
-        int rowNumber = jdbc.update("DELETE FROM student WHERE student_id = ?", studentId);
+        // student テーブルの処理
+        try {
+            rowNumber = jdbc.update("UPDATE student SET student_id = ? WHERE student_id = ?", deleteId, studentId);
+        } catch (DataAccessException e) {
+            System.out.println("studentに " + studentId + " はありませんでした");
+        }
+
+        // future_path テーブルの処理
+        try {
+            rowNumber = jdbc.update("UPDATE future_path SET student_id = ? WHERE student_id = ?", deleteId, studentId);
+        } catch (DataAccessException e) {
+            System.out.println("future_pathに " + studentId + " はありませんでした");
+        }
+
+        // practice_exam テーブルの処理
+        try {
+            rowNumber = jdbc.update("UPDATE practice_exam SET student_id = ? WHERE student_id = ?", deleteId, studentId);
+        } catch (DataAccessException e) {
+            System.out.println("practice_examに  " + studentId + " はありませんでした");
+        }
+
+        // regular_exam テーブルの処理
+        try {
+            rowNumber = jdbc.update("UPDATE regular_exam SET student_id = ? WHERE student_id = ?", deleteId, studentId);
+        } catch (DataAccessException e) {
+            System.out.println("regular_examに " + studentId + " はありませんでした");
+        }
+
+        // school_record テーブルの処理
+        try {
+            rowNumber = jdbc.update("UPDATE school_record SET student_id = ? WHERE student_id = ?", deleteId, studentId);
+        } catch (DataAccessException e) {
+            System.out.println("school_recordに " + studentId + " はありませんでした");
+        }
+
+
 
         return rowNumber;
     }

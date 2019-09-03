@@ -341,10 +341,7 @@ public class StudentController {
         //Student削除実行
         boolean result = studentService.deleteOne(form.getStudentId());
 
-        //Zenken削除実行
-        boolean zenkenResult = zenkenService.deleteOne(form.getStudentId());
-
-        if (result == true && zenkenResult == true) {
+        if (result == true) {
 
             model.addAttribute("result", "削除しました");
 
@@ -446,24 +443,4 @@ public class StudentController {
         //クラス管理画面を表示
         return getClassManagement(model);
     }
-
-    /**
-     * PDFダウンロード
-     *
-     * @param filename
-     * @return
-     */
-    @GetMapping(path = "/download/{filename:.+\\.pdf}")
-    public ModelAndView downloadPdf(@PathVariable String filename) {
-
-        // 全件取得する
-
-
-        // 帳票レイアウト、データ、ダウンロード時のファイル名を指定する
-        //val view = new PdfView("jaspertmpl/name_list.jrxml", users.getData(), filename);
-
-        //return new ModelAndView(view);
-        return null;
-    }
-
 }

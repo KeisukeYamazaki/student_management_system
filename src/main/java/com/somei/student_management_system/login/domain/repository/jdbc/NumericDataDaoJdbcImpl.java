@@ -48,7 +48,7 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                 + " FROM school_record"
                 + " JOIN record_group"
                 + " ON school_record.record_id = record_group.id"
-                + " WHERE student_id = ?"
+                + " WHERE student_id = ? AND char_length(school_record.student_id) = 4"
                 + " ORDER BY grade ASC, term_name ASC";
 
         // RowMapperの生成
@@ -82,7 +82,7 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                 + " ON school_record.record_id = record_group.id"
                 + " JOIN student"
                 + " ON school_record.student_id = student.student_id"
-                + " WHERE school = ? and school_record.student_id between ? and ?"
+                + " WHERE school = ? AND char_length(school_record.student_id) = 4 AND school_record.student_id between ? and ?"
                 + " ORDER BY term_name COLLATE \"C\"";
 
         // RowMapperの生成
@@ -203,7 +203,7 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                 + " FROM practice_exam"
                 + " JOIN practice_month"
                 + " ON practice_exam.practice_month = practice_month.month"
-                + " WHERE student_id = ?"
+                + " WHERE student_id = ? AND char_length(practice_exam.student_id) = 4"
                 + " ORDER BY grade ASC, practice_month ASC";
 
         // RowMapperの生成
