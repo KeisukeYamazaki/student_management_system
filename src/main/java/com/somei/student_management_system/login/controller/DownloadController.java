@@ -1,7 +1,6 @@
 package com.somei.student_management_system.login.controller;
 
 import com.somei.student_management_system.login.bean.CreateZip;
-import com.somei.student_management_system.login.bean.MakePdf;
 import com.somei.student_management_system.login.domain.model.NameList;
 import com.somei.student_management_system.login.domain.service.StudentService;
 import com.somei.student_management_system.login.domain.service.ZenkenService;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,9 +27,6 @@ public class DownloadController {
 
     @Autowired
     StudentService studentService;
-
-    @Autowired
-    MakePdf makePdf;
 
     @Autowired
     CreateZip createZip;
@@ -108,31 +106,26 @@ public class DownloadController {
      */
     @PostMapping("downloads")
     public ResponseEntity<byte[]> downloadNameList(@RequestParam("className") String className,
-                                   Model model) {
+                                                   Model model) {
 
         // 送られてきたクラスを分割してリスト化
         List<String> classList = Arrays.asList(className.split(","));
 
-        // リストの長さの分のFile配列を作成
-        File[] files = new File[classList.size()];
+        // ZIPファイルのファイル名作成用に日付を取得
+        LocalDate date = LocalDate.now();
 
-        // PDFを作成して保存
-        for (int i = 0; i < classList.size(); i++) {
+        // ZIPファイル名を決める
+        String zipFilename = DateTimeFormatter.ofPattern("yyyyMMdd").format(date) + "NameList.zip";
 
-            String filename = makePdf.makePdf(classList.get(i));
+        // Zipファイルを作成・削除リストの受け取り
+        List<String> deleteList = createZip.createZip(classList, zipFilename);
 
-            files[i] = new File(filename);
-        }
-
-        // zipファイルをサーバに保存、ファイル名を取得
-        String zipFileName = createZip.createZip(files);
-
+        // サーバーに保存されているZIPファイルをbyteで取得する
         byte[] bytes = null;
 
         try {
 
-            // サーバーに保存されているZIPファイルをbyteで取得する
-            bytes = zenkenService.getFile(zipFileName);
+            bytes = zenkenService.getFile(zipFilename);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -143,7 +136,7 @@ public class DownloadController {
             //HTTPヘッダーの設定
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Type", "application/zip; charset=UTF-8");
-            headers.setContentDispositionFormData("filename", zipFileName);
+            headers.setContentDispositionFormData("filename", zipFilename);
 
             // ZIPファイルを戻す
             return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
@@ -151,21 +144,26 @@ public class DownloadController {
         } finally {
 
             // サーバに保存したファイルを削除する
-            for(File file : files) {
+            // PDFファイルの削除
+            for(String name : deleteList) {
 
-                // PDFファイルの削除
-                file.delete();
+                File file = new File(name);
+
+                // ファイルが存在していたら削除
+                if(file.exists()) {
+                    file.delete();
+                }
             }
 
             // ZIPファイルの削除
-            File zipFile = new File(zipFileName);
+            File zipFile = new File(zipFilename);
             zipFile.delete();
 
         }
     }
 
     @PostMapping(value = "downloads", params = "spreadsheet")
-    public String writeNameListInSpreadsheet() throws GeneralSecurityException, IOException{
+    public String writeNameListInSpreadsheet() throws GeneralSecurityException, IOException {
 
         return null;
     }

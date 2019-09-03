@@ -1,63 +1,92 @@
 package com.somei.student_management_system.login.bean;
 
-import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @Component
 public class CreateZip {
 
-    public String createZip(File[] files) {
+    @Autowired
+    MakePdf makePdf;
 
-        // zipファイルのファイル名作成用に日付を取得
-        LocalDate data = LocalDate.now();
+    /**
+     * クラス名のリスト、ZIPファイル名を受け取りPDFを格納したZIPファイルを返す
+     *
+     * @param classList クラス名が格納されたリスト
+     * @param zipFilename 返すZIPファイルの名前
+     * @return deleteList 削除用のリスト
+     */
+    public List<String> createZip(List<String> classList, String zipFilename) {
 
-        // ファイル名を決める
-        String zipFilename = DateTimeFormatter.ofPattern("yyyyMMdd").format(data) + "List.zip";
+        // PDFファイル名
+        String pdfName = null;
 
-        // zip処理
+        // 削除用のPDFファイルの名前リスト
+        List<String> deleteList = new ArrayList<>();
+
+        // ZIPファイルを作成
+        FileOutputStream fos = null;
         ZipOutputStream zos = null;
         try {
-            zos = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(new File(zipFilename))));
-            createZip(zos, files);
-        } catch (IOException e) {
+            // アーカイブファイルを用意する。
+            byte[] buffer = new byte[1024];
+            fos = new FileOutputStream(zipFilename);
+            zos = new ZipOutputStream(fos);
+
+            //PDFファイルを作成し、ZIPファイルに入れていく
+            for (int i = 0; i < classList.size(); i++) {
+
+                pdfName = makePdf.makePdf(classList.get(i));
+
+                // 削除用のリストに追加
+                deleteList.add(pdfName);
+
+                FileInputStream fin = new FileInputStream(pdfName);
+
+                // エントリーを追加
+                zos.putNextEntry(new ZipEntry(pdfName));
+
+                int length;
+                while ((length = fin.read(buffer)) > 0) {
+                    zos.write(buffer, 0, length);
+                }
+
+                // アーカイブに含めるファイルの中身
+                byte[] data = pdfName.getBytes(StandardCharsets.UTF_8);
+                zos.write(data);
+                zos.closeEntry();
+                fin.close();
+            }
+
+        } catch (
+                IOException e) {
             e.printStackTrace();
         } finally {
-            IOUtils.closeQuietly(zos);
-        }
-
-        return zipFilename;
-
-    }
-
-    private void createZip(ZipOutputStream zos, File[] files) throws IOException {
-        byte[] buf = new byte[1024];
-        InputStream is = null;
-        try {
-            for (File file : files) {
-                ZipEntry entry = new ZipEntry(file.getName());
-                zos.putNextEntry(entry);
-                is = new BufferedInputStream(new FileInputStream(file));
-                int len = 0;
-                while ((len = is.read(buf)) != -1) {
-                    zos.write(buf, 0, len);
+            if (zos != null) {
+                try {
+                    zos.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-                is.close();
             }
-        } finally {
-            IOUtils.closeQuietly(is);
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
-    }
 
+        return deleteList;
+    }
 }
