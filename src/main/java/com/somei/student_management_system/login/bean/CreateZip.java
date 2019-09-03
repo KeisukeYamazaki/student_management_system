@@ -53,9 +53,11 @@ public class CreateZip {
                 while ((len = is.read(buf)) != -1) {
                     zos.write(buf, 0, len);
                 }
+                is.close();
             }
         } finally {
             IOUtils.closeQuietly(is);
         }
     }
+
 }
