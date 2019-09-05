@@ -224,7 +224,7 @@ public class StudentController {
     /**
      * 生徒編集用処理.
      */
-    @PostMapping(value = "/studentEdit", params = "update")
+    @PostMapping("/studentEdit")
     public String postStudentDetailUpdate(@ModelAttribute @Validated SignupForm form,
                                           @ModelAttribute FuturePathWithData futurePathData,
                                           BindingResult bindingResult,
