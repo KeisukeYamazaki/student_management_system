@@ -1,8 +1,10 @@
 package com.somei.student_management_system.login.controller;
 
+import com.opencsv.exceptions.CsvException;
+import com.somei.student_management_system.login.bean.IOCsv;
 import com.somei.student_management_system.login.bean.excelProcessing;
+import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
-import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.service.NumericDataService;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +34,9 @@ public class RegistryController {
 
     @Autowired
     NumericDataService numericDataService;
+
+    @Autowired
+    IOCsv ioCsv;
 
     /**
      * 各種登録画面のGETメソッド.
@@ -236,7 +244,8 @@ public class RegistryController {
     /**
      * 模擬試験登録画面のGETメソッド.
      *
-     * @param model
+     * @param model モデル
+     * @return 模試登録画面へ遷移
      */
     @GetMapping("registry/practiceExam")
     public String getRegistryPracticeExam(Model model) {
@@ -245,5 +254,45 @@ public class RegistryController {
         model.addAttribute("contents", "login/registryPracticeExam :: registryPracticeExam_contents");
 
         return "login/homeLayout";
+    }
+
+    /**
+     * 模擬試験登録画面のPOSTメソッド.
+     *
+     * @param multipartFile 模試のCSVデータ
+     * @param model         モデル
+     * @return 模試登録確認画面へ遷移
+     */
+    @PostMapping("practiceCsvUpload")
+    public String postRegistryPracticeExam(@RequestParam("file") MultipartFile multipartFile,
+                                           Model model) {
+
+        ImportPracticeExam ipe = new ImportPracticeExam();
+
+        try (InputStream is = multipartFile.getInputStream();
+             InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
+             Reader reader = new BufferedReader(ireader);) {
+
+            List<ImportPracticeExam> exams = ioCsv.read(reader);
+
+            boolean result = numericDataService.insertPracticeMany(exams);
+
+            if (result == true) {
+                model.addAttribute("result", "模擬試験データを登録しました");
+            } else {
+                model.addAttribute("result", "模擬試験データの登録に失敗しました");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CsvException e) {
+            e.printStackTrace();
+        } catch (DataAccessException e) {
+
+            model.addAttribute("result", "更新失敗(トランザクションテスト)");
+
+        }
+
+        return getRegistry(model);
     }
 }

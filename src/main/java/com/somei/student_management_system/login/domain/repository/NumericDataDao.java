@@ -1,5 +1,6 @@
 package com.somei.student_management_system.login.domain.repository;
 
+import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
@@ -31,6 +32,9 @@ public interface NumericDataDao {
 
     // practice_examテーブルの1人分の模試データを取得.
     public List<PracticeExam> selectPracticeOne(String studentId) throws DataAccessException;
+
+    // practice_examテーブルに複数人の模試データを挿入.
+    public List<Integer> insertPracticeMany(List<ImportPracticeExam> list) throws DataAccessException;
 
     // regular_examテーブルの1人分の定期試験データを取得.
     public List<RegularExam> selectRegularOne(String studentId) throws DataAccessException;

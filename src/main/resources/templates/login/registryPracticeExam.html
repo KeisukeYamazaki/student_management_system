@@ -30,6 +30,41 @@
                style="border-color: white">模擬試験
             </a>
         </div>
+        <!-- 結果表示用 -->
+        <span class="text-info" th:if="${result}" th:text="${result}"
+              style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
+    </div>
+    <div class="panel panel-container col-sm-12" style="margin-top: 15px; padding-top: 7px; padding-left: 5px">
+        <div class="col-sm-10">
+            <ol class="defaultlist list10">
+                <li class="list10-count">Googleスプレッドシートでの登録
+                    <p style="color: #444444; margin: 10px 0 10px 0px">
+                        下記のリンクからシートにアクセスして必要事項を入力後、下の「登録」ボタンを押してください。</p>
+                    <a href="https://docs.google.com/spreadsheets/d/1mo_zeobRayVBhKC9MZbozQa5OPs6C9npsIyn0jQqkiA/edit?usp=sharing"
+                       class="btn-link" target="_blank" style="margin-left: 2px">模試結果登録シート</a>
+                </li>
+                <li class="list10-count">CSVファイルでの登録
+                    <p style="color: #444444; margin: 10px 0 10px 0px">
+                        <strong>１</strong>．作成したファイルを下のボックスにアップロードしてください。</p>
+                    <p style="color: #444444; margin: 10px 0 30px 0px">
+                        <strong>２</strong>．登録ボタンを押してください。
+                    </p>
+                    <form method="post" enctype="multipart/form-data" th:action="@{/practiceCsvUpload}">
+                        <div class="input-group col-sm-5">
+                            <input id="upload" type="file" name="file" style="display:none">
+                            <input type="text" id="upload_file" name="upload_file" class="form-control"
+                                   placeholder="select file..." readonly>
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-sm" id="button"
+                                    style="height: 34px; border-color: #9d9d9d">ファイル選択</button>
+                            </span>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin: 40px 0 0 0px">登録
+                        </button>
+                    </form>
+                </li>
+            </ol>
+        </div>
     </div>
 </div>
 </body>

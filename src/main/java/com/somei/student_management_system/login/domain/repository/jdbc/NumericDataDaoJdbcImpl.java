@@ -1,5 +1,6 @@
 package com.somei.student_management_system.login.domain.repository.jdbc;
 
+import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
@@ -213,6 +214,63 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
         return jdbc.query(sql, rowMapper, studentId);
     }
 
+    @Override
+    public List<Integer> insertPracticeMany(List<ImportPracticeExam> list) throws DataAccessException {
+
+        // 結果返却用のリストを生成
+        List<Integer> resultList = new ArrayList<>();
+
+
+        // リストの数の分のinsertを行う
+        for (int i = 0; i < list.size(); i++) {
+
+            ImportPracticeExam ipe = list.get(i);
+
+            // クエリーを実行
+            int rowNumber = jdbc.update("INSERT INTO practice_exam(student_id,"
+                            + " grade,"
+                            + " exam_year,"
+                            + " practice_month,"
+                            + " english_score,"
+                            + " math_score,"
+                            + " japanese_score,"
+                            + " science_score,"
+                            + " social_score,"
+                            + " sum_three,"
+                            + " sum_all,"
+                            + " dev_three,"
+                            + " dev_five,"
+                            + " english_deviation,"
+                            + " math_deviation,"
+                            + " japanese_deviation,"
+                            + " science_deviation,"
+                            + " social_deviation)"
+                            + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    , ipe.getStudentId()
+                    , ipe.getGrade()
+                    , ipe.getExamYear()
+                    , ipe.getMonthName()
+                    , ipe.getEnglishScore()
+                    , ipe.getMathScore()
+                    , ipe.getJapaneseScore()
+                    , ipe.getScienceScore()
+                    , ipe.getSocialScore()
+                    , ipe.getSumThree()
+                    , ipe.getSumAll()
+                    , ipe.getDevThree()
+                    , ipe.getDevFive()
+                    , ipe.getEnglishDeviation()
+                    , ipe.getMathDeviation()
+                    , ipe.getJapaneseDeviation()
+                    , ipe.getScienceDeviation()
+                    , ipe.getSocialDeviation());
+
+            resultList.add(rowNumber);
+
+        }
+
+        return resultList;
+    }
 
     @Override
     public List<RegularExam> selectRegularOne(String studentId) throws DataAccessException {
