@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
 
     <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/table_border.css}" rel="stylesheet">
     <script th:src="@{/webjars/jquery/1.11.1/jquery.slim.min.js}"></script>
     <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.css}"></script>
 
@@ -96,99 +97,105 @@
                             <div th:if="*{entryTime != '中２' and entryTime != '中３'}">
                                 <p style="font-size: medium">＜中学１年＞</p>
                                 <table class="table table-bordered table-hover table-condensed">
-                                    <tr>
+                                    <tr th:if="${schoolRecordList_1st}">
                                         <th class="info col-sm-2">時期</th>
                                         <th class="info col">英語</th>
                                         <th class="info col">数学</th>
                                         <th class="info col">国語</th>
                                         <th class="info col">理科</th>
                                         <th class="info col">社会</th>
-                                        <th class="info col">５科</th>
+                                        <th class="info col table_border_up">５科</th>
                                         <th class="info col">音楽</th>
                                         <th class="info col">美術</th>
                                         <th class="info col">保体</th>
                                         <th class="info col">技家</th>
-                                        <th class="info col">９科</th>
+                                        <th class="info col table_border_up">９科</th>
                                     </tr>
-                                    <tr th:each="record : ${schoolRecordList}" th:if="${record.grade == 1}">
+                                    <tr th:each="record, recordStat : ${schoolRecordList_1st}">
                                         <td th:text="${record.termName}"></td>
                                         <td th:text="${record.english}"></td>
                                         <td th:text="${record.math}"></td>
                                         <td th:text="${record.japanese}"></td>
                                         <td th:text="${record.science}"></td>
                                         <td th:text="${record.socialStudies}"></td>
-                                        <td th:text="${record.sumFive}"></td>
+                                        <td th:classappend="${recordStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${record.sumFive}"></td>
                                         <td th:text="${record.music}"></td>
                                         <td th:text="${record.art}"></td>
                                         <td th:text="${record.pe}"></td>
                                         <td th:text="${record.techHome}"></td>
-                                        <td th:text="${record.sumAll}"></td>
+                                        <td th:classappend="${recordStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${record.sumAll}"></td>
                                     </tr>
                                 </table>
                             </div>
                             <div th:if="*{grade == '中２' or grade == '中３'}">
                                 <p style="font-size: medium">＜中学２年＞</p>
                                 <table class="table table-bordered table-hover table-condensed">
-                                    <tr>
+                                    <tr th:if="${schoolRecordList_2nd}">
                                         <th class="info col-sm-2">時期</th>
                                         <th class="info col">英語</th>
                                         <th class="info col">数学</th>
                                         <th class="info col">国語</th>
                                         <th class="info col">理科</th>
                                         <th class="info col">社会</th>
-                                        <th class="info col">５科</th>
+                                        <th class="info col table_border_up">５科</th>
                                         <th class="info col">音楽</th>
                                         <th class="info col">美術</th>
                                         <th class="info col">保体</th>
                                         <th class="info col">技家</th>
-                                        <th class="info col">９科</th>
+                                        <th class="info col table_border_up">９科</th>
                                     </tr>
-                                    <tr th:each="record : ${schoolRecordList}" th:if="${record.grade == 2}">
+                                    <tr th:each="record, recordStat : ${schoolRecordList_2nd}">
                                         <td th:text="${record.termName}"></td>
                                         <td th:text="${record.english}"></td>
                                         <td th:text="${record.math}"></td>
                                         <td th:text="${record.japanese}"></td>
                                         <td th:text="${record.science}"></td>
                                         <td th:text="${record.socialStudies}"></td>
-                                        <td th:text="${record.sumFive}"></td>
+                                        <td th:classappend="${recordStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${record.sumFive}"></td>
                                         <td th:text="${record.music}"></td>
                                         <td th:text="${record.art}"></td>
                                         <td th:text="${record.pe}"></td>
                                         <td th:text="${record.techHome}"></td>
-                                        <td th:text="${record.sumAll}"></td>
+                                        <td th:classappend="${recordStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${record.sumAll}"></td>
                                     </tr>
                                 </table>
                             </div>
                             <div th:if="*{grade == '中３'}">
                                 <p style="font-size: medium">＜中学３年＞</p>
                                 <table class="table table-bordered table-hover table-condensed">
-                                    <tr>
+                                    <tr th:if="${schoolRecordList_3rd}">
                                         <th class="info col-sm-2">時期</th>
                                         <th class="info col">英語</th>
                                         <th class="info col">数学</th>
                                         <th class="info col">国語</th>
                                         <th class="info col">理科</th>
                                         <th class="info col">社会</th>
-                                        <th class="info col">５科</th>
+                                        <th class="info col table_border_up">５科</th>
                                         <th class="info col">音楽</th>
                                         <th class="info col">美術</th>
                                         <th class="info col">保体</th>
                                         <th class="info col">技家</th>
-                                        <th class="info col">９科</th>
+                                        <th class="info col table_border_up">９科</th>
                                     </tr>
-                                    <tr th:each="record : ${schoolRecordList}" th:if="${record.grade == 3}">
+                                    <tr th:each="record, recordStat : ${schoolRecordList_3rd}">
                                         <td th:text="${record.termName}"></td>
                                         <td th:text="${record.english}"></td>
                                         <td th:text="${record.math}"></td>
                                         <td th:text="${record.japanese}"></td>
                                         <td th:text="${record.science}"></td>
                                         <td th:text="${record.socialStudies}"></td>
-                                        <td th:text="${record.sumFive}"></td>
+                                        <td th:classappend="${recordStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${record.sumFive}"></td>
                                         <td th:text="${record.music}"></td>
                                         <td th:text="${record.art}"></td>
                                         <td th:text="${record.pe}"></td>
                                         <td th:text="${record.techHome}"></td>
-                                        <td th:text="${record.sumAll}"></td>
+                                        <td th:classappend="${recordStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${record.sumAll}"></td>
                                     </tr>
                                 </table>
                             </div>
@@ -202,28 +209,29 @@
                             <div th:if="*{entryTime != '中２' and entryTime != '中３'}">
                                 <p style="font-size: medium">＜中学１年＞</p>
                                 <table class="table table-bordered table-hover table-condensed">
-                                    <tr>
+                                    <tr th:if="${regularExamList_1st}">
                                         <th class="info col-sm-2">時期</th>
                                         <th class="info col">英語</th>
                                         <th class="info col">数学</th>
                                         <th class="info col">国語</th>
                                         <th class="info col">理科</th>
                                         <th class="info col">社会</th>
-                                        <th class="info col">５科</th>
+                                        <th class="info col table_border_up">５科</th>
                                         <th class="info col">音楽</th>
                                         <th class="info col">美術</th>
                                         <th class="info col">保体</th>
                                         <th class="info col">技術</th>
                                         <th class="info col">家庭</th>
                                     </tr>
-                                    <tr th:each="regular : ${regularExamList}" th:if="${regular.grade == 1}">
+                                    <tr th:each="regular, regularStat : ${regularExamList_1st}">
                                         <td th:text="${regular.examName}"></td>
                                         <td th:text="${regular.english}"></td>
                                         <td th:text="${regular.math}"></td>
                                         <td th:text="${regular.japanese}"></td>
                                         <td th:text="${regular.science}"></td>
                                         <td th:text="${regular.socialStudies}"></td>
-                                        <td th:text="${regular.sumFive}"></td>
+                                        <td th:classappend="${regularStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${regular.sumFive}"></td>
                                         <td th:text="${regular.music}"></td>
                                         <td th:text="${regular.art}"></td>
                                         <td th:text="${regular.pe}"></td>
@@ -235,28 +243,29 @@
                             <div th:if="*{entryTime != '中３'}">
                                 <p style="font-size: medium">＜中学２年＞</p>
                                 <table class="table table-bordered table-hover table-condensed">
-                                    <tr>
+                                    <tr th:if="${regularExamList_2nd}">
                                         <th class="info col-sm-2">時期</th>
                                         <th class="info col">英語</th>
                                         <th class="info col">数学</th>
                                         <th class="info col">国語</th>
                                         <th class="info col">理科</th>
                                         <th class="info col">社会</th>
-                                        <th class="info col">５科</th>
+                                        <th class="info col table_border_up">５科</th>
                                         <th class="info col">音楽</th>
                                         <th class="info col">美術</th>
                                         <th class="info col">保体</th>
                                         <th class="info col">技術</th>
                                         <th class="info col">家庭</th>
                                     </tr>
-                                    <tr th:each="regular : ${regularExamList}" th:if="${regular.grade == 2}">
+                                    <tr th:each="regular, regularStat : ${regularExamList_2nd}">
                                         <td th:text="${regular.examName}"></td>
                                         <td th:text="${regular.english}"></td>
                                         <td th:text="${regular.math}"></td>
                                         <td th:text="${regular.japanese}"></td>
                                         <td th:text="${regular.science}"></td>
                                         <td th:text="${regular.socialStudies}"></td>
-                                        <td th:text="${regular.sumFive}"></td>
+                                        <td th:classappend="${regularStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${regular.sumFive}"></td>
                                         <td th:text="${regular.music}"></td>
                                         <td th:text="${regular.art}"></td>
                                         <td th:text="${regular.pe}"></td>
@@ -268,28 +277,29 @@
                             <div th:if="*{grade == '中３'}">
                                 <p style="font-size: medium">＜中学３年＞</p>
                                 <table class="table table-bordered table-hover table-condensed">
-                                    <tr>
+                                    <tr th:if="${regularExamList_3rd}">
                                         <th class="info col-sm-2">時期</th>
                                         <th class="info col">英語</th>
                                         <th class="info col">数学</th>
                                         <th class="info col">国語</th>
                                         <th class="info col">理科</th>
                                         <th class="info col">社会</th>
-                                        <th class="info col">５科</th>
+                                        <th class="info col table_border_up">５科</th>
                                         <th class="info col">音楽</th>
                                         <th class="info col">美術</th>
                                         <th class="info col">保体</th>
                                         <th class="info col">技術</th>
                                         <th class="info col">家庭</th>
                                     </tr>
-                                    <tr th:each="regular : ${regularExamList}" th:if="${regular.grade == 3}">
+                                    <tr th:each="regular, regularStat : ${regularExamList_3rd}">
                                         <td th:text="${regular.examName}"></td>
                                         <td th:text="${regular.english}"></td>
                                         <td th:text="${regular.math}"></td>
                                         <td th:text="${regular.japanese}"></td>
                                         <td th:text="${regular.science}"></td>
                                         <td th:text="${regular.socialStudies}"></td>
-                                        <td th:text="${regular.sumFive}"></td>
+                                        <td th:classappend="${regularStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${regular.sumFive}"></td>
                                         <td th:text="${regular.music}"></td>
                                         <td th:text="${regular.art}"></td>
                                         <td th:text="${regular.pe}"></td>
@@ -308,7 +318,7 @@
                             <div th:if="*{entryTime != '中２' and entryTime != '中３'}">
                                 <p style="font-size: medium">＜中学１年＞</p>
                                 <table class="table table-bordered table-hover table-condensed">
-                                    <tr class="align-middle">
+                                    <tr th:if="${practiceExamList_1st}">
                                         <th class="info col-sm-1">実施月</th>
                                         <th class="info col">英語</th>
                                         <th class="info col">数学</th>
@@ -316,16 +326,16 @@
                                         <th class="info col">理科</th>
                                         <th class="info col">社会</th>
                                         <th class="info col">３科</th>
-                                        <th class="info col">５科</th>
+                                        <th class="info col table_border_up">５科</th>
                                         <th class="info col">３科<br/>偏差</th>
-                                        <th class="info col">５科<br/>偏差</th>
+                                        <th class="info col table_border_up">５科<br/>偏差</th>
                                         <th class="info col">英語<br/>偏差</th>
                                         <th class="info col">数学<br/>偏差</th>
                                         <th class="info col">国語<br/>偏差</th>
                                         <th class="info col">理科<br/>偏差</th>
                                         <th class="info col">社会<br/>偏差</th>
                                     </tr>
-                                    <tr th:each="practice : ${practiceExamList}" th:if="${practice.grade == 1}">
+                                    <tr th:each="practice, practiceStat : ${practiceExamList_1st}">
                                         <td th:text="${practice.monthName}"></td>
                                         <td th:text="${practice.englishScore}"></td>
                                         <td th:text="${practice.mathScore}"></td>
@@ -333,9 +343,11 @@
                                         <td th:text="${practice.scienceScore}"></td>
                                         <td th:text="${practice.socialScore}"></td>
                                         <td th:text="${practice.sumThree}"></td>
-                                        <td th:text="${practice.sumAll}"></td>
+                                        <td th:classappend="${practiceStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${practice.sumAll}"></td>
                                         <td th:text="${practice.devThree}"></td>
-                                        <td th:text="${practice.devFive}"></td>
+                                        <td th:classappend="${practiceStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${practice.devFive}"></td>
                                         <td th:text="${practice.englishDeviation}"></td>
                                         <td th:text="${practice.mathDeviation}"></td>
                                         <td th:text="${practice.japaneseDeviation}"></td>
@@ -347,7 +359,7 @@
                             <div th:if="*{entryTime != '中３'}">
                                 <p style="font-size: medium">＜中学２年＞</p>
                                 <table class="table table-bordered table-hover table-condensed">
-                                    <tr>
+                                    <tr th:if="${practiceExamList_2nd}">
                                         <th class="info col-sm-1">実施月</th>
                                         <th class="info col">英語</th>
                                         <th class="info col">数学</th>
@@ -355,16 +367,16 @@
                                         <th class="info col">理科</th>
                                         <th class="info col">社会</th>
                                         <th class="info col">３科</th>
-                                        <th class="info col">５科</th>
+                                        <th class="info col table_border_up">５科</th>
                                         <th class="info col">３科<br/>偏差</th>
-                                        <th class="info col">５科<br/>偏差</th>
+                                        <th class="info col table_border_up">５科<br/>偏差</th>
                                         <th class="info col">英語<br/>偏差</th>
                                         <th class="info col">数学<br/>偏差</th>
                                         <th class="info col">国語<br/>偏差</th>
                                         <th class="info col">理科<br/>偏差</th>
                                         <th class="info col">社会<br/>偏差</th>
                                     </tr>
-                                    <tr th:each="practice : ${practiceExamList}" th:if="${practice.grade == 2}">
+                                    <tr th:each="practice, practiceStat : ${practiceExamList_2nd}">
                                         <td th:text="${practice.monthName}"></td>
                                         <td th:text="${practice.englishScore}"></td>
                                         <td th:text="${practice.mathScore}"></td>
@@ -372,9 +384,11 @@
                                         <td th:text="${practice.scienceScore}"></td>
                                         <td th:text="${practice.socialScore}"></td>
                                         <td th:text="${practice.sumThree}"></td>
-                                        <td th:text="${practice.sumAll}"></td>
+                                        <td th:classappend="${practiceStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${practice.sumAll}"></td>
                                         <td th:text="${practice.devThree}"></td>
-                                        <td th:text="${practice.devFive}"></td>
+                                        <td th:classappend="${practiceStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${practice.devFive}"></td>
                                         <td th:text="${practice.englishDeviation}"></td>
                                         <td th:text="${practice.mathDeviation}"></td>
                                         <td th:text="${practice.japaneseDeviation}"></td>
@@ -386,7 +400,7 @@
                             <div th:if="*{grade == '中３'}">
                                 <p style="font-size: medium">＜中学３年＞</p>
                                 <table class="table table-bordered table-hover table-condensed">
-                                    <tr>
+                                    <tr th:if="${practiceExamList_3rd}">
                                         <th class="info col-sm-1">実施月</th>
                                         <th class="info col">英語</th>
                                         <th class="info col">数学</th>
@@ -394,16 +408,16 @@
                                         <th class="info col">理科</th>
                                         <th class="info col">社会</th>
                                         <th class="info col">３科</th>
-                                        <th class="info col">５科</th>
+                                        <th class="info col table_border_up">５科</th>
                                         <th class="info col">３科<br/>偏差</th>
-                                        <th class="info col">５科<br/>偏差</th>
+                                        <th class="info col table_border_up">５科<br/>偏差</th>
                                         <th class="info col">英語<br/>偏差</th>
                                         <th class="info col">数学<br/>偏差</th>
                                         <th class="info col">国語<br/>偏差</th>
                                         <th class="info col">理科<br/>偏差</th>
                                         <th class="info col">社会<br/>偏差</th>
                                     </tr>
-                                    <tr th:each="practice : ${practiceExamList}" th:if="${practice.grade == 3}">
+                                    <tr th:each="practice, practiceStat : ${practiceExamList_3rd}">
                                         <td th:text="${practice.monthName}"></td>
                                         <td th:text="${practice.englishScore}"></td>
                                         <td th:text="${practice.mathScore}"></td>
@@ -411,9 +425,11 @@
                                         <td th:text="${practice.scienceScore}"></td>
                                         <td th:text="${practice.socialScore}"></td>
                                         <td th:text="${practice.sumThree}"></td>
-                                        <td th:text="${practice.sumAll}"></td>
+                                        <td th:classappend="${practiceStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${practice.sumAll}"></td>
                                         <td th:text="${practice.devThree}"></td>
-                                        <td th:text="${practice.devFive}"></td>
+                                        <td th:classappend="${practiceStat.last} ? table_border_down : table_border_middle"
+                                            th:text="${practice.devFive}"></td>
                                         <td th:text="${practice.englishDeviation}"></td>
                                         <td th:text="${practice.mathDeviation}"></td>
                                         <td th:text="${practice.japaneseDeviation}"></td>
@@ -508,7 +524,8 @@
                                         <tr>
                                             <td height="440px" style="vertical-align: top; text-align: left">
                                                 <th:block th:if="*{information}">
-                                                    <th:block th:each="str, stat : *{information.split('\r\n|\r|\n', -1)}">
+                                                    <th:block
+                                                            th:each="str, stat : *{information.split('\r\n|\r|\n', -1)}">
                                                         <th:block th:text="${str}"/>
                                                         <br th:if="${!stat.last}"/>
                                                     </th:block>

@@ -100,23 +100,65 @@ public class StudentController {
             // 生徒ID確認（デバッグ）
             System.out.println("Detail_student = " + student.getStudentName());
 
-            // 成績一覧の生成
+            // 成績一覧の生成（学年別に作成）
             List<SchoolRecord> schoolRecordList = numericDataService.selectRecordOne(studentId);
+            List<SchoolRecord> schoolRecordList_1st = new ArrayList<>();
+            List<SchoolRecord> schoolRecordList_2nd = new ArrayList<>();
+            List<SchoolRecord> schoolRecordList_3rd = new ArrayList<>();
+            for (SchoolRecord record : schoolRecordList) {
+                if (record.getGrade() == 3) {
+                    schoolRecordList_3rd.add(record);
+                } else if (record.getGrade() == 2) {
+                    schoolRecordList_2nd.add(record);
+                } else {
+                    schoolRecordList_1st.add(record);
+                }
+            }
 
-            // 定期試験一覧の生成
+            // 定期試験一覧の生成（学年別に作成）
             List<RegularExam> regularExamList = numericDataService.selectRegularOne(studentId);
+            List<RegularExam> regularExamList_1st = new ArrayList<>();
+            List<RegularExam> regularExamList_2nd = new ArrayList<>();
+            List<RegularExam> regularExamList_3rd = new ArrayList<>();
+            for (RegularExam rexam : regularExamList) {
+                if (rexam.getGrade() == 3) {
+                    regularExamList_3rd.add(rexam);
+                } else if (rexam.getGrade() == 2) {
+                    regularExamList_2nd.add(rexam);
+                } else {
+                    regularExamList_1st.add(rexam);
+                }
+            }
 
-            // 模試一覧の生成
+            // 模試一覧の生成（学年別に作成）
             List<PracticeExam> practiceExamList = numericDataService.selectPracticeOne(studentId);
+            List<PracticeExam> practiceExamList_1st = new ArrayList<>();
+            List<PracticeExam> practiceExamList_2nd = new ArrayList<>();
+            List<PracticeExam> practiceExamList_3rd = new ArrayList<>();
+            for (PracticeExam pexam : practiceExamList) {
+                if (pexam.getGrade() == 3) {
+                    practiceExamList_3rd.add(pexam);
+                } else if (pexam.getGrade() == 2) {
+                    practiceExamList_2nd.add(pexam);
+                } else {
+                    practiceExamList_1st.add(pexam);
+                }
+            }
 
             // 進路データの生成
             FuturePathWithData futurePathData = studentService.selectPathDataOne(studentId);
 
             // Modelに登録
             model.addAttribute("student", student);
-            model.addAttribute("schoolRecordList", schoolRecordList);
-            model.addAttribute("regularExamList", regularExamList);
-            model.addAttribute("practiceExamList", practiceExamList);
+            model.addAttribute("schoolRecordList_1st", schoolRecordList_1st);
+            model.addAttribute("schoolRecordList_2nd", schoolRecordList_2nd);
+            model.addAttribute("schoolRecordList_3rd", schoolRecordList_3rd);
+            model.addAttribute("regularExamList_1st", regularExamList_1st);
+            model.addAttribute("regularExamList_2nd", regularExamList_2nd);
+            model.addAttribute("regularExamList_3rd", regularExamList_3rd);
+            model.addAttribute("practiceExamList_1st", practiceExamList_1st);
+            model.addAttribute("practiceExamList_2nd", practiceExamList_2nd);
+            model.addAttribute("practiceExamList_3rd", practiceExamList_3rd);
             model.addAttribute("futurePathData", futurePathData);
         }
 
