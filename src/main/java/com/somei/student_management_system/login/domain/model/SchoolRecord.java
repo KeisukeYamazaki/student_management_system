@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class SchoolRecord {
 
-    private int studentId;
-    private int grade;
+    private String studentId;
+    private String grade;
     private String termName;
     private int english;
     private int math;

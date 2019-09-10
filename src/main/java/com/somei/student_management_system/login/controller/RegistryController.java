@@ -2,8 +2,10 @@ package com.somei.student_management_system.login.controller;
 
 import com.opencsv.exceptions.CsvException;
 import com.somei.student_management_system.login.bean.IOCsv;
+import com.somei.student_management_system.login.bean.RecordRegistry;
 import com.somei.student_management_system.login.bean.excelProcessing;
 import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
+import com.somei.student_management_system.login.domain.model.SchoolRecord;
 import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.service.NumericDataService;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -37,6 +39,9 @@ public class RegistryController {
 
     @Autowired
     IOCsv ioCsv;
+
+    @Autowired
+    RecordRegistry recordRegistry;
 
     /**
      * 各種登録画面のGETメソッド.
@@ -97,6 +102,60 @@ public class RegistryController {
     }
 
     /**
+     * 学年別成績登録画面
+     *
+     * @param school 対象の校舎
+     * @param grade 対象の学年
+     * @param termName 対象の学期
+     * @param model モデル
+     * @return 成績登録画面に遷移
+     */
+    @PostMapping("registry/schoolRecord/way/ByGrade")
+    public String getRegistrySchoolRecordWay(@RequestParam("school") String school,
+                                             @RequestParam("grade") String grade,
+                                             @RequestParam("termName") String termName,
+                                             Model model) {
+
+        List<SchoolRecordWithName> recordList = numericDataService.selectRecordMany(school, grade, termName);
+
+        //コンテンツ部分に生徒一覧を表示するための文字列を登録
+        model.addAttribute("contents", "login/registrySchoolRecord :: registrySchoolRecord_contents");
+
+        // 学年別の場合
+        model.addAttribute("ByGrade", true);
+
+        // 校舎・学年・学期
+        model.addAttribute("school", school);
+        model.addAttribute("grade", grade);
+        model.addAttribute("termName", termName);
+
+        // 成績のリスト
+        model.addAttribute("recordList", recordList);
+
+        return "login/homeLayout";
+    }
+
+    /**
+     * 学年別成績登録の処理
+     *
+     * @param srwn 成績の数値
+     * @param model モデル
+     * @return 登録確認画面に遷移
+     */
+    @PostMapping(value = "registry/schoolRecord/way/ByGrade", params = "register")
+    public String getRegistrySchoolRecordWay(@ModelAttribute SchoolRecordWithName srwn,
+                                             Model model) {
+
+        // リストに登録処理するためのリストを作成
+        List<SchoolRecordWithName> SchoolRecordWithNameList = recordRegistry.recordRegistration(srwn);
+
+        //コンテンツ部分に生徒一覧を表示するための文字列を登録
+        model.addAttribute("contents", "login/schoolRecordConfirm :: schoolRecordConfirm_contents");
+
+        return "login/homeLayout";
+    }
+
+    /**
      * 成績登録確認画面表示.
      *
      * @param multipartFile アップロードされたエクセルファイル
@@ -136,7 +195,7 @@ public class RegistryController {
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
         model.addAttribute("contents", "login/schoolRecordConfirm :: schoolRecordConfirm_contents");
 
-        return "login/homeLayout";
+        return getRegistry(model);
     }
 
     /**
@@ -145,53 +204,11 @@ public class RegistryController {
      * @param model モデル
      * @return 各種登録画面に遷移
      */
-    @PostMapping(value = "schoolRecordConfirm", params = "register")
+    @PostMapping("schoolRecordRegistry")
     public String RecordProcessing(@ModelAttribute SchoolRecordWithName schoolRecordWithName, Model model) {
 
-        // 送られてきた値をフィールド別にリストに格納
-        List<String> nameList = Arrays.asList(schoolRecordWithName.getStudentName().split(","));
-        List<String> idList = Arrays.asList(schoolRecordWithName.getStudentId().split(","));
-        List<String> gradeList = Arrays.asList(schoolRecordWithName.getGrade().split(","));
-        List<String> yearList = Arrays.asList(schoolRecordWithName.getRecordYear().split(","));
-        List<String> termList = Arrays.asList(schoolRecordWithName.getTermName().split(","));
-        List<String> englishList = Arrays.asList(schoolRecordWithName.getEnglish().split(","));
-        List<String> mathList = Arrays.asList(schoolRecordWithName.getMath().split(","));
-        List<String> japaneseList = Arrays.asList(schoolRecordWithName.getJapanese().split(","));
-        List<String> scienceList = Arrays.asList(schoolRecordWithName.getScience().split(","));
-        List<String> socialList = Arrays.asList(schoolRecordWithName.getSocialStudies().split(","));
-        List<String> musicList = Arrays.asList(schoolRecordWithName.getMusic().split(","));
-        List<String> artList = Arrays.asList(schoolRecordWithName.getArt().split(","));
-        List<String> peList = Arrays.asList(schoolRecordWithName.getPe().split(","));
-        List<String> techHomeList = Arrays.asList(schoolRecordWithName.getTechHome().split(","));
-        List<String> sumFiveList = Arrays.asList(schoolRecordWithName.getSumFive().split(","));
-        List<String> sumAllList = Arrays.asList(schoolRecordWithName.getSumAll().split(","));
-
-        // 渡すためのリストを作成
-        List<SchoolRecordWithName> SchoolRecordWithNameList = new ArrayList<>();
-
-        for (int i = 0; i < nameList.size(); i++) {
-            SchoolRecordWithName inList = new SchoolRecordWithName();
-
-            // SchoolRecordWithNameクラスにフィールド別のリストを代入してリストに格納
-            inList.setStudentName(nameList.get(i));
-            inList.setStudentId(idList.get(i));
-            inList.setGrade(gradeList.get(i));
-            inList.setRecordYear(yearList.get(i));
-            inList.setTermName(termList.get(i));
-            inList.setEnglish(englishList.get(i));
-            inList.setMath(mathList.get(i));
-            inList.setJapanese(japaneseList.get(i));
-            inList.setScience(scienceList.get(i));
-            inList.setSocialStudies(socialList.get(i));
-            inList.setMusic(musicList.get(i));
-            inList.setArt(artList.get(i));
-            inList.setPe(peList.get(i));
-            inList.setTechHome(techHomeList.get(i));
-            inList.setSumFive(sumFiveList.get(i));
-            inList.setSumAll(sumAllList.get(i));
-
-            SchoolRecordWithNameList.add(inList);
-        }
+        // リストに登録処理するためのリストを作成
+        List<SchoolRecordWithName> SchoolRecordWithNameList = recordRegistry.recordRegistration(schoolRecordWithName);
 
         // 成績の登録処理
         try {

@@ -86,7 +86,7 @@ public class EntranceExamCalculation {
             String termName = schoolRecord.getTermName();
 
             // 中２かつ３学期か後期があれば、変数に格納
-            if (schoolRecord.getGrade() == 2 && (termName.equals("３学期") || termName.equals("後期"))) {
+            if (schoolRecord.getGrade().equals("中２") && (termName.equals("３学期") || termName.equals("後期"))) {
                 lastOfSecond = schoolRecord;
             }
         }

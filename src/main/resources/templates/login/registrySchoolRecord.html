@@ -48,8 +48,116 @@
         </form>
     </div>
     <div th:if="${ByGrade}" class="panel panel-container col-sm-12" style="margin-top: 15px">
-        <form method="post" th:action="@{/}">
-            <button type="submit" class="btn btn-primary" name="change">登録</button>
+        <form method="post" th:action="@{/registry/schoolRecord/way/ByGrade}">
+            <div style="margin-bottom: 17px">成績を登録する校舎・学年・学期を選択してください</div>
+            <div class="form-group">
+                <label for="school" class="control-label col-xs-1"
+                       style="text-align: right; margin-top: 7px">校舎：</label>
+                <div class="col-sm-2 col-xs-4">
+                    <select class="form-control" id="school" name="school">
+                        <option value="">校舎</option>
+                        <option value="橋戸校" th:selected="${school} == '橋戸校'">橋戸校</option>
+                        <option value="瀬谷校" th:selected="${school} == '瀬谷校'">瀬谷校</option>
+                        <option value="大和校" th:selected="${school} == '大和校'">大和校</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="grade" class="control-label col-xs-1"
+                       style="text-align: right; margin: 7px 0 0 20px">学年：</label>
+                <div class="col-sm-2 col-xs-4">
+                    <select class="form-control" id="grade" name="grade">
+                        <option value="">学年</option>
+                        <option value="中３" th:selected="${grade} == '中３'">中３</option>
+                        <option value="中２" th:selected="${grade} == '中２'">中２</option>
+                        <option value="中１" th:selected="${grade} == '中１'">中１</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="termName" class="control-label col-xs-1"
+                       style="text-align: right; margin: 7px 0 0 20px">学期：</label>
+                <div class="col-sm-2 col-xs-4">
+                    <select class="form-control" id="termName" name="termName">
+                        <option value="">学期</option>
+                        <option value="１学期・前期" th:selected="${termName} == '１学期・前期'">１学期・前期</option>
+                        <option value="２学期" th:selected="${termName} == '２学期'">２学期</option>
+                        <option value="３学期・後期" th:selected="${termName} == '３学期・後期'">３学期・後期</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit" style="margin-left: 60px">表示</button>
+        </form>
+        <form method="post" th:action="@{/schoolRecordRegistry}" th:if="${recordList}"
+              th:object="${SchoolRecordWithName}">
+            <table class="table table-bordered table-hover" style="margin-top: 30px; margin-bottom: 20px">
+                <tr>
+                    <th class="info" style="font-size: small">生徒名</th>
+                    <th class="info" style="font-size: small">学年</th>
+                    <th class="info" style="font-size: small">年度<p style="font-size: x-small">※ 半角数字4ケタ</p></th>
+                    <th class="info" style="font-size: small">学期</th>
+                    <th class="info" style="font-size: small">英語<p style="font-size: x-small">※ 半角数字</p></th>
+                    <th class="info" style="font-size: small">数学<p style="font-size: x-small">※ 半角数字</p></th>
+                    <th class="info" style="font-size: small">国語<p style="font-size: x-small">※ 半角数字</p></th>
+                    <th class="info" style="font-size: small">理科<p style="font-size: x-small">※ 半角数字</p></th>
+                    <th class="info" style="font-size: small">社会<p style="font-size: x-small">※ 半角数字</p></th>
+                    <th class="info" style="font-size: small">音楽<p style="font-size: x-small">※ 半角数字</p></th>
+                    <th class="info" style="font-size: small">美術<p style="font-size: x-small">※ 半角数字</p></th>
+                    <th class="info" style="font-size: small">保体<p style="font-size: x-small">※ 半角数字</p></th>
+                    <th class="info" style="font-size: small">技家<p style="font-size: x-small">※ 半角数字</p></th>
+                </tr>
+                <tr th:each="record : ${recordList}">
+                    <input type="hidden" name="studentId" th:value="${record.studentId}">
+                    <input type="hidden" name="studentName" th:value="${record.studentName}">
+                    <input type="hidden" name="grade" th:value="${record.grade}">
+                    <td th:text="${record.studentName}"></td>
+                    <td th:text="${record.grade}"></td>
+                    <td style="width: 10%">
+                        <input type="text" class="form-control" name="recordYear" th:value="${record.recordYear}"></td>
+                    <td>
+                        <div class="form-group">
+                            <select name="termName" class="form-control">
+                                <option value="">学期</option>
+                                <option value="１学期" th:selected="${record.termName} == '１学期'">１学期</option>
+                                <option value="前期" th:selected="${record.termName} == '前期'">前期</option>
+                                <option value="２学期" th:selected="${record.termName} == '２学期'">２学期</option>
+                                <option value="後期" th:selected="${record.termName} == '後期'">後期</option>
+                                <option value="３学期" th:selected="${record.termName} == '３学期'">３学期</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td style="width: 7%">
+                        <input type="text" class="form-control" name="english" th:value="${record.english}">
+                    </td>
+                    <td style="width: 7%">
+                        <input type="text" class="form-control" name="math" th:value="${record.math}">
+                    </td>
+                    <td style="width: 7%">
+                        <input type="text" class="form-control" name="japanese" th:value="${record.japanese}">
+                    </td>
+                    <td style="width: 7%">
+                        <input type="text" class="form-control" name="science" th:value="${record.science}">
+                    </td>
+                    <td style="width: 7%">
+                        <input type="text" class="form-control" name="socialStudies" th:value="${record.socialStudies}">
+                    </td>
+                    <td style="width: 7%">
+                        <input type="text" class="form-control" name="music" th:value="${record.music}">
+                    </td>
+                    <td style="width: 7%">
+                        <input type="text" class="form-control" name="art" th:value="${record.art}">
+                    </td>
+                    <td style="width: 7%">
+                        <input type="text" class="form-control" name="pe" th:value="${record.pe}">
+                    </td>
+                    <td style="width: 7%">
+                        <input type="text" class="form-control" name="techHome" th:value="${record.techHome}">
+                    </td>
+                    <input type="hidden" name="sumFive" value="">
+                    <input type="hidden" name="sumAll" value="">
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary">登録</button>
         </form>
     </div>
     <div th:if="${AllatOnece}" class="panel panel-container col-sm-12"

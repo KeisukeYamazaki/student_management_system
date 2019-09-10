@@ -30,9 +30,15 @@ public class NumericDataService {
         return dao.selectRecordOne(studentId);
     }
 
+
+
     /**
-     * １件以上更新用メソッド.
+     * 複数の成績を取得.
      */
+    public List<SchoolRecordWithName> selectRecordMany(String school, String grade, String termName) {
+        //全件取得
+        return dao.selectRecordMany(school, grade, termName);
+    }
 
     /**
      * 複数の成績を挿入
@@ -67,6 +73,7 @@ public class NumericDataService {
     /**
      * １件削除用メソッド.
      */
+
 
     /**
      * 1人分模試取得用メソッド.

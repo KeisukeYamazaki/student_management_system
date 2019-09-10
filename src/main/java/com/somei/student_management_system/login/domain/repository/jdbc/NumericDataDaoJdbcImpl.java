@@ -59,6 +59,14 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
         return jdbc.query(sql, rowMapper, studentId);
     }
 
+    /**
+     * 複数の成績を取得.
+     *
+     * @param school 対象の校舎
+     * @param grade  対象の学年
+     * @return 実行結果のリスト
+     * @throws
+     */
     @Override
     public List<SchoolRecord> selectRecordMany(String school, String grade) throws DataAccessException {
 
@@ -94,11 +102,126 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
     }
 
     /**
+     * 複数の成績を取得（成績登録用）
+     *
+     * @param school   対象の校舎
+     * @param grade    対象の学年
+     * @param termName 対象の学期
+     * @return 実行結果のリスト
+     * @throws
+     */
+    @Override
+    public List<SchoolRecordWithName> selectRecordMany(String school, String grade, String termName) throws DataAccessException {
+
+        String startNum = grade.equals("中３") ? "2201" : grade.equals("中２") ? "2301" : "2401";
+        String endNum = grade.equals("中３") ? "2299" : grade.equals("中２") ? "2399" : "2499";
+
+        // school_recordテーブルのデータ複数人分取得するSQL
+        String sql = null;
+
+        // termName によって条件分岐
+        if (termName.equals("１学期・前期")) {
+
+            sql ="SELECT student.student_name,"
+                    + " student.student_id,"
+                    + " student.grade,"
+                    + " record_year,"
+                    + " term_name,"
+                    + " english,"
+                    + " math,"
+                    + " japanese,"
+                    + " science,"
+                    + " social_studies,"
+                    + " music,"
+                    + " art,"
+                    + " pe,"
+                    + " tech_home"
+                    + " FROM student"
+                    + " LEFT OUTER JOIN school_record"
+                    + " ON student.student_id = school_record.student_id"
+                        + " AND student.grade = school_record.grade"
+                        + " AND student.grade = ?"
+                        + " AND (school_record.record_id = 1 OR school_record.record_id = 2)"
+                    + " LEFT OUTER JOIN record_group"
+                    + " ON school_record.record_id = record_group.id"
+                    + " WHERE student.school = ?"
+                        + " AND student.student_id BETWEEN ? AND ?"
+                        + " AND char_length(student.student_id) = 4"
+                    + " ORDER BY student.student_id";
+
+        } else if (termName.equals("２学期")) {
+
+            sql ="SELECT student.student_name,"
+                    + " student.student_id,"
+                    + " student.grade,"
+                    + " record_year,"
+                    + " term_name,"
+                    + " english,"
+                    + " math,"
+                    + " japanese,"
+                    + " science,"
+                    + " social_studies,"
+                    + " music,"
+                    + " art,"
+                    + " pe,"
+                    + " tech_home"
+                    + " FROM student"
+                    + " LEFT OUTER JOIN school_record"
+                    + " ON student.student_id = school_record.student_id"
+                        + " AND student.grade = school_record.grade"
+                        + " AND student.grade = ?"
+                        + " AND school_record.record_id = 3"
+                    + " LEFT OUTER JOIN record_group"
+                    + " ON school_record.record_id = record_group.id"
+                    + " WHERE student.school = ?"
+                        + " AND student.student_id BETWEEN ? AND ?"
+                        + " AND char_length(student.student_id) = 4"
+                    + " ORDER BY student.student_id";
+
+        } else {
+
+            sql ="SELECT student.student_name,"
+                    + " student.student_id,"
+                    + " student.grade,"
+                    + " record_year,"
+                    + " term_name,"
+                    + " english,"
+                    + " math,"
+                    + " japanese,"
+                    + " science,"
+                    + " social_studies,"
+                    + " music,"
+                    + " art,"
+                    + " pe,"
+                    + " tech_home"
+                    + " FROM student"
+                    + " LEFT OUTER JOIN school_record"
+                    + " ON student.student_id = school_record.student_id"
+                        + " AND student.grade = school_record.grade"
+                        + " AND student.grade = ?"
+                        + " AND (school_record.record_id = 4 OR school_record.record_id = 5)"
+                    + " LEFT OUTER JOIN record_group"
+                    + " ON school_record.record_id = record_group.id"
+                    + " WHERE student.school = ?"
+                        + " AND student.student_id BETWEEN ? AND ?"
+                        + " AND char_length(student.student_id) = 4"
+                    + " ORDER BY student.student_id";
+
+        }
+
+        // RowMapperの生成
+        RowMapper<SchoolRecordWithName> rowMapper = new BeanPropertyRowMapper<>(SchoolRecordWithName.class);
+
+        // SQL実行
+        return jdbc.query(sql, rowMapper, grade, school, startNum, endNum);
+    }
+
+    /**
      * 複数の成績を挿入.
      *
      * @param list 成績のリスト
      * @return 実行結果のリスト
-     * @exception
+     * @throws
      */
     @Override
     public List<Integer> insertRecordMany(List<SchoolRecordWithName> list) throws DataAccessException {
@@ -110,6 +233,28 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
         for (int i = 0; i < list.size(); i++) {
 
             SchoolRecordWithName srwn = list.get(i);
+
+            if(srwn.getSumFive().equals("")) {
+                int sumFive = Integer.parseInt(srwn.getEnglish())
+                        + Integer.parseInt(srwn.getMath())
+                        + Integer.parseInt(srwn.getJapanese())
+                        + Integer.parseInt(srwn.getScience())
+                        + Integer.parseInt(srwn.getSocialStudies());
+                srwn.setSumFive(String.valueOf(sumFive));
+            }
+
+            if(srwn.getSumAll().equals("")) {
+                int sumAll = Integer.parseInt(srwn.getEnglish())
+                        + Integer.parseInt(srwn.getMath())
+                        + Integer.parseInt(srwn.getJapanese())
+                        + Integer.parseInt(srwn.getScience())
+                        + Integer.parseInt(srwn.getSocialStudies())
+                        + Integer.parseInt(srwn.getMusic())
+                        + Integer.parseInt(srwn.getArt())
+                        + Integer.parseInt(srwn.getPe())
+                        + Integer.parseInt(srwn.getTechHome());
+                srwn.setSumAll(String.valueOf(sumAll));
+            }
 
             // 学期名をを数値に変換
             int recordId = 0;
@@ -148,10 +293,35 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                             + " sum_five,"
                             + " sum_all)"
                             + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-                    , Integer.parseInt(srwn.getStudentId())
-                    , Integer.parseInt(srwn.getGrade())
+                            + " ON CONFLICT ON CONSTRAINT record_const"
+                            + " DO UPDATE SET grade = ?,"
+                            + " english = ?,"
+                            + " math = ?,"
+                            + " japanese = ?,"
+                            + " science = ?,"
+                            + " social_studies = ?,"
+                            + " music = ?,"
+                            + " art = ?,"
+                            + " pe = ?,"
+                            + " tech_home = ?,"
+                            + " sum_five = ?,"
+                            + " sum_all = ?;"
+                    , srwn.getStudentId()
+                    , srwn.getGrade()
                     , Integer.parseInt(srwn.getRecordYear())
                     , recordId
+                    , Integer.parseInt(srwn.getEnglish())
+                    , Integer.parseInt(srwn.getMath())
+                    , Integer.parseInt(srwn.getJapanese())
+                    , Integer.parseInt(srwn.getScience())
+                    , Integer.parseInt(srwn.getSocialStudies())
+                    , Integer.parseInt(srwn.getMusic())
+                    , Integer.parseInt(srwn.getArt())
+                    , Integer.parseInt(srwn.getPe())
+                    , Integer.parseInt(srwn.getTechHome())
+                    , Integer.parseInt(srwn.getSumFive())
+                    , Integer.parseInt(srwn.getSumAll())
+                    , srwn.getGrade()
                     , Integer.parseInt(srwn.getEnglish())
                     , Integer.parseInt(srwn.getMath())
                     , Integer.parseInt(srwn.getJapanese())

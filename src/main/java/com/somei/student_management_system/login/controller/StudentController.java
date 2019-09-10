@@ -106,9 +106,9 @@ public class StudentController {
             List<SchoolRecord> schoolRecordList_2nd = new ArrayList<>();
             List<SchoolRecord> schoolRecordList_3rd = new ArrayList<>();
             for (SchoolRecord record : schoolRecordList) {
-                if (record.getGrade() == 3) {
+                if (record.getGrade().equals("中３")) {
                     schoolRecordList_3rd.add(record);
-                } else if (record.getGrade() == 2) {
+                } else if (record.getGrade().equals("中２")) {
                     schoolRecordList_2nd.add(record);
                 } else {
                     schoolRecordList_1st.add(record);

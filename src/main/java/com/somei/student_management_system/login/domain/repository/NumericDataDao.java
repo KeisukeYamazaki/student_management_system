@@ -21,6 +21,9 @@ public interface NumericDataDao {
     // school_recordテーブルの複数人の成績データを取得.
     public List<SchoolRecord> selectRecordMany(String school, String grade) throws DataAccessException;
 
+    // school_recordテーブルの複数人の成績データを取得.
+    public List<SchoolRecordWithName> selectRecordMany(String school, String grade, String termName) throws DataAccessException;
+
     // school_recordテーブルの複数人の成績データを挿入.
     public List<Integer> insertRecordMany(List<SchoolRecordWithName> list) throws DataAccessException;
 

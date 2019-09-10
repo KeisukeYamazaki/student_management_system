@@ -26,7 +26,7 @@ public class ZenkenProcessing {
             String strId = String.valueOf(record.getStudentId());
 
             // Id・学年・学期が合致した成績データを見つけたら、recordsに代入
-            if (strId.equals(studentId) && record.getGrade() == 2 && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
 
                 records.append("," + term + ",");
                 records.append(record.getEnglish() + ",");
@@ -54,7 +54,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(j);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 3 && (record.getTermName().equals("１学期") || record.getTermName().equals("前期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中３") && (record.getTermName().equals("１学期") || record.getTermName().equals("前期"))) {
 
                 records.append("," + term + ",");
                 records.append(record.getEnglish() + ",");
@@ -82,7 +82,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(k);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 3 && (record.getTermName().equals("２学期") || record.getTermName().equals("後期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中３") && (record.getTermName().equals("２学期") || record.getTermName().equals("後期"))) {
 
                 records.append("," + term  + ",");
                 records.append(record.getEnglish() + ",");
@@ -120,7 +120,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(i);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 1 && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
 
                 records.append("," + term + ",");
                 records.append(record.getEnglish() + ",");
@@ -148,7 +148,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(j);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 2 && (record.getTermName().equals("１学期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("１学期"))) {
 
                 records.append("," + term  + ",");
                 records.append(record.getEnglish() + ",");
@@ -176,7 +176,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(k);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 2 && (record.getTermName().equals("２学期") || record.getTermName().equals("前期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("２学期") || record.getTermName().equals("前期"))) {
 
                 records.append("," + term  + ",");
                 records.append(record.getEnglish() + ",");
@@ -214,7 +214,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(i);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 1 && (record.getTermName().equals("１学期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("１学期"))) {
 
                 records.append("," + term + ",");
                 records.append(record.getEnglish() + ",");
@@ -242,7 +242,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(j);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 1 && (record.getTermName().equals("２学期") || record.getTermName().equals("前期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("２学期") || record.getTermName().equals("前期"))) {
 
                 records.append("," + term  + ",");
                 records.append(record.getEnglish() + ",");
@@ -270,7 +270,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(k);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 1 && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
 
                 records.append("," + term  + ",");
                 records.append(record.getEnglish() + ",");
@@ -314,7 +314,7 @@ public class ZenkenProcessing {
             String strId = String.valueOf(record.getStudentId());
 
             // Id・学年・学期が合致した成績データを見つけたら、recordsに代入
-            if (strId.equals(studentId) && record.getGrade() == 2 && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
 
                 // 対象の成績があれば true をセット
                 existence.setFirstRecord(true);
@@ -328,7 +328,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(j);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 3 && (record.getTermName().equals("１学期") || record.getTermName().equals("前期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中３") && (record.getTermName().equals("１学期") || record.getTermName().equals("前期"))) {
 
                 existence.setSecondRecord(true);
 
@@ -341,7 +341,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(k);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 3 && (record.getTermName().equals("２学期") || record.getTermName().equals("後期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中３") && (record.getTermName().equals("２学期") || record.getTermName().equals("後期"))) {
 
                 existence.setThirdRecord(true);
 
@@ -371,7 +371,7 @@ public class ZenkenProcessing {
             String strId = String.valueOf(record.getStudentId());
 
             // Id・学年・学期が合致した成績データを見つけたら、recordsに代入
-            if (strId.equals(studentId) && record.getGrade() == 1 && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
 
                 // 対象の成績があれば true をセット
                 existence.setFirstRecord(true);
@@ -385,7 +385,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(j);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 2 && (record.getTermName().equals("１学期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("１学期"))) {
 
                 existence.setSecondRecord(true);
 
@@ -398,7 +398,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(k);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 2 && (record.getTermName().equals("２学期") || record.getTermName().equals("前期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("２学期") || record.getTermName().equals("前期"))) {
 
                 existence.setThirdRecord(true);
 
@@ -428,7 +428,7 @@ public class ZenkenProcessing {
             String strId = String.valueOf(record.getStudentId());
 
             // Id・学年・学期が合致した成績データを見つけたら、recordsに代入
-            if (strId.equals(studentId) && record.getGrade() == 1 && (record.getTermName().equals("１学期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("１学期"))) {
 
                 // 対象の成績があれば true をセット
                 existence.setFirstRecord(true);
@@ -442,7 +442,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(j);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 1 && (record.getTermName().equals("２学期") || record.getTermName().equals("前期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("２学期") || record.getTermName().equals("前期"))) {
 
                 existence.setSecondRecord(true);
 
@@ -455,7 +455,7 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(k);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade() == 1 && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
 
                 existence.setThirdRecord(true);
 

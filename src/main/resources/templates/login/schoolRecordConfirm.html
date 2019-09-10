@@ -38,16 +38,16 @@
         <div class="col-sm-12">
             <h4>以下の内容で登録しますか？</h4>
             <div class="container-fluid col-sm-12">
-                <form method="post" th:action="@{/schoolRecordConfirm}" th:object="${SchoolRecordWithName}">
+                <form method="post" th:action="@{/schoolRecordRegistry}" th:object="${SchoolRecordWithName}">
                     <table class="table table-bordered table-hover">
                         <tr>
                             <th class="info" style="font-size: small">生徒ID</th>
                             <th class="info" style="font-size: small">生徒名</th>
                             <th class="info" style="font-size: small">学年</th>
-                            <th class="info" style="font-size: small">登録学期</th>
+                            <th class="info" style="font-size: small">学期</th>
                             <th class="info" style="font-size: small">英語</th>
-                            <th class="info" style="font-size: small">国語</th>
                             <th class="info" style="font-size: small">数学</th>
+                            <th class="info" style="font-size: small">国語</th>
                             <th class="info" style="font-size: small">理科</th>
                             <th class="info" style="font-size: small">社会</th>
                             <th class="info" style="font-size: small">音楽</th>
@@ -58,11 +58,7 @@
                         <tr th:each="SchoolRecordWithName : ${schoolRecordList}">
                             <td th:text="${SchoolRecordWithName.studentId}"></td>
                             <td th:text="${SchoolRecordWithName.studentName}"></td>
-                            <td th:switch="${SchoolRecordWithName.grade}">
-                                <div th:case="3" th:text="'中３'"></div>
-                                <div th:case="2" th:text="'中２'"></div>
-                                <div th:case="1" th:text="'中１'"></div>
-                            </td>
+                            <td th:switch="${SchoolRecordWithName.grade}"></td>
                             <td th:text="${SchoolRecordWithName.termName}"></td>
                             <td th:text="${SchoolRecordWithName.english}"></td>
                             <td th:text="${SchoolRecordWithName.math}"></td>
@@ -93,7 +89,7 @@
                         </tr>
                     </table>
                     <!-- 登録ボタン -->
-                    <button class="btn btn-primary" type="submit" name="register" style="margin-top: 15px">登録</button>
+                    <button class="btn btn-primary" type="submit" style="margin-top: 15px">登録</button>
                     <!-- 戻るボタン -->
                     <button class="btn btn-default btn-margin" type="submit" name="back"style="margin: 15px 0 0 10px; border-color: #9d9d9d">戻る</button>
                 </form>
