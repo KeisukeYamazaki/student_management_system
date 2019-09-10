@@ -61,7 +61,7 @@ public class excelProcessing {
                         srwn.setRecordYear(String.valueOf((int)cell.getNumericCellValue()));
                         break;
                     case 3:
-                        srwn.setGrade(String.valueOf((int)cell.getNumericCellValue()));
+                        srwn.setGrade(cell.getStringCellValue());
                         break;
                     case 4:
                         srwn.setTermName(cell.getStringCellValue());

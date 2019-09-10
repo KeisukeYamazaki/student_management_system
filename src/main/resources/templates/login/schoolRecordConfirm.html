@@ -58,7 +58,7 @@
                         <tr th:each="SchoolRecordWithName : ${schoolRecordList}">
                             <td th:text="${SchoolRecordWithName.studentId}"></td>
                             <td th:text="${SchoolRecordWithName.studentName}"></td>
-                            <td th:switch="${SchoolRecordWithName.grade}"></td>
+                            <td th:text="${SchoolRecordWithName.grade}"></td>
                             <td th:text="${SchoolRecordWithName.termName}"></td>
                             <td th:text="${SchoolRecordWithName.english}"></td>
                             <td th:text="${SchoolRecordWithName.math}"></td>
@@ -91,7 +91,7 @@
                     <!-- 登録ボタン -->
                     <button class="btn btn-primary" type="submit" style="margin-top: 15px">登録</button>
                     <!-- 戻るボタン -->
-                    <button class="btn btn-default btn-margin" type="submit" name="back"style="margin: 15px 0 0 10px; border-color: #9d9d9d">戻る</button>
+                    <button class="btn btn-default btn-margin" type="submit" name="back" style="margin: 15px 0 0 10px; border-color: #9d9d9d">戻る</button>
                 </form>
             </div>
         </div>

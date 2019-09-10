@@ -136,26 +136,6 @@ public class RegistryController {
     }
 
     /**
-     * 学年別成績登録の処理
-     *
-     * @param srwn 成績の数値
-     * @param model モデル
-     * @return 登録確認画面に遷移
-     */
-    @PostMapping(value = "registry/schoolRecord/way/ByGrade", params = "register")
-    public String getRegistrySchoolRecordWay(@ModelAttribute SchoolRecordWithName srwn,
-                                             Model model) {
-
-        // リストに登録処理するためのリストを作成
-        List<SchoolRecordWithName> SchoolRecordWithNameList = recordRegistry.recordRegistration(srwn);
-
-        //コンテンツ部分に生徒一覧を表示するための文字列を登録
-        model.addAttribute("contents", "login/schoolRecordConfirm :: schoolRecordConfirm_contents");
-
-        return "login/homeLayout";
-    }
-
-    /**
      * 成績登録確認画面表示.
      *
      * @param multipartFile アップロードされたエクセルファイル
@@ -195,7 +175,7 @@ public class RegistryController {
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
         model.addAttribute("contents", "login/schoolRecordConfirm :: schoolRecordConfirm_contents");
 
-        return getRegistry(model);
+        return "login/homeLayout";
     }
 
     /**
@@ -240,8 +220,7 @@ public class RegistryController {
     @PostMapping(value = "schoolRecordConfirm", params = "back")
     public String RecordProcessingBack(Model model) {
 
-
-        return null;
+        return getRegistry(model);
     }
 
     /**
