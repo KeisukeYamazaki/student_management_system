@@ -20,6 +20,19 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-5">
+            <div class="panel panel-default" style="line-height: 2em">
+                <div class="panel-heading" th:text="${birthdayStr}"><i class="fa fa-birthday-cake "></i></div>
+                <div class="panel-body" style="font-size: large">
+                    <div th:each="birthday : ${birthdayList}" style="margin-bottom: 5px">
+                        <span style="float: left" th:text="${birthday.grade}"></span>
+                        <span style="float: left; margin-left: 40px" th:text="${birthday.studentName}"></span>
+                        <span style="display: block; margin-left: 230px" th:text="${#dates.format(birthday.birthday, 'M月d日')}"></span>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

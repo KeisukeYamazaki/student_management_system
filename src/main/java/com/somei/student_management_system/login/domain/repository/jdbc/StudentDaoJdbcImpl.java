@@ -178,6 +178,32 @@ public class StudentDaoJdbcImpl implements StudentDao {
     }
 
     @Override
+    public List<Student> selectManyByBirthday(String thisMonth, String nextMonth) throws DataAccessException {
+
+        try {
+
+            String sql = "SELECT * FROM student"
+                    + " WHERE to_char(birthday, 'FMMM') = ?"
+                    + " OR to_char(birthday, 'FMMM') = ?"
+                    + " ORDER BY to_char(birthday, 'MM-dd')";
+
+            //RowMapperの生成
+            RowMapper<Student> rowMapper = new BeanPropertyRowMapper<Student>(Student.class);
+
+            //SQL実行
+            return jdbc.query(sql, rowMapper, thisMonth, nextMonth);
+
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+
+            //データがない場合はnullを返す
+            return null;
+
+        }
+
+    }
+
+    @Override
     public FuturePath selectPathOne(String studentId) throws DataAccessException {
 
         try {

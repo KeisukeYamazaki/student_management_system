@@ -28,6 +28,9 @@ public interface StudentDao {
     // studentテーブルの指定クラスの全データを取得
     public List<NameList> selectManyByHomeRoom(String homeRoom) throws DataAccessException;
 
+    // studentテーブルの指定月の誕生日の生徒データを取得
+    public List<Student> selectManyByBirthday(String thisMonth, String nextMonth) throws DataAccessException;
+
     // future_pathテーブルのデータを１件取得
     public FuturePath selectPathOne(String studentId) throws DataAccessException;
 

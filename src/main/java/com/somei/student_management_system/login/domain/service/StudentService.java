@@ -69,6 +69,11 @@ public class StudentService {
         return dao.selectManyByGrade(grade);
     }
 
+    public List<Student> selectManyByBirthday(String thisMonth, String nextMonth) {
+        // 指定学年を全件取得
+        return dao.selectManyByBirthday(thisMonth, nextMonth);
+    }
+
     /**
      * 生徒データ１件取得用メソッド.
      */
