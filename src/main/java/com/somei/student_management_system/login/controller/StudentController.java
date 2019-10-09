@@ -3,6 +3,7 @@ package com.somei.student_management_system.login.controller;
 import com.somei.student_management_system.login.bean.PdfView;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.FuturePathWithData;
+import com.somei.student_management_system.login.domain.model.Highschools;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
@@ -30,7 +31,9 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class StudentController {
@@ -484,5 +487,87 @@ public class StudentController {
 
         //クラス管理画面を表示
         return getClassManagement(model);
+    }
+
+    // 高校のリスト
+    public Map<String, String> getSchoolList() {
+        Map<String, String> selectMap = new LinkedHashMap<>();
+        selectMap.put("1010", "鶴見");
+        selectMap.put("1040", "横浜翠嵐");
+        selectMap.put("1050", "城郷");
+        selectMap.put("1060", "港北");
+        selectMap.put("1070", "新羽");
+        selectMap.put("1080", "岸根");
+        selectMap.put("1090", "横浜市立東");
+        selectMap.put("1100", "新栄");
+        selectMap.put("1110", "川和");
+        selectMap.put("1120", "市ヶ尾");
+        selectMap.put("1130", "霧が丘");
+        selectMap.put("1149", "白山 美術");
+        selectMap.put("1160", "荏田");
+        selectMap.put("1170", "元石川");
+        selectMap.put("1180", "希望ヶ丘");
+        selectMap.put("1190", "旭");
+        selectMap.put("1220", "松陽");
+        selectMap.put("1250", "瀬谷");
+        selectMap.put("1260", "瀬谷西");
+        selectMap.put("1270", "横浜平沼");
+        selectMap.put("1280", "光陵");
+        selectMap.put("1290", "保土ヶ谷");
+        selectMap.put("1300", "舞岡");
+        selectMap.put("1320", "上矢部");
+        selectMap.put("1321", "上矢部 美術");
+        selectMap.put("1330", "金井");
+        selectMap.put("1350", "横浜市立戸塚");
+        selectMap.put("1351", "横浜市立戸塚 音楽");
+        selectMap.put("1360", "横浜市立桜丘");
+        selectMap.put("1440", "柏陽");
+        selectMap.put("1460", "横浜市立南");
+        selectMap.put("1470", "横浜緑ヶ丘");
+        selectMap.put("1540", "横浜市立金沢");
+        selectMap.put("1640", "百合ヶ丘");
+        selectMap.put("1830", "鎌倉");
+        selectMap.put("1840", "七里ガ浜");
+        selectMap.put("1850", "大船");
+        selectMap.put("1860", "深沢");
+        selectMap.put("1870", "湘南");
+        selectMap.put("1890", "藤沢西");
+        selectMap.put("1930", "湘南台");
+        selectMap.put("2200", "厚木");
+        selectMap.put("2210", "厚木東");
+        selectMap.put("2250", "海老名");
+        selectMap.put("2260", "有馬");
+        selectMap.put("2280", "大和");
+        selectMap.put("2290", "大和南");
+        selectMap.put("2300", "大和西");
+        selectMap.put("2320", "座間");
+        selectMap.put("2350", "綾瀬");
+        selectMap.put("2360", "綾瀬西");
+        selectMap.put("2380", "上鶴間");
+        selectMap.put("2530", "相原 畜産科学");
+        selectMap.put("2531", "相原 食品科学");
+        selectMap.put("2532", "相原 環境緑地");
+        selectMap.put("2533", "相原 総合ビジネス");
+        selectMap.put("2540", "中央農業 園芸科学");
+        selectMap.put("2541", "中央農業 陸三科学");
+        selectMap.put("2542", "中央農業 農業総合");
+        selectMap.put("2550", "神奈川工業 機械");
+        selectMap.put("2551", "神奈川工業 建設");
+        selectMap.put("2552", "神奈川工業 電気");
+        selectMap.put("2553", "神奈川工業 デザイン");
+        selectMap.put("2560", "商工 総合技術");
+        selectMap.put("2561", "商工 総合ビジネス");
+        selectMap.put("2690", "横浜市立戸塚 音楽");
+        selectMap.put("2691", "横浜市立桜丘");
+        selectMap.put("2692", "柏陽");
+        selectMap.put("2693", "横浜市立南");
+        selectMap.put("2694", "横浜緑ヶ丘");
+        selectMap.put("2695", "横浜市立金沢");
+        selectMap.put("2740", "百合ヶ丘");
+        selectMap.put("2741", "鎌倉");
+        selectMap.put("2742", "七里ガ浜");
+        selectMap.put("2790", "大船");
+        selectMap.put("2791", "深沢");
+        return selectMap;
     }
 }

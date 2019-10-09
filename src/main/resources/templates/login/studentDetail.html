@@ -470,19 +470,19 @@
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
                                             <th class="info col-sm-2 col-xs-3">第１志望</th>
-                                            <td class="col-sm-4" th:text="*{firstChoice}"></td>
+                                            <td class="col-sm-4 showfirstChoice" id="showfirstChoice" th:value="*{firstChoice}"></td>
                                         </tr>
                                     </table>
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
                                             <th class="info col-sm-2 col-xs-3">第２志望</th>
-                                            <td class="col-sm-4" th:text="*{secondChoice}"></td>
+                                            <td class="col-sm-4 showsecondChoice" id="showsecondChoice" th:value="*{secondChoice}"></td>
                                         </tr>
                                     </table>
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
                                             <th class="info col-sm-2 col-xs-3">第３志望</th>
-                                            <td class="col-sm-4" th:text="*{thirdChoice}"></td>
+                                            <td class="col-sm-4 showthirdChoice" id="showthirdChoice" th:value="*{thirdChoice}"></td>
                                         </tr>
                                     </table>
                                     <div class="row col-sm-12 align">
@@ -490,27 +490,31 @@
                                         <table class="table table-bordered table-hover table-condensed">
                                             <tr>
                                                 <th class="info col-sm-2 col-xs-3" rowspan="3">公立高校</th>
-                                                <td class="col-sm-4" style="height: 27px"
-                                                    th:text="*{publicSchool1}"></td>
+                                                <td class="col-sm-4 showpublicSchool1" id="showpublicSchool1" style="height: 27px"
+                                                    th:value="*{publicSchool1}"></td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 27px" th:text="*{publicSchool2}"></td>
+                                                <td style="height: 27px" class="shwopublicSchool2" id="shwopublicSchool2"
+                                                    th:text="*{publicSchool2}"></td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 27px" th:text="*{publicSchool3}"></td>
+                                                <td style="height: 27px" class="showpublicSchool3" id="showpublicSchool3"
+                                                    th:value="*{publicSchool3}"></td>
                                             </tr>
                                         </table>
                                         <table class="table table-bordered table-hover table-condensed">
                                             <tr>
                                                 <th class="info col-sm-2 col-xs-3" rowspan="3">私立高校</th>
-                                                <td class="col-sm-4" style="height: 27px"
-                                                    th:text="*{privateSchool1}"></td>
+                                                <td class="col-sm-4 showprivateSchool1" style="height: 27px" id="showprivateSchool1"
+                                                    th:value="*{privateSchool1}"></td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 27px" th:text="*{privateSchool2}"></td>
+                                                <td style="height: 27px" class="showprivateSchool2" id="showprivateSchool2"
+                                                    th:value="*{privateSchool2}"></td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 27px" th:text="*{privateSchool3}"></td>
+                                                <td style="height: 27px" class="showprivateSchool3" id="showprivateSchool3"
+                                                    th:value="*{privateSchool3}"></td>
                                             </tr>
                                         </table>
                                     </div>

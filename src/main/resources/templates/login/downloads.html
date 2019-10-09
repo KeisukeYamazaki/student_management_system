@@ -20,6 +20,9 @@
     </div>
     <div class="row col-sm-10">
         <div class="btn-group btn-group-justified" role="group">
+            <a type="button" class="btn btn-primary" th:href="@{'/downloads/meetingSheet'}"
+               style="width: 20%; border-color: white">個人面談シート
+            </a>
             <a type="button" class="btn btn-primary" th:href="@{'/downloads/nameListJunior'}"
                style="width: 20%; border-color: white">中学生名簿
             </a>
@@ -27,6 +30,205 @@
                style="width: 20%; border-color: white">小学生名簿
             </a>
         </div>
+    </div>
+    <div th:if="${meetingSheet}" class="row col-sm-12">
+        <form method="post" th:action="@{/meetingSheet/grade}">
+            <div class="form-group">
+                <label for="grade" class="control-label col-xs-2" style="width: 120px; margin-top: 5px">学年を選択：</label>
+                <div class="col-sm-2 col-xs-4">
+                    <select class="form-control" id="grade" name="grade" onchange="this.form.submit()">
+                        <option value="">学年</option>
+                        <option value="中３" th:selected="${grade} == 3rd">中３</option>
+                        <option value="中２" th:selected="${grade} == 2nd">中２</option>
+                        <option value="中１" th:selected="${grade} == 1st">中１</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div th:if="${gradeList}" class="panel panel-container col-sm-12" style="margin-top: 15px">
+        <!-- 結果表示用 -->
+        <span class="text-info" th:if="${result}" th:text="${result}"
+              style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
+        <div class="col-sm-8">
+            <table class="table table-bordered table-condensed table-hover table-striped" style="margin-top: 15px">
+                <tr>
+                    <th class="info col-sm-2">名前</th>
+                    <th class="info col-sm-2">校舎</th>
+                    <th class="info col-sm-2">クラス</th>
+                    <th class="info col-sm-2"></th>
+                    <th class="info col-sm-2"></th>
+                </tr>
+                <tr th:each="student : ${gradeList}">
+                    <td th:text="${student.studentName}"></td>
+                    <td th:text="${student.school}"></td>
+                    <td th:text="${student.homeRoom}"></td>
+                    <td>
+                        <a class="btn btn-success" th:href="@{'/meetingSheetEdit/' + ${student.studentId}}">編集</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{'/meetingSheetDownload/' + ${student.studentId}}">ダウンロード</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div th:if="${studentEdit}" class="panel panel-container col-sm-12" style="margin-top: 15px">
+        <form method="post" th:action="@{/meetingSheetEdit}" th:object="${futurePathData}">
+            <div class="row col-sm-12">
+                <ul class="cp_list">
+                    <li>面談シートに記載する進路情報の編集</li>
+                </ul>
+                <div class="col-sm-12">
+                    <p style="font-size: medium">＜入試内申＞</p>
+                    <table class="table table-bordered table-hover table-condensed">
+                        <tr>
+                            <th class="info col-sm-1">/45</th>
+                            <th class="info col-sm-1">/135</th>
+                            <th class="info col-sm-1">/25</th>
+                            <th class="info col-sm-1">/50</th>
+                            <th class="info col-sm-1">/75</th>
+                            <th class="info col-sm-1">/15</th>
+                            <th class="info col-sm-1">/30</th>
+                        </tr>
+                        <tr>
+                            <td th:text="*{fortyFive}"></td>
+                            <td th:text="*{hundredThirtyFive}"></td>
+                            <td th:text="*{twentyFive}"></td>
+                            <td th:text="*{fifty}"></td>
+                            <td th:text="*{seventyFive}"></td>
+                            <td th:text="*{fifteen}"></td>
+                            <td th:text="*{thirty}"></td>
+                        </tr>
+                    </table>
+                    <div class="row col-sm-6">
+                        <p style="font-size: medium">＜志望校＞</p>
+                        <input type="hidden" th:field="*{studentId}">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th class="info col-sm-2 col-xs-3">第１志望</th>
+                                <td class="col-sm-4">
+                                    <div class="form-group">
+                                        <select class="selectFirstChoice form-control" name="firstChoice" id="firstChoice" th:value="*{firstChoice}"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th class="info col-sm-2 col-xs-3">第２志望</th>
+                                <td class="col-sm-4">
+                                    <div class="form-group">
+                                        <select class="selectSecondChoice form-control" name="secondChoice" id="secondChoice" th:value="*{secondChoice}"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th class="info col-sm-2 col-xs-3">第３志望</th>
+                                <td class="col-sm-4">
+                                    <div class="form-group">
+                                        <select class="selectThirdChoice form-control" name="thirdChoice" id="thirdChoice" th:value="*{thirdChoice}"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="row col-sm-12 align">
+                            <p style="font-size: medium">＜その他の候補となる高校＞</p>
+                            <table class="table table-bordered table-hover table-condensed">
+                                <tr>
+                                    <th class="info col-sm-2 col-xs-3" rowspan="3">公立高校</th>
+                                    <td class="col-sm-4">
+                                        <div class="form-group">
+                                            <select class="selectpublicSchool1 form-control" name="publicSchool1" id="publicSchool1" th:value="*{publicSchool1}"></select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <select class="selectpublicSchool2 form-control" name="publicSchool2" id="publicSchool2" th:value="*{publicSchool2}"></select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <select class="selectpublicSchool3 form-control" name="publicSchool3" id="publicSchool3" th:value="*{publicSchool3}"></select>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table table-bordered table-hover table-condensed">
+                                <tr>
+                                    <th class="info col-sm-2 col-xs-3" rowspan="3">私立高校</th>
+                                    <td class="col-sm-4">
+                                        <div class="form-group">
+                                            <select class="selectprivateSchool1 form-control" name="privateSchool1" id="privateSchool1" th:value="*{privateSchool1}"></select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <select class="selectprivateSchool2 form-control" name="privateSchool2" id="privateSchool2" th:value="*{privateSchool2}"></select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <select class="selectprivateSchool3 form-control" name="privateSchool3" id="privateSchool3" th:value="*{privateSchool3}"></select>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="row col-sm-12 align">
+                            <p style="font-size: medium">＜追加で記載する私立高校(空欄可)＞</p>
+                            <table class="table table-bordered table-hover table-condensed">
+                                <tr>
+                                    <th class="info col-sm-2 col-xs-3" rowspan="2">私立高校</th>
+                                    <td class="col-sm-4">
+                                        <div class="form-group">
+                                            <select class="additionalPrivateSchool1 form-control" name="additionalPrivateSchool1"></select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <select class="additionalPrivateSchool2 form-control" name="additionalPrivateSchool2"></select>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row col-sm-6 col-xs-12"
+                         style="margin: 5px 0px 0px 30px; float: right; padding: 0px">
+                        <table class="table table-bordered table-hover table-condensed">
+                            <tr>
+                                <th class="info">その他</th>
+                            </tr>
+                            <tr>
+                                <td height="440px">
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="35" th:field="*{information}"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- ボタン -->
+            <div class="row col-sm-12" style="margin-top: 20px">
+                <button class="btn btn-default btn-lg" style="margin: 0 20px 0 20px; border-color: #9d9d9d" name="back" type="submit">戻る</button>
+                <button class="btn btn-primary btn-lg" name="download" type="submit">更新してダウンロード</button>
+            </div>
+        </form>
     </div>
     <div th:if="${class3A}" class="panel panel-container col-sm-12" style="margin-top: 15px">
         <div class="col-sm-12">

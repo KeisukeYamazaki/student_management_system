@@ -146,6 +146,16 @@
             <artifactId>opencsv</artifactId>
             <version>4.5</version>
         </dependency>
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>64.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>select2</artifactId>
+            <version>4.0.10</version>
+        </dependency>
     </dependencies>
 
     <build>

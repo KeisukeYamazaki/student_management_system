@@ -3,17 +3,13 @@ package com.somei.student_management_system.login.domain.service;
 import com.somei.student_management_system.login.bean.EntranceExamCalculation;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.FuturePathWithData;
+import com.somei.student_management_system.login.domain.model.Highschools;
 import com.somei.student_management_system.login.domain.model.NameList;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.repository.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

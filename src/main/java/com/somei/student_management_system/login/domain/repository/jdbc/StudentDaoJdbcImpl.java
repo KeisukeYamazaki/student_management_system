@@ -1,9 +1,9 @@
 package com.somei.student_management_system.login.domain.repository.jdbc;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.NameList;
 import com.somei.student_management_system.login.domain.model.Student;
+import com.somei.student_management_system.login.domain.model.Highschools;
 import com.somei.student_management_system.login.domain.repository.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -208,7 +208,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
 
         try {
 
-            //future_pathテーブルのデータを全件取得するSQL
+            //future_pathテーブルのデータを取得するSQL
             String sql = "SELECT * FROM future_path WHERE student_id = ? AND char_length(student_id) = 4";
 
             //RowMapperの生成

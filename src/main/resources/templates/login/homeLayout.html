@@ -14,6 +14,7 @@
     <link th:href="@{/css/numberList.css}" rel="stylesheet">
     <link th:href="@{/css/checkboxRadiobox.css}" rel="stylesheet">
     <link th:href="@{/css/table_border.css}" rel="stylesheet">
+    <link th:href="@{/webjars/select2/4.0.10/css/select2.min.css}" rel="stylesheet">
 
     <!--Font-awesome-->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
@@ -24,6 +25,8 @@
     <script src="/js/respond.min.js" th:src="@{/js/html5shiv.min.js}"></script>
     <![endif]-->
     <script src="/js/allcheck.js" th:src="@{/js/allcheck.js}"></script>
+    <script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/select2/4.0.10/js/select2.min.js}"></script>
 </head>
 <body>
 <!-- ===== ヘッダー（ナビゲーションバー） =====  -->
@@ -109,6 +112,11 @@
         $('#upload_file').val($(this).val().replace(/^.*\\/, ""));
     })
 </script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script src="/js/highschoolList.js" th:src="@{/js/highschoolList.js}"></script>
+<script src="/js/showHighschool.js" th:src="@{/js/showHighschool.js}"></script>
 
 </body>
 </html>

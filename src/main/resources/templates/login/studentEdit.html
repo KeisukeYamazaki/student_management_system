@@ -219,7 +219,7 @@
                                             <th class="info col-sm-2 col-xs-3">第１志望</th>
                                             <td class="col-sm-4">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" th:field="*{firstChoice}"/>
+                                                    <select class="selectFirstChoice form-control" name="firstChoice" id="firstChoice" th:value="*{firstChoice}"></select>
                                                 </div>
                                             </td>
                                         </tr>
@@ -229,7 +229,7 @@
                                             <th class="info col-sm-2 col-xs-3">第２志望</th>
                                             <td class="col-sm-4">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" th:field="*{secondChoice}"/>
+                                                    <select class="selectSecondChoice form-control" name="secondChoice" id="secondChoice" th:value="*{secondChoice}"></select>
                                                 </div>
                                             </td>
                                         </tr>
@@ -239,7 +239,7 @@
                                             <th class="info col-sm-2 col-xs-3">第３志望</th>
                                             <td class="col-sm-4">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" th:field="*{thirdChoice}"/>
+                                                    <select class="selectThirdChoice form-control" name="thirdChoice" id="thirdChoice" th:value="*{thirdChoice}"></select>
                                                 </div>
                                             </td>
                                         </tr>
@@ -251,24 +251,21 @@
                                                 <th class="info col-sm-2 col-xs-3" rowspan="3">公立高校</th>
                                                 <td class="col-sm-4">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control"
-                                                               th:field="*{publicSchool1}"/>
+                                                        <select class="selectpublicSchool1 form-control" name="publicSchool1" id="publicSchool1" th:value="*{publicSchool1}"></select>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control"
-                                                               th:field="*{publicSchool2}"/>
+                                                        <select class="selectpublicSchool2 form-control" name="publicSchool2" id="publicSchool2" th:value="*{publicSchool2}"></select>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control"
-                                                               th:field="*{publicSchool3}"/>
+                                                        <select class="selectpublicSchool3 form-control" name="publicSchool3" id="publicSchool3" th:value="*{publicSchool3}"></select>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -278,24 +275,21 @@
                                                 <th class="info col-sm-2 col-xs-3" rowspan="3">私立高校</th>
                                                 <td class="col-sm-4">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control"
-                                                               th:field="*{privateSchool1}"/>
+                                                        <select class="selectprivateSchool1 form-control" name="privateSchool1" id="privateSchool1" th:value="*{privateSchool1}"></select>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control"
-                                                               th:field="*{privateSchool2}"/>
+                                                        <select class="selectprivateSchool2 form-control" name="privateSchool2" id="privateSchool2" th:value="*{privateSchool2}"></select>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control"
-                                                               th:field="*{privateSchool3}"/>
+                                                        <select class="selectprivateSchool3 form-control" name="privateSchool3" id="privateSchool3" th:value="*{privateSchool3}"></select>
                                                     </div>
                                                 </td>
                                             </tr>
