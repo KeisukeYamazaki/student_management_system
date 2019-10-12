@@ -137,7 +137,7 @@ public class MeetingSheetWriter {
                 practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_2nd, practiceExamList_3rd, 3);
 
                 // 進路情報の入力
-                meetingSheetFuturePathWriter.writeFuturePath3rd(wb, sheet, futurePathData, allRecordList);
+                meetingSheetFuturePathWriter.writeFuturePath(sheet, futurePathData, allRecordList, 3);
 
             } else {
 
@@ -169,7 +169,7 @@ public class MeetingSheetWriter {
                 practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_2nd, practiceExamList_3rd, 2);
 
                 // 進路情報の入力
-                meetingSheetFuturePathWriter.writeFuturePath3rd(wb, sheet, futurePathData, allRecordList);
+                meetingSheetFuturePathWriter.writeFuturePath(sheet, futurePathData, allRecordList, 3);
 
             }
 
@@ -195,9 +195,11 @@ public class MeetingSheetWriter {
                 // 中２の定期試験の入力
                 regularExamWriter.writeRegularExam3terms(wb, sheet, regularExamList_2nd, 2, 2);
 
-
                 // 模試結果の入力
                 practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_1st, practiceExamList_2nd, 3);
+
+                // 進路情報の入力
+                meetingSheetFuturePathWriter.writeFuturePath(sheet, futurePathData, allRecordList, 2);
 
             } else {
 
@@ -221,8 +223,10 @@ public class MeetingSheetWriter {
 
                 // 模試結果の入力
                 practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_1st, practiceExamList_2nd, 2);
-            }
 
+                // 進路情報の入力
+                meetingSheetFuturePathWriter.writeFuturePath(sheet, futurePathData, allRecordList, 2);
+            }
 
         } else {
 
@@ -244,6 +248,9 @@ public class MeetingSheetWriter {
                 // 模試結果の入力
                 practiceExamWriter.write1stPracticeExam(wb, sheet, practiceExamList_1st, 3);
 
+                // 進路情報の入力
+                meetingSheetFuturePathWriter.writeFuturePath1st(sheet, futurePathData, allRecordList);
+
             } else {
 
                 // ２学期制の場合
@@ -258,10 +265,11 @@ public class MeetingSheetWriter {
 
                 // 模試結果の入力
                 practiceExamWriter.write1stPracticeExam(wb, sheet, practiceExamList_1st, 2);
+
+                // 進路情報の入力
+                meetingSheetFuturePathWriter.writeFuturePath1st(sheet, futurePathData, allRecordList);
             }
-
         }
-
         return wb;
     }
 

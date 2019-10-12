@@ -187,6 +187,25 @@ public class StudentService {
     }
 
     /**
+     * 進路データ１件更挿入メソッド.
+     */
+    public boolean insertPathOne(String studentId) {
+
+        // 判定用変数
+        boolean result = false;
+
+        // １件更新
+        int rowNumber = dao.insertPathOne(studentId);
+
+        if (rowNumber > 0) {
+            // update成功
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
      * １件削除用メソッド.
      */
     public boolean deleteOne(String studentId) {

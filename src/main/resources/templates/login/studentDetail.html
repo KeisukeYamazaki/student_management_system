@@ -442,6 +442,8 @@
                         <div class="row col-sm-12" th:object="${futurePathData}">
                             <ul class="cp_list">
                                 <li>進路関係</li>
+                                <span style="float: right" id="futurePathUpdate" th:value="*{recordDate}"
+                                      th:text="|最終更新日：*{#dates.format(recordDate, 'yyyy/MM/dd')}|"></span>
                             </ul>
                             <div class="col-sm-10">
                                 <p style="font-size: medium">＜入試内申＞</p>

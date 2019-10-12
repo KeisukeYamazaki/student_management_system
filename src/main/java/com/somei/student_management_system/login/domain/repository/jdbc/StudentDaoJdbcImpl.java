@@ -301,7 +301,8 @@ public class StudentDaoJdbcImpl implements StudentDao {
                         + " private_school1 = ?,"
                         + " private_school2 = ?,"
                         + " private_school3 = ?,"
-                        + " information = ?"
+                        + " information = ?,"
+                        + " record_date = current_timestamp AT TIME ZONE 'Asia/Tokyo'"
                         + " WHERE student_id = ?"
                 , futurePath.getFirstChoice()
                 , futurePath.getSecondChoice()
@@ -314,6 +315,15 @@ public class StudentDaoJdbcImpl implements StudentDao {
                 , futurePath.getPrivateSchool3()
                 , futurePath.getInformation()
                 , futurePath.getStudentId());
+
+        return rowNumber;
+    }
+
+    // future_pathテーブルのデータを１件挿入
+    @Override
+    public int insertPathOne(String studentId) throws DataAccessException {
+
+        int rowNumber = jdbc.update("INSERT INTO future_path (studnet_id, record_date) VALUES (?, current_timestamp AT TIME ZONE 'Asia/Tokyo')", studentId);
 
         return rowNumber;
     }

@@ -1,9 +1,7 @@
 package com.somei.student_management_system.login.controller;
 
-import com.somei.student_management_system.login.bean.PdfView;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.FuturePathWithData;
-import com.somei.student_management_system.login.domain.model.Highschools;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
@@ -12,7 +10,6 @@ import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.service.NumericDataService;
 import com.somei.student_management_system.login.domain.service.StudentService;
 import com.somei.student_management_system.login.domain.service.ZenkenService;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -173,7 +169,6 @@ public class StudentController {
      */
     @GetMapping("/studentEdit/{id:.+}")
     public String getStudentEdit(@ModelAttribute SignupForm form,
-                                 @ModelAttribute FuturePathWithData futurePathData,
                                  Model model,
                                  @PathVariable("id") String studentId) {
 
@@ -242,20 +237,7 @@ public class StudentController {
             form.setInfo(student.getInfo());
 
             // 進路データを取得
-            FuturePathWithData data = studentService.selectPathDataOne(studentId);
-
-            // 進路データを dataクラスに変換
-            futurePathData.setStudentId(data.getStudentId());
-            futurePathData.setFirstChoice(data.getFirstChoice());
-            futurePathData.setSecondChoice(data.getSecondChoice());
-            futurePathData.setThirdChoice(data.getThirdChoice());
-            futurePathData.setPublicSchool1(data.getPublicSchool1());
-            futurePathData.setPublicSchool2(data.getPublicSchool2());
-            futurePathData.setPublicSchool3(data.getPublicSchool3());
-            futurePathData.setPrivateSchool1(data.getPrivateSchool1());
-            futurePathData.setPrivateSchool2(data.getPrivateSchool2());
-            futurePathData.setPrivateSchool3(data.getPrivateSchool3());
-            futurePathData.setInformation(data.getInformation());
+            FuturePathWithData futurePathData = studentService.selectPathDataOne(studentId);
 
             // Modelに登録
             model.addAttribute("signupForm", form);
@@ -265,11 +247,30 @@ public class StudentController {
         return "login/homeLayout";
     }
 
+    /**
+     * 戻るボタンの処理
+     *
+     * @param model モデル
+     * @return 生徒一覧画面へ遷移
+     */
+    @PostMapping(name = "/studentEdit", params = "back")
+    public String postStudentDetailBack(Model model) {
+
+        //生徒一覧画面を表示
+        return getStudentList(model);
+    }
+
 
     /**
-     * 生徒編集用処理.
+     * 生徒編集用処理
+     *
+     * @param form           生徒登録フォーム
+     * @param futurePathData 進路情報データ
+     * @param bindingResult
+     * @param model          モデル
+     * @return 生徒一覧画面へ遷移
      */
-    @PostMapping("/studentEdit")
+    @PostMapping(name = "/studentEdit", params = "update")
     public String postStudentDetailUpdate(@ModelAttribute @Validated SignupForm form,
                                           @ModelAttribute FuturePathWithData futurePathData,
                                           BindingResult bindingResult,
@@ -279,7 +280,7 @@ public class StudentController {
         if (bindingResult.hasErrors()) {
 
             // GET用のメソッドを呼び出して、生徒登録画面に戻る
-            return getStudentEdit(form, futurePathData, model, form.getStudentId());
+            return getStudentEdit(form, model, form.getStudentId());
         }
 
         // Studentの更新
@@ -375,7 +376,11 @@ public class StudentController {
     }
 
     /**
-     * 生徒削除用処理.
+     * 生徒削除用処理
+     *
+     * @param form  フォーム
+     * @param model モデル
+     * @return 生徒一覧画面へ遷移
      */
     @PostMapping("/studentDetail")
     public String postStudentDetailDelete(@ModelAttribute SignupForm form,
@@ -487,87 +492,5 @@ public class StudentController {
 
         //クラス管理画面を表示
         return getClassManagement(model);
-    }
-
-    // 高校のリスト
-    public Map<String, String> getSchoolList() {
-        Map<String, String> selectMap = new LinkedHashMap<>();
-        selectMap.put("1010", "鶴見");
-        selectMap.put("1040", "横浜翠嵐");
-        selectMap.put("1050", "城郷");
-        selectMap.put("1060", "港北");
-        selectMap.put("1070", "新羽");
-        selectMap.put("1080", "岸根");
-        selectMap.put("1090", "横浜市立東");
-        selectMap.put("1100", "新栄");
-        selectMap.put("1110", "川和");
-        selectMap.put("1120", "市ヶ尾");
-        selectMap.put("1130", "霧が丘");
-        selectMap.put("1149", "白山 美術");
-        selectMap.put("1160", "荏田");
-        selectMap.put("1170", "元石川");
-        selectMap.put("1180", "希望ヶ丘");
-        selectMap.put("1190", "旭");
-        selectMap.put("1220", "松陽");
-        selectMap.put("1250", "瀬谷");
-        selectMap.put("1260", "瀬谷西");
-        selectMap.put("1270", "横浜平沼");
-        selectMap.put("1280", "光陵");
-        selectMap.put("1290", "保土ヶ谷");
-        selectMap.put("1300", "舞岡");
-        selectMap.put("1320", "上矢部");
-        selectMap.put("1321", "上矢部 美術");
-        selectMap.put("1330", "金井");
-        selectMap.put("1350", "横浜市立戸塚");
-        selectMap.put("1351", "横浜市立戸塚 音楽");
-        selectMap.put("1360", "横浜市立桜丘");
-        selectMap.put("1440", "柏陽");
-        selectMap.put("1460", "横浜市立南");
-        selectMap.put("1470", "横浜緑ヶ丘");
-        selectMap.put("1540", "横浜市立金沢");
-        selectMap.put("1640", "百合ヶ丘");
-        selectMap.put("1830", "鎌倉");
-        selectMap.put("1840", "七里ガ浜");
-        selectMap.put("1850", "大船");
-        selectMap.put("1860", "深沢");
-        selectMap.put("1870", "湘南");
-        selectMap.put("1890", "藤沢西");
-        selectMap.put("1930", "湘南台");
-        selectMap.put("2200", "厚木");
-        selectMap.put("2210", "厚木東");
-        selectMap.put("2250", "海老名");
-        selectMap.put("2260", "有馬");
-        selectMap.put("2280", "大和");
-        selectMap.put("2290", "大和南");
-        selectMap.put("2300", "大和西");
-        selectMap.put("2320", "座間");
-        selectMap.put("2350", "綾瀬");
-        selectMap.put("2360", "綾瀬西");
-        selectMap.put("2380", "上鶴間");
-        selectMap.put("2530", "相原 畜産科学");
-        selectMap.put("2531", "相原 食品科学");
-        selectMap.put("2532", "相原 環境緑地");
-        selectMap.put("2533", "相原 総合ビジネス");
-        selectMap.put("2540", "中央農業 園芸科学");
-        selectMap.put("2541", "中央農業 陸三科学");
-        selectMap.put("2542", "中央農業 農業総合");
-        selectMap.put("2550", "神奈川工業 機械");
-        selectMap.put("2551", "神奈川工業 建設");
-        selectMap.put("2552", "神奈川工業 電気");
-        selectMap.put("2553", "神奈川工業 デザイン");
-        selectMap.put("2560", "商工 総合技術");
-        selectMap.put("2561", "商工 総合ビジネス");
-        selectMap.put("2690", "横浜市立戸塚 音楽");
-        selectMap.put("2691", "横浜市立桜丘");
-        selectMap.put("2692", "柏陽");
-        selectMap.put("2693", "横浜市立南");
-        selectMap.put("2694", "横浜緑ヶ丘");
-        selectMap.put("2695", "横浜市立金沢");
-        selectMap.put("2740", "百合ヶ丘");
-        selectMap.put("2741", "鎌倉");
-        selectMap.put("2742", "七里ガ浜");
-        selectMap.put("2790", "大船");
-        selectMap.put("2791", "深沢");
-        return selectMap;
     }
 }

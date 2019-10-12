@@ -172,7 +172,7 @@ public class DownloadController {
     }
 
     /**
-     * 面談シート進路情報から戻るメソッド
+     * 面談シート編集画面からダウンロードするメソッド
      *
      * @param futurePathData 生徒の進路情報
      * @param model モデル
@@ -182,8 +182,8 @@ public class DownloadController {
      */
     @PostMapping(value = "/meetingSheetEdit", params = "download")
     public ResponseEntity<byte[]> postMeetingSheetEditDownload(@ModelAttribute FuturePathWithData futurePathData,
-                                                               @RequestParam("additionalPrivateSchool1") String schoolId1,
-                                                               @RequestParam("additionalPrivateSchool2") String schoolId2,
+                                                               @RequestParam(name = "additionalPrivateSchool1", required = false) String schoolId1,
+                                                               @RequestParam(name = "additionalPrivateSchool2", required = false) String schoolId2,
                                                                Model model) {
 
         // セッションに２つの高校を加える

@@ -43,6 +43,9 @@ public interface StudentDao {
     // future_pathテーブルのデータを１件更新
     public int updatePathOne(FuturePath futurePath) throws DataAccessException;
 
+    // future_pathテーブルのデータを１件挿入
+    public int insertPathOne(String studentId) throws DataAccessException;
+
     // studentテーブルを１件削除.
     public int deleteOne(String studentId) throws DataAccessException;
 }

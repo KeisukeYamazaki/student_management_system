@@ -78,6 +78,7 @@
             <div class="row col-sm-12">
                 <ul class="cp_list">
                     <li>面談シートに記載する進路情報の編集</li>
+                    <span style="float: right" th:if="*{recordDate}" th:text="|最終更新日：*{#dates.format(recordDate, 'yyyy/MM/dd')}|"></span>
                 </ul>
                 <div class="col-sm-12">
                     <p style="font-size: medium">＜入試内申＞</p>

@@ -5,7 +5,6 @@ import com.somei.student_management_system.login.bean.IOCsv;
 import com.somei.student_management_system.login.bean.RecordRegistry;
 import com.somei.student_management_system.login.bean.excelProcessing;
 import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
-import com.somei.student_management_system.login.domain.model.SchoolRecord;
 import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.service.NumericDataService;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -24,8 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller

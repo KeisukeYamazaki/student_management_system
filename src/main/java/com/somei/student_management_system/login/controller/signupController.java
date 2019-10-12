@@ -130,6 +130,9 @@ public class signupController {
         // 全県登録処理
         boolean zenkenResult = zenkenService.insertOne(zenken);
 
+        // 進路情報ID登録処理
+        boolean futurePath = studentService.insertPathOne(form.getStudentId());
+
         // 生徒登録結果の判定
         if (result == true && zenkenResult == true) {
             System.out.println("insert成功");
