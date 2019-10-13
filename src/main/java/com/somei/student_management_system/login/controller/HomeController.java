@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +29,7 @@ public class HomeController {
     /**
      * ホーム画面のGET用メソッド
      */
-    @GetMapping("/home")
+    @GetMapping(value = "/home")
     public String getHome(Model model) {
 
         // ユーザー名を取得

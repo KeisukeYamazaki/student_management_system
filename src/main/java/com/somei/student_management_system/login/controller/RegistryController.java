@@ -46,7 +46,7 @@ public class RegistryController {
      * @param model モデル
      * @return 各種登録画面に遷移
      */
-    @GetMapping("registry")
+    @GetMapping("/registry")
     public String getRegistry(Model model) {
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
@@ -61,7 +61,7 @@ public class RegistryController {
      * @param model モデル
      * @return 成績登録方法選択の画面に遷移
      */
-    @GetMapping("registry/schoolRecord")
+    @GetMapping("/registry/schoolRecord")
     public String getRegistrySchoolRecord(Model model) {
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
@@ -77,7 +77,7 @@ public class RegistryController {
      * @param model モデル
      * @return いずれかの方法を表示する画面に遷移
      */
-    @PostMapping("registry/schoolRecord/way")
+    @PostMapping("/registry/schoolRecord/way")
     public String getRegistrySchoolRecordWay(@RequestParam("radioName") String way, Model model) {
 
         // 登録方法によってmodelに登録するものを変える
@@ -107,7 +107,7 @@ public class RegistryController {
      * @param model モデル
      * @return 成績登録画面に遷移
      */
-    @PostMapping("registry/schoolRecord/way/ByGrade")
+    @PostMapping("/registry/schoolRecord/way/ByGrade")
     public String getRegistrySchoolRecordWay(@RequestParam("school") String school,
                                              @RequestParam("grade") String grade,
                                              @RequestParam("termName") String termName,
@@ -139,7 +139,7 @@ public class RegistryController {
      * @param model         モデル
      * @return 登録確認画面に遷移
      */
-    @PostMapping("upload")
+    @PostMapping("/upload")
     public String postRecordFile(@RequestParam("file") MultipartFile multipartFile,
                                  Model model) throws IOException {
 
@@ -181,7 +181,7 @@ public class RegistryController {
      * @param model モデル
      * @return 各種登録画面に遷移
      */
-    @PostMapping("schoolRecordRegistry")
+    @PostMapping("/schoolRecordRegistry")
     public String RecordProcessing(@ModelAttribute SchoolRecordWithName schoolRecordWithName, Model model) {
 
         // リストに登録処理するためのリストを作成
@@ -214,7 +214,7 @@ public class RegistryController {
      * @param model モデル
      * @return
      */
-    @PostMapping(value = "schoolRecordConfirm", params = "back")
+    @PostMapping(value = "/schoolRecordConfirm", params = "back")
     public String RecordProcessingBack(Model model) {
 
         return getRegistry(model);
@@ -225,7 +225,7 @@ public class RegistryController {
      *
      * @param model
      */
-    @GetMapping("registry/regularExam")
+    @GetMapping("/registry/regularExam")
     public String getRegistryRegularExam(Model model) {
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
@@ -240,7 +240,7 @@ public class RegistryController {
      * @param model モデル
      * @return 模試登録画面へ遷移
      */
-    @GetMapping("registry/practiceExam")
+    @GetMapping("/registry/practiceExam")
     public String getRegistryPracticeExam(Model model) {
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
@@ -256,7 +256,7 @@ public class RegistryController {
      * @param model         モデル
      * @return 模試登録確認画面へ遷移
      */
-    @PostMapping("practiceCsvUpload")
+    @PostMapping("/practiceCsvUpload")
     public String postRegistryPracticeExam(@RequestParam("file") MultipartFile multipartFile,
                                            Model model) {
 

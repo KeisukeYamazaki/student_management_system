@@ -27,9 +27,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class StudentController {
@@ -253,9 +251,8 @@ public class StudentController {
      * @param model モデル
      * @return 生徒一覧画面へ遷移
      */
-    @PostMapping(name = "/studentEdit", params = "back")
+    @PostMapping(value = "/studentEdit", params = "back")
     public String postStudentDetailBack(Model model) {
-
         //生徒一覧画面を表示
         return getStudentList(model);
     }
@@ -270,7 +267,7 @@ public class StudentController {
      * @param model          モデル
      * @return 生徒一覧画面へ遷移
      */
-    @PostMapping(name = "/studentEdit", params = "update")
+    @PostMapping(value = "/studentEdit", params = "update")
     public String postStudentDetailUpdate(@ModelAttribute @Validated SignupForm form,
                                           @ModelAttribute FuturePathWithData futurePathData,
                                           BindingResult bindingResult,

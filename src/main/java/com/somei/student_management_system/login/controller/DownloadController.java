@@ -51,7 +51,7 @@ public class DownloadController {
     /**
      * 各種ダウンロード画面のGETメソッド.
      */
-    @GetMapping("downloads")
+    @GetMapping("/downloads")
     public String getDownloads(Model model) {
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
@@ -67,7 +67,7 @@ public class DownloadController {
      * @return 学年の選択リストを表示
      *
      */
-    @GetMapping("downloads/meetingSheet")
+    @GetMapping("/downloads/meetingSheet")
     public String getMeetingSheetDownload(Model model) {
 
         // 学年選択のドロップダウンリストを表示させる
@@ -159,7 +159,7 @@ public class DownloadController {
      * 面談シート進路情報から戻るメソッド
      *
      * @param futurePathData 生徒の進路情報
-     * @param model モデル
+     * @param model          モデル
      * @return 当該学年の生徒一覧画面を表示
      */
     @PostMapping(value = "/meetingSheetEdit", params = "back")
@@ -299,7 +299,7 @@ public class DownloadController {
     /**
      * 中学生名簿ダウンロード画面のGETメソッド
      */
-    @GetMapping("downloads/nameListJunior")
+    @GetMapping("/downloads/nameListJunior")
     public String getNameListJuniorDownload(Model model) {
 
         // クラス別の名前リストを取得
@@ -324,7 +324,7 @@ public class DownloadController {
     /**
      * 小学生名簿ダウンロード画面のGETメソッド
      */
-    @GetMapping("downloads/nameListElementary")
+    @GetMapping("/downloads/nameListElementary")
     public String getNameListElementaryDownload(Model model) {
 
         // クラス別の名前リストを取得
@@ -354,7 +354,7 @@ public class DownloadController {
      * @param model
      * @return
      */
-    @PostMapping("downloads")
+    @PostMapping("/downloads")
     public ResponseEntity<byte[]> downloadNameList(@RequestParam("className") String className,
                                                    Model model) {
 
