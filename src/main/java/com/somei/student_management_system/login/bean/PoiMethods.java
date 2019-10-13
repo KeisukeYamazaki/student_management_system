@@ -1,6 +1,7 @@
 package com.somei.student_management_system.login.bean;
 
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -55,6 +56,21 @@ public class PoiMethods {
                 newCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND); // 塗りつぶし
                 getCell(sheet, r, c).setCellStyle(newCellStyle);
             }
+        }
+    }
+
+    /**
+     * 指定行の削除メソッド
+     * <p>
+     *
+     * </p>
+     * @param sheet            シート
+     * @param startRow 削除開始行
+     * @param endRow 削除終了行
+     */
+    public void deleteRows(XSSFSheet sheet,  int startRow, int endRow) {
+        for(int i = startRow; i <= endRow; i++) {
+            sheet.shiftRows(startRow, sheet.getLastRowNum(),-1);
         }
     }
 }

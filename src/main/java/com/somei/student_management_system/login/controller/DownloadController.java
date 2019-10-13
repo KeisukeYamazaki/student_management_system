@@ -1,6 +1,7 @@
 package com.somei.student_management_system.login.controller;
 
 import com.ibm.icu.text.Transliterator;
+import com.somei.student_management_system.login.bean.MakeExcelNameSheet;
 import com.somei.student_management_system.login.bean.CreateZip;
 import com.somei.student_management_system.login.bean.ExcelMeetingSheet;
 import com.somei.student_management_system.login.domain.model.FuturePath;
@@ -47,6 +48,9 @@ public class DownloadController {
 
     @Autowired
     SessionData sessionData;
+
+    @Autowired
+    MakeExcelNameSheet makeExcelNameSheet;
 
     /**
      * 各種ダウンロード画面のGETメソッド.
@@ -292,9 +296,7 @@ public class DownloadController {
             // ファイルの削除
             File file = new File(fileName);
             file.delete();
-
         }
-
     }
 
     /**
@@ -349,13 +351,13 @@ public class DownloadController {
     }
 
     /**
-     * 名簿ダウンロードメソッド
+     * PDF名簿ダウンロードメソッド
      *
      * @param className
      * @param model
      * @return
      */
-    @PostMapping("/downloads")
+    @PostMapping(value = "/downloads", params = "pdf")
     public ResponseEntity<byte[]> downloadNameList(@RequestParam("className") String className,
                                                    Model model) {
 
@@ -409,7 +411,50 @@ public class DownloadController {
             // ZIPファイルの削除
             File zipFile = new File(zipFilename);
             zipFile.delete();
+        }
+    }
 
+    /**
+     * エクセル名簿ダウンロードメソッド
+     *
+     * @param className
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "/downloads", params = "excel")
+    public ResponseEntity<byte[]> downloadExcelNameSheet(@RequestParam("className") String className,
+                                                         Model model) {
+        // 送られてきたクラスを分割してリスト化
+        List<String> classList = Arrays.asList(className.split(","));
+
+        // ファイル名作成用に日付を取得
+        LocalDate date = LocalDate.now();
+
+        // ファイル名を決める
+        String fileName = DateTimeFormatter.ofPattern("yyyyMMdd").format(date) + "NameSheet.xlsx";
+
+        // エクセル名簿の作成
+        makeExcelNameSheet.MakeExcelNameSheet(classList, fileName);
+
+        // サーバーに保存されているエクセルファイルをbyteで取得する
+        byte[] bytes = null;
+
+        try {
+            bytes = zenkenService.getFile(fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            //HTTPヘッダーの設定
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8");
+            headers.setContentDispositionFormData("filename", fileName);
+            // ファイルをダウンロード
+            return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+        } finally {
+            // ファイルの削除
+            File file = new File(fileName);
+            file.delete();
         }
     }
 
