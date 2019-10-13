@@ -249,8 +249,9 @@ public class DownloadController {
         Student student = studentService.selectOne(studentId);
 
         // 生徒名（カタカナ）をひらながなに変換
+        String reName = student.getNameRuby().replace("　", " ");
         Transliterator transliterator = Transliterator.getInstance("Katakana-Hiragana");
-        String name = transliterator.transliterate(student.getNameRuby());
+        String name = transliterator.transliterate(reName);
 
         // 生徒名（ひらがな）をローマ字に変換
         transliterator = Transliterator.getInstance("Hiragana-Latin");
