@@ -183,7 +183,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
         try {
 
             String sql = "SELECT * FROM student"
-                    + " WHERE to_char(birthday, 'FMMM') = ?"
+                    + " WHERE to_char(birthday, 'FMMM') = ? AND char_length(student_id) = 4"
                     + " OR to_char(birthday, 'FMMM') = ?"
                     + " ORDER BY to_char(birthday, 'MM-dd')";
 
