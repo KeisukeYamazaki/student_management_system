@@ -153,11 +153,14 @@ public class ZenkenService {
             // １人分の処理
             for (int i = 0; i < studentList.size(); i++) {
                 Zenken zen = studentList.get(i);
+                // 姓と名の間に全角スペースを入れる
+                String name = zen.getStudentName().replace(" ", "　");
+                String nameRuby = zen.getNameRuby().replace(" ", "　");
                 String str = zen.getNumber() + ","
                         + zen.getGender() + ","
                         + zen.getEnrollment() + ","
-                        + "\"" + zen.getStudentName() + "\"" + ","
-                        + "\"" + zen.getNameRuby() + "\"" + ","
+                        + "\"" + name + "\"" + ","
+                        + "\"" + nameRuby + "\"" + ","
                         + zen.getPrefecture() + ","
                         + zen.getCity();
 

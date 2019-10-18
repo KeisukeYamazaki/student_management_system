@@ -205,121 +205,125 @@
                         </div>
                     </div>
                     <br/>
-                    <form method="post" th:action="@{/studentEdit}"
-                          th:if="*{grade == '中１' or grade == '中２' or grade == '中３'}" th:object="${futurePathData}">
-                        <div class="row col-sm-12">
-                            <ul class="cp_list">
-                                <li>進路関係</li>
-                                <span style="float: right" id="futurePathUpdate"
-                                      th:text="|最終更新日：*{#dates.format(recordDate, 'yyyy/MM/dd')}|"></span>
-                            </ul>
-                            <div class="col-sm-12">
-                                <div class="row col-sm-6">
-                                    <p style="font-size: medium">＜志望校＞</p>
+                    <button class="btn btn-default btn-lg" style="margin: 0 20px 0 20px; border-color: #9d9d9d" name="back" type="submit">戻る</button>
+                    <button class="btn btn-primary btn-lg" name="basicUpdate" type="submit">基本情報を更新</button>
+                </form>
+                <form method="post" th:action="@{/studentEdit}" style="margin-top: 100px"
+                      th:if="${signupForm.grade == '中１' or signupForm.grade == '中２' or signupForm.grade == '中３'}"
+                      th:object="${futurePathData}">
+                    <input type="hidden" name="studentId" th:value="*{studentId}">
+                    <div class="row col-sm-12">
+                        <ul class="cp_list">
+                            <li>進路関係</li>
+                            <span style="float: right" id="futurePathUpdate"
+                                  th:text="|最終更新日：*{#dates.format(recordDate, 'yyyy/MM/dd')}|"></span>
+                        </ul>
+                        <div class="col-sm-12">
+                            <div class="row col-sm-6">
+                                <p style="font-size: medium">＜志望校＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-2 col-xs-3">第１志望</th>
+                                        <td class="col-sm-4">
+                                            <div class="form-group">
+                                                <select class="selectFirstChoice form-control" name="firstChoice" id="firstChoice" th:value="*{firstChoice}"></select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-2 col-xs-3">第２志望</th>
+                                        <td class="col-sm-4">
+                                            <div class="form-group">
+                                                <select class="selectSecondChoice form-control" name="secondChoice" id="secondChoice" th:value="*{secondChoice}"></select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info col-sm-2 col-xs-3">第３志望</th>
+                                        <td class="col-sm-4">
+                                            <div class="form-group">
+                                                <select class="selectThirdChoice form-control" name="thirdChoice" id="thirdChoice" th:value="*{thirdChoice}"></select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="row col-sm-12 align">
+                                    <p style="font-size: medium">＜その他の候補となる高校＞</p>
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
-                                            <th class="info col-sm-2 col-xs-3">第１志望</th>
+                                            <th class="info col-sm-2 col-xs-3" rowspan="3">公立高校</th>
                                             <td class="col-sm-4">
                                                 <div class="form-group">
-                                                    <select class="selectFirstChoice form-control" name="firstChoice" id="firstChoice" th:value="*{firstChoice}"></select>
+                                                    <select class="selectpublicSchool1 form-control" name="publicSchool1" id="publicSchool1" th:value="*{publicSchool1}"></select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-group">
+                                                    <select class="selectpublicSchool2 form-control" name="publicSchool2" id="publicSchool2" th:value="*{publicSchool2}"></select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-group">
+                                                    <select class="selectpublicSchool3 form-control" name="publicSchool3" id="publicSchool3" th:value="*{publicSchool3}"></select>
                                                 </div>
                                             </td>
                                         </tr>
                                     </table>
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
-                                            <th class="info col-sm-2 col-xs-3">第２志望</th>
+                                            <th class="info col-sm-2 col-xs-3" rowspan="3">私立高校</th>
                                             <td class="col-sm-4">
                                                 <div class="form-group">
-                                                    <select class="selectSecondChoice form-control" name="secondChoice" id="secondChoice" th:value="*{secondChoice}"></select>
+                                                    <select class="selectprivateSchool1 form-control" name="privateSchool1" id="privateSchool1" th:value="*{privateSchool1}"></select>
                                                 </div>
                                             </td>
                                         </tr>
-                                    </table>
-                                    <table class="table table-bordered table-hover table-condensed">
                                         <tr>
-                                            <th class="info col-sm-2 col-xs-3">第３志望</th>
-                                            <td class="col-sm-4">
+                                            <td>
                                                 <div class="form-group">
-                                                    <select class="selectThirdChoice form-control" name="thirdChoice" id="thirdChoice" th:value="*{thirdChoice}"></select>
+                                                    <select class="selectprivateSchool2 form-control" name="privateSchool2" id="privateSchool2" th:value="*{privateSchool2}"></select>
                                                 </div>
                                             </td>
                                         </tr>
-                                    </table>
-                                    <div class="row col-sm-12 align">
-                                        <p style="font-size: medium">＜その他の候補となる高校＞</p>
-                                        <table class="table table-bordered table-hover table-condensed">
-                                            <tr>
-                                                <th class="info col-sm-2 col-xs-3" rowspan="3">公立高校</th>
-                                                <td class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <select class="selectpublicSchool1 form-control" name="publicSchool1" id="publicSchool1" th:value="*{publicSchool1}"></select>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <select class="selectpublicSchool2 form-control" name="publicSchool2" id="publicSchool2" th:value="*{publicSchool2}"></select>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <select class="selectpublicSchool3 form-control" name="publicSchool3" id="publicSchool3" th:value="*{publicSchool3}"></select>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <table class="table table-bordered table-hover table-condensed">
-                                            <tr>
-                                                <th class="info col-sm-2 col-xs-3" rowspan="3">私立高校</th>
-                                                <td class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <select class="selectprivateSchool1 form-control" name="privateSchool1" id="privateSchool1" th:value="*{privateSchool1}"></select>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <select class="selectprivateSchool2 form-control" name="privateSchool2" id="privateSchool2" th:value="*{privateSchool2}"></select>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <select class="selectprivateSchool3 form-control" name="privateSchool3" id="privateSchool3" th:value="*{privateSchool3}"></select>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="row col-sm-6 col-xs-12"
-                                     style="margin: 5px 0px 0px 30px; float: right; padding: 0px">
-                                    <table class="table table-bordered table-hover table-condensed">
                                         <tr>
-                                            <th class="info">その他</th>
-                                        </tr>
-                                        <tr>
-                                            <td height="440px">
+                                            <td>
                                                 <div class="form-group">
-                                                    <textarea class="form-control" rows="20" th:field="*{information}"/>
+                                                    <select class="selectprivateSchool3 form-control" name="privateSchool3" id="privateSchool3" th:value="*{privateSchool3}"></select>
                                                 </div>
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
+                            <div class="row col-sm-6 col-xs-12"
+                                 style="margin: 5px 0px 0px 30px; float: right; padding: 0px">
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr>
+                                        <th class="info">その他</th>
+                                    </tr>
+                                    <tr>
+                                        <td height="440px">
+                                            <div class="form-group">
+                                                <textarea class="form-control" rows="20" th:field="*{information}"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                    </form>
+                    </div>
                     <!-- 更新ボタン -->
                     <div class="row col-sm-12">
                         <button class="btn btn-default btn-lg" style="margin: 0 20px 0 20px; border-color: #9d9d9d" name="back" type="submit">戻る</button>
-                        <button class="btn btn-primary btn-lg" name="update" type="submit">更新</button>
+                        <button class="btn btn-primary btn-lg" name="futurePathUpdate" type="submit">進路情報を更新</button>
                     </div>
                 </form>
             </div>

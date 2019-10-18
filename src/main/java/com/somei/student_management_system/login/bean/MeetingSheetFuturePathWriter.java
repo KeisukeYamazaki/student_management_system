@@ -69,16 +69,18 @@ public class MeetingSheetFuturePathWriter {
 
                         // 第一志望が空でなかった場合
                         if (Integer.parseInt(futurePathData.getFirstChoice()) < 3500) {
-
                             // 高校IDが 3500 よりも小さい場合（＝公立高校の場合）
                             // 高校名を取得する
                             String highschoolName = highSchoolService.getPublicHighSchoolOne(futurePathData.getFirstChoice()).getHighschoolName();
+                            // 高校へのアクセスを取得する
+                            String access = highSchoolService.getPublicHighSchoolOne(futurePathData.getFirstChoice()).getAccess();
                             // 公立高校１箇所目
                             writePublicHighSchool(sheet, highSchoolService.getPublicHighSchoolOne(futurePathData.getFirstChoice()), publicRowCount);
                             // ２箇所目（名前のみ）
                             poiMethods.getCell(sheet, publicRowCount + 13, 0).setCellValue(highschoolName);
-                            // ３箇所目（名前のみ）
+                            // ３箇所目（名前、アクセス）
                             poiMethods.getCell(sheet, publicRowCount + 20, 0).setCellValue(highschoolName);
+                            poiMethods.getCell(sheet, publicRowCount + 20, 2).setCellValue(access);
                             // 公立高校のIDをリストに格納
                             publicHighSchoolIds.add(futurePathData.getFirstChoice());
                             // カウンタに１を足す
@@ -86,8 +88,6 @@ public class MeetingSheetFuturePathWriter {
 
                         } else {
                             // 高校IDが 3500 よりも大きい場合（＝私立高校の場合）
-                            // 高校名を取得する
-                            String highschoolName = highSchoolService.getPrivateHighSchoolOne(futurePathData.getFirstChoice()).getHighschoolName();
                             // 私立高校１箇所目
                             writePrivateHighSchool1(sheet, highSchoolService.getPrivateHighSchoolOne(futurePathData.getFirstChoice()), privateRowCount);
                             // ２箇所目
@@ -104,16 +104,18 @@ public class MeetingSheetFuturePathWriter {
 
                         // 第二志望が空でなかった場合
                         if (Integer.parseInt(futurePathData.getSecondChoice()) < 3500) {
-
                             // 高校IDが 3500 よりも小さい場合（＝公立高校の場合）
                             // 高校名を取得する
                             String highschoolName = highSchoolService.getPublicHighSchoolOne(futurePathData.getSecondChoice()).getHighschoolName();
+                            // 高校へのアクセスを取得する
+                            String access = highSchoolService.getPublicHighSchoolOne(futurePathData.getSecondChoice()).getAccess();
                             // 公立高校１箇所目
                             writePublicHighSchool(sheet, highSchoolService.getPublicHighSchoolOne(futurePathData.getSecondChoice()), publicRowCount);
                             // ２箇所目（名前のみ）
                             poiMethods.getCell(sheet, publicRowCount + 13, 0).setCellValue(highschoolName);
-                            // ３箇所目（名前のみ）
+                            // ３箇所目（名前、アクセスのみ）
                             poiMethods.getCell(sheet, publicRowCount + 20, 0).setCellValue(highschoolName);
+                            poiMethods.getCell(sheet, publicRowCount + 20, 2).setCellValue(access);
                             // 公立高校のIDをリストに格納
                             publicHighSchoolIds.add(futurePathData.getSecondChoice());
                             // カウンタに１を足す
@@ -121,8 +123,6 @@ public class MeetingSheetFuturePathWriter {
 
                         } else {
                             // 高校IDが 3500 よりも大きい場合（＝私立高校の場合）
-                            // 高校名を取得する
-                            String highschoolName = highSchoolService.getPrivateHighSchoolOne(futurePathData.getSecondChoice()).getHighschoolName();
                             // 私立高校１箇所目
                             writePrivateHighSchool1(sheet, highSchoolService.getPrivateHighSchoolOne(futurePathData.getSecondChoice()), privateRowCount);
                             // ２箇所目（名前のみ）
@@ -137,18 +137,20 @@ public class MeetingSheetFuturePathWriter {
                 case 2:
                     if (futurePathData.getThirdChoice() != null) {
 
-                        // 第二志望が空でなかった場合
+                        // 第三志望が空でなかった場合
                         if (Integer.parseInt(futurePathData.getThirdChoice()) < 3500) {
-
                             // 高校IDが 3500 よりも小さい場合（＝公立高校の場合）
                             // 高校名を取得する
                             String highschoolName = highSchoolService.getPublicHighSchoolOne(futurePathData.getThirdChoice()).getHighschoolName();
+                            // 高校へのアクセスを取得する
+                            String access = highSchoolService.getPublicHighSchoolOne(futurePathData.getThirdChoice()).getAccess();
                             // 公立高校１箇所目
                             writePublicHighSchool(sheet, highSchoolService.getPublicHighSchoolOne(futurePathData.getThirdChoice()), publicRowCount);
                             // ２箇所目（名前のみ）
                             poiMethods.getCell(sheet, publicRowCount + 13, 0).setCellValue(highschoolName);
-                            // ３箇所目（名前のみ）
+                            // ３箇所目（名前、アクセス）
                             poiMethods.getCell(sheet, publicRowCount + 20, 0).setCellValue(highschoolName);
+                            poiMethods.getCell(sheet, publicRowCount + 20, 2).setCellValue(access);
                             // 公立高校のIDをリストに格納
                             publicHighSchoolIds.add(futurePathData.getThirdChoice());
                             // カウンタに１を足す
@@ -156,8 +158,6 @@ public class MeetingSheetFuturePathWriter {
 
                         } else {
                             // 高校IDが 3500 よりも大きい場合（＝私立高校の場合）
-                            // 高校名を取得する
-                            String highschoolName = highSchoolService.getPrivateHighSchoolOne(futurePathData.getThirdChoice()).getHighschoolName();
                             // 私立高校１箇所目
                             writePrivateHighSchool1(sheet, highSchoolService.getPrivateHighSchoolOne(futurePathData.getThirdChoice()), privateRowCount);
                             // ２箇所目（名前のみ）
@@ -176,14 +176,14 @@ public class MeetingSheetFuturePathWriter {
         // 公立高校リストの取得
         List<PublicHighSchool> publicHighSchoolList = getPublicHighschoolList(futurePathData);
         if (publicHighSchoolList.size() != 0) {
-
             // 戻されたリストが空でなかった場合、ループを回して処理する
             for (int i = 0; i < publicHighSchoolList.size(); i++) {
-
                 // 24行目を超えたら処理を終了する
                 if (publicRowCount <= 24) {
                     // 高校名の取得
                     String highschoolName = highSchoolService.getPublicHighSchoolOne(publicHighSchoolList.get(i).getHighschoolId()).getHighschoolName();
+                    // 高校へのアクセスを取得する
+                    String access = highSchoolService.getPublicHighSchoolOne(publicHighSchoolList.get(i).getHighschoolId()).getAccess();
                     // 高校IDの取得
                     String highschoolId = highSchoolService.getPublicHighSchoolOne(publicHighSchoolList.get(i).getHighschoolId()).getHighschoolId();
                     // 公立高校１箇所目
@@ -192,6 +192,7 @@ public class MeetingSheetFuturePathWriter {
                     poiMethods.getCell(sheet, publicRowCount + 13, 0).setCellValue(highschoolName);
                     // 公立高校３箇所目（名前のみ）
                     poiMethods.getCell(sheet, publicRowCount + 20, 0).setCellValue(highschoolName);
+                    poiMethods.getCell(sheet, publicRowCount + 20, 2).setCellValue(access);
                     // 公立高校のIDをリストに格納
                     publicHighSchoolIds.add(highschoolId);
                     // カウンタに１を足す
@@ -227,8 +228,6 @@ public class MeetingSheetFuturePathWriter {
                 if (privateRowCount <= 31) {
                     // 高校のデータが存在しない場合は NullPointerException が発生する
                     try {
-                        // 高校名を取得
-                        String highschoolName = highSchoolService.getPrivateHighSchoolOne(privateHighSchoolList.get(i).getHighschoolId()).getHighschoolName();
                         // 高校IDを取得
                         String highschoolId = highSchoolService.getPrivateHighSchoolOne(privateHighSchoolList.get(i).getHighschoolId()).getHighschoolId();
                         // 私立高校１箇所目
@@ -479,13 +478,8 @@ public class MeetingSheetFuturePathWriter {
                 }
             }
         }
-
         // 公立高校の平均内申までに必要な数値、中位合格数点数、ボーダー点数を入力する
         publicHighSchoolCalculation(sheet, publicHighSchoolIds, allList, 1);
-
-
-
-
     }
 
     /**

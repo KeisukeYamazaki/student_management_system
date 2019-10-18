@@ -259,23 +259,19 @@ public class StudentController {
 
 
     /**
-     * 生徒編集用処理
+     * 生徒基本情報の更新用処理
      *
-     * @param form           生徒登録フォーム
-     * @param futurePathData 進路情報データ
+     * @param form          生徒登録フォーム
      * @param bindingResult
-     * @param model          モデル
+     * @param model         モデル
      * @return 生徒一覧画面へ遷移
      */
-    @PostMapping(value = "/studentEdit", params = "update")
-    public String postStudentDetailUpdate(@ModelAttribute @Validated SignupForm form,
-                                          @ModelAttribute FuturePathWithData futurePathData,
-                                          BindingResult bindingResult,
-                                          Model model) {
-
+    @PostMapping(value = "/studentEdit", params = "basicUpdate")
+    public String postStudentBasicUpdate(@ModelAttribute @Validated SignupForm form,
+                                         BindingResult bindingResult,
+                                         Model model) {
         // 入力チェックに引っかかった場合、生徒編集画面に戻る
         if (bindingResult.hasErrors()) {
-
             // GET用のメソッドを呼び出して、生徒登録画面に戻る
             return getStudentEdit(form, model, form.getStudentId());
         }
@@ -294,8 +290,8 @@ public class StudentController {
         }
 
         // 名前を結合
-        String name = form.getLastName() + "　" + form.getFirstName();
-        String ruby = form.getLastRuby() + "　" + form.getFirstRuby();
+        String name = form.getLastName() + " " + form.getFirstName();
+        String ruby = form.getLastRuby() + " " + form.getFirstRuby();
 
         //フォームクラスをStudentクラスに変換
         student.setStudentId(form.getStudentId());
@@ -314,21 +310,33 @@ public class StudentController {
         student.setInfo(form.getInfo());
 
         try {
-
             //更新実行
             boolean result = studentService.updateOne(student);
-
             if (result == true) {
-                model.addAttribute("result", "生徒データを更新しました");
+                model.addAttribute("result", "基本情報データを更新しました");
+                System.out.println("基本情報更新処理：" + form.getLastName() + " " + form.getFirstName());
             } else {
-                model.addAttribute("result", "生徒データ更新に失敗しました");
+                model.addAttribute("result", "更新に失敗しました");
             }
-
         } catch (DataAccessException e) {
-
             model.addAttribute("result", "更新失敗(トランザクションテスト)");
-
         }
+        //生徒一覧画面を表示
+        return getStudentList(model);
+    }
+
+    /**
+     * 生徒進路情報の編集用処理
+     *
+     * @param futurePathData 進路情報
+     * @param model          モデル
+     * @return 生徒一覧画面へ遷移
+     */
+    @PostMapping(value = "/studentEdit", params = "futurePathUpdate")
+    public String postStudentFuturePathUpdate(@ModelAttribute FuturePathWithData futurePathData, Model model) {
+
+        // 生徒名の取得
+        String name = studentService.selectOne(futurePathData.getStudentId()).getStudentName();
 
         // FuturePath の更新
         // FuturePathインスタンスの生成
@@ -348,26 +356,19 @@ public class StudentController {
         futurePath.setInformation(futurePathData.getInformation());
 
         try {
-
             // 更新実行
             boolean result = studentService.updatePathOne(futurePath);
 
             if (result == true) {
-                model.addAttribute("result", "更新しました");
-
+                model.addAttribute("result", "進路情報データを更新しました");
                 //ログ出力
-                System.out.println("更新処理：" + form.getLastName() + form.getFirstName());
-
+                System.out.println("進路情報更新処理：" + name);
             } else {
                 model.addAttribute("result", "更新に失敗しました");
             }
-
         } catch (DataAccessException e) {
-
             model.addAttribute("result", "更新失敗(トランザクションテスト)");
-
         }
-
         //生徒一覧画面を表示
         return getStudentList(model);
     }

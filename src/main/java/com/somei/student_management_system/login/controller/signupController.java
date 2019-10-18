@@ -98,8 +98,9 @@ public class signupController {
             birthday = null;
         }
 
-        String name = form.getLastName() + "　" + form.getFirstName();
-        String ruby = form.getLastRuby() + "　" + form.getFirstRuby();
+        // 姓と名の間に半角スペースを入れる
+        String name = form.getLastName() + " " + form.getFirstName();
+        String ruby = form.getLastRuby() + " " + form.getFirstRuby();
 
         //フォームクラスをStudentクラスに変換
         student.setStudentId(form.getStudentId());
