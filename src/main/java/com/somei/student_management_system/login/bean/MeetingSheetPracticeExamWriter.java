@@ -161,16 +161,47 @@ public class MeetingSheetPracticeExamWriter {
      * @param listNum 成績リスト取得用の番号
      */
     private void writeSubjectPracticeExam(XSSFSheet sheet, List<PracticeExam> list, int row, int listNum) {
-
-        poiMethods.getCell(sheet, row, 5).setCellValue(Integer.parseInt(list.get(listNum).getEnglishScore()));
-        poiMethods.getCell(sheet, row, 6).setCellValue(Integer.parseInt(list.get(listNum).getMathScore()));
-        poiMethods.getCell(sheet, row, 7).setCellValue(Integer.parseInt(list.get(listNum).getJapaneseScore()));
-        poiMethods.getCell(sheet, row, 8).setCellValue(Integer.parseInt(list.get(listNum).getScienceScore()));
-        poiMethods.getCell(sheet, row, 9).setCellValue(Integer.parseInt(list.get(listNum).getSocialScore()));
-        poiMethods.getCell(sheet, row, 10).setCellValue(Integer.parseInt(list.get(listNum).getSumAll()));
-        poiMethods.getCell(sheet, row, 11).setCellValue(Integer.parseInt(list.get(listNum).getDevThree()));
-        poiMethods.getCell(sheet, row, 12).setCellValue(Integer.parseInt(list.get(listNum).getDevFive()));
-
+        // 結果がない場合は例外が発生する。その際はそのまま（空白）を入力する。
+        try {
+            poiMethods.getCell(sheet, row, 5).setCellValue(Integer.parseInt(list.get(listNum).getEnglishScore()));
+        } catch (RuntimeException e) {
+            poiMethods.getCell(sheet, row, 5).setCellValue(list.get(listNum).getEnglishScore());
+        }
+        try {
+            poiMethods.getCell(sheet, row, 6).setCellValue(Integer.parseInt(list.get(listNum).getMathScore()));
+        } catch (RuntimeException e) {
+            poiMethods.getCell(sheet, row, 6).setCellValue(list.get(listNum).getMathScore());
+        }
+        try {
+            poiMethods.getCell(sheet, row, 7).setCellValue(Integer.parseInt(list.get(listNum).getJapaneseScore()));
+        } catch (RuntimeException e) {
+            poiMethods.getCell(sheet, row, 7).setCellValue(list.get(listNum).getJapaneseScore());
+        }
+        try {
+            poiMethods.getCell(sheet, row, 8).setCellValue(Integer.parseInt(list.get(listNum).getScienceScore()));
+        } catch (RuntimeException e) {
+            poiMethods.getCell(sheet, row, 8).setCellValue(list.get(listNum).getScienceScore());
+        }
+        try {
+            poiMethods.getCell(sheet, row, 9).setCellValue(Integer.parseInt(list.get(listNum).getSocialScore()));
+        } catch (RuntimeException e) {
+            poiMethods.getCell(sheet, row, 9).setCellValue(list.get(listNum).getSocialScore());
+        }
+        try {
+            poiMethods.getCell(sheet, row, 10).setCellValue(Integer.parseInt(list.get(listNum).getSumAll()));
+        } catch (RuntimeException e) {
+            poiMethods.getCell(sheet, row, 10).setCellValue(list.get(listNum).getSumAll());
+        }
+        try {
+            poiMethods.getCell(sheet, row, 11).setCellValue(Integer.parseInt(list.get(listNum).getDevThree()));
+        } catch (RuntimeException e) {
+            poiMethods.getCell(sheet, row, 11).setCellValue(list.get(listNum).getDevThree());
+        }
+        try {
+            poiMethods.getCell(sheet, row, 12).setCellValue(Integer.parseInt(list.get(listNum).getDevFive()));
+        } catch (RuntimeException e) {
+            poiMethods.getCell(sheet, row, 12).setCellValue(list.get(listNum).getDevFive());
+        }
     }
 
 }

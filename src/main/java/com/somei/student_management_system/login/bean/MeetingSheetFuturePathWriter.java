@@ -540,17 +540,32 @@ public class MeetingSheetFuturePathWriter {
             poiMethods.getCell(sheet, row, 12).setCellValue(publicHighSchool.getSScoreThreeyearsago());
         }
         try {
-            poiMethods.getCell(sheet, row, 13).setCellValue(Double.parseDouble(publicHighSchool.getBorderThisyear()));
+            // ボーダーが「-1（算出不能）」の場合は「-」を入力する
+            if(publicHighSchool.getBorderThisyear().equals("-1")) {
+                poiMethods.getCell(sheet, row, 13).setCellValue("-");
+            } else {
+                poiMethods.getCell(sheet, row, 13).setCellValue(Double.parseDouble(publicHighSchool.getBorderThisyear()));
+            }
         } catch (RuntimeException e) {
             poiMethods.getCell(sheet, row, 13).setCellValue(publicHighSchool.getBorderThisyear());
         }
         try {
-            poiMethods.getCell(sheet, row, 14).setCellValue(Double.parseDouble(publicHighSchool.getBoderLastyear()));
+            // ボーダーが「-1（算出不能）」の場合は「-」を入力する
+            if(publicHighSchool.getBoderLastyear().equals("-1")) {
+                poiMethods.getCell(sheet, row, 14).setCellValue("-");
+            } else {
+                poiMethods.getCell(sheet, row, 14).setCellValue(Double.parseDouble(publicHighSchool.getBoderLastyear()));
+            }
         } catch (RuntimeException e) {
             poiMethods.getCell(sheet, row, 14).setCellValue(publicHighSchool.getBoderLastyear());
         }
         try {
-            poiMethods.getCell(sheet, row, 15).setCellValue(Double.parseDouble(publicHighSchool.getBorderThreeyearsago()));
+            // ボーダーが「-1（算出不能）」の場合は「-」を入力する
+            if(publicHighSchool.getBorderThreeyearsago().equals("-1")) {
+                poiMethods.getCell(sheet, row, 15).setCellValue("-");
+            } else {
+                poiMethods.getCell(sheet, row, 15).setCellValue(Double.parseDouble(publicHighSchool.getBorderThreeyearsago()));
+            }
         } catch (RuntimeException e) {
             poiMethods.getCell(sheet, row, 15).setCellValue(publicHighSchool.getBorderThreeyearsago());
         }
