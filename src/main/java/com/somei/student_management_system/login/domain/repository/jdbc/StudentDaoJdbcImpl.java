@@ -327,12 +327,16 @@ public class StudentDaoJdbcImpl implements StudentDao {
      */
     private String nullConvert(String str) {
         // もし引数が" "ならnullを返す
-        if(str.equals(" ")) {
-            return null;
-        } else {
-            // そうでなければ値をそのまま返す
-            return str;
+        // nullであると例外が発生するので、nullでない場合にチェックする
+        if(str != null) {
+            if (str.equals(" ")) {
+                return null;
+            } else {
+                // そうでなければ値をそのまま返す
+                return str;
+            }
         }
+        return null;
     }
 
     // future_pathテーブルのデータを１件挿入
