@@ -156,10 +156,8 @@ public class StudentService {
                 "小６", "小６橋戸", "小６瀬谷", "小５", "小５橋戸", "小５瀬谷", "小４橋戸", "小４瀬谷", "小３橋戸", "小３瀬谷");
 
         for(String className : classList) {
-
             // クラスのリストを取得
             List<NameList> list = dao.selectManyByHomeRoom(className);
-
             // 返却用リストに格納
             returnList.add(list);
         }

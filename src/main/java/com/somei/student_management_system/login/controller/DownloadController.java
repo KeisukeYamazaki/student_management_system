@@ -189,7 +189,6 @@ public class DownloadController {
                                                                @RequestParam(name = "additionalPrivateSchool1", required = false) String schoolId1,
                                                                @RequestParam(name = "additionalPrivateSchool2", required = false) String schoolId2,
                                                                Model model) {
-
         // セッションに２つの高校を加える
         sessionData.setStr1(schoolId1);
         sessionData.setStr2(schoolId2);
@@ -215,30 +214,22 @@ public class DownloadController {
         futurePath.setInformation(futurePathData.getInformation());
 
         try {
-
             // 更新実行
             boolean result = studentService.updatePathOne(futurePath);
 
             if (result == true) {
                 model.addAttribute("result", "更新しました");
-
                 //ログ出力
                 System.out.println("進路更新処理：" + student.getStudentName());
-
             } else {
                 model.addAttribute("result", "更新に失敗しました");
             }
-
         } catch (DataAccessException e) {
-
             model.addAttribute("result", "更新失敗(トランザクションテスト)");
-
         }
-
         // 面談シートダウンロードメソッドを実行
         return getMeetingSheetDownload(futurePathData.getStudentId(), model);
     }
-
 
     /**
      * 面談シートダウンロードメソッド
@@ -274,15 +265,12 @@ public class DownloadController {
         byte[] bytes = null;
 
         try {
-
             bytes = zenkenService.getFile(fileName);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-
             //HTTPヘッダーの設定
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8");
@@ -290,9 +278,7 @@ public class DownloadController {
 
             // ファイルをダウンロード
             return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
-
         } finally {
-
             // ファイルの削除
             File file = new File(fileName);
             file.delete();
@@ -339,10 +325,8 @@ public class DownloadController {
 
         //コンテンツ部分に表示するクラスを登録
         for (int i = 8; i < classNameList.size(); i++) {
-
             model.addAttribute(classNameList.get(i), nameList.get(i));
         }
-
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
         model.addAttribute("contents", "login/downloads :: downloads_contents");
@@ -377,15 +361,12 @@ public class DownloadController {
         byte[] bytes = null;
 
         try {
-
             bytes = zenkenService.getFile(zipFilename);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-
             //HTTPヘッダーの設定
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Type", "application/zip; charset=UTF-8");
@@ -399,15 +380,12 @@ public class DownloadController {
             // サーバに保存したファイルを削除する
             // PDFファイルの削除
             for (String name : deleteList) {
-
                 File file = new File(name);
-
                 // ファイルが存在していたら削除
                 if (file.exists()) {
                     file.delete();
                 }
             }
-
             // ZIPファイルの削除
             File zipFile = new File(zipFilename);
             zipFile.delete();

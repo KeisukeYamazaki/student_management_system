@@ -304,19 +304,35 @@ public class StudentDaoJdbcImpl implements StudentDao {
                         + " information = ?,"
                         + " record_date = current_timestamp AT TIME ZONE 'Asia/Tokyo'"
                         + " WHERE student_id = ?"
-                , futurePath.getFirstChoice()
-                , futurePath.getSecondChoice()
-                , futurePath.getThirdChoice()
-                , futurePath.getPublicSchool1()
-                , futurePath.getPublicSchool2()
-                , futurePath.getPublicSchool3()
-                , futurePath.getPrivateSchool1()
-                , futurePath.getPrivateSchool2()
-                , futurePath.getPrivateSchool3()
+                , nullConvert(futurePath.getFirstChoice())
+                , nullConvert(futurePath.getSecondChoice())
+                , nullConvert(futurePath.getThirdChoice())
+                , nullConvert(futurePath.getPublicSchool1())
+                , nullConvert(futurePath.getPublicSchool2())
+                , nullConvert(futurePath.getPublicSchool3())
+                , nullConvert(futurePath.getPrivateSchool1())
+                , nullConvert(futurePath.getPrivateSchool2())
+                , nullConvert(futurePath.getPrivateSchool3())
                 , futurePath.getInformation()
                 , futurePath.getStudentId());
 
         return rowNumber;
+    }
+
+    /**
+     * 空の値（未選択）の場合 null に変えるメソッド
+     *
+     * @param str 登録された高校の番号
+     * @return if " " -> null, else str
+     */
+    private String nullConvert(String str) {
+        // もし引数が" "ならnullを返す
+        if(str.equals(" ")) {
+            return null;
+        } else {
+            // そうでなければ値をそのまま返す
+            return str;
+        }
     }
 
     // future_pathテーブルのデータを１件挿入

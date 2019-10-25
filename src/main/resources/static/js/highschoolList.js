@@ -1,5 +1,9 @@
 var inputData1 = [
     {
+        "id": " ",
+        "text": "-未選択-"
+    },
+    {
         "id": "1010",
         "text": "鶴見"
     },
@@ -771,6 +775,10 @@ var inputData1 = [
 
 var inputData2 = [
     {
+        "id": " ",
+        "text": "-未選択-"
+    },
+    {
         "id": "1010",
         "text": "鶴見"
     },
@@ -1161,6 +1169,10 @@ var inputData2 = [
 ];
 
 var inputData3 = [
+    {
+        "id": " ",
+        "text": "-未選択-"
+    },
     {
         "id": "4171",
         "text": "藤嶺学園藤沢 普通 併願"
