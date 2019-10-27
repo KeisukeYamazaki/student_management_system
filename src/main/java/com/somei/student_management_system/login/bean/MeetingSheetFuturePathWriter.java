@@ -305,7 +305,7 @@ public class MeetingSheetFuturePathWriter {
                             // 高校名を取得する
                             String highschoolName = highSchoolService.getPublicHighSchoolOne(futurePathData.getFirstChoice()).getHighschoolName();
                             // 公立高校１箇所目
-                            writePublicHighSchool1st(sheet, highSchoolService.getPublicHighSchoolOne(futurePathData.getFirstChoice()), publicRowCount + i);
+                            writePublicHighSchool1st(sheet, highSchoolService.getPublicHighSchoolOne(futurePathData.getFirstChoice()), publicRowCount);
                             // ２箇所目（名前のみ）
                             poiMethods.getCell(sheet, publicRowCount + 15, 0).setCellValue(highschoolName);
                             // ３箇所目（名前のみ）
@@ -338,7 +338,7 @@ public class MeetingSheetFuturePathWriter {
                             // 高校名を取得する
                             String highschoolName = highSchoolService.getPublicHighSchoolOne(futurePathData.getSecondChoice()).getHighschoolName();
                             // 公立高校１箇所目
-                            writePublicHighSchool1st(sheet, highSchoolService.getPublicHighSchoolOne(futurePathData.getSecondChoice()), publicRowCount + i);
+                            writePublicHighSchool1st(sheet, highSchoolService.getPublicHighSchoolOne(futurePathData.getSecondChoice()), publicRowCount);
                             // ２箇所目（名前のみ）
                             poiMethods.getCell(sheet, publicRowCount + 15, 0).setCellValue(highschoolName);
                             // ３箇所目（名前のみ）
@@ -374,7 +374,7 @@ public class MeetingSheetFuturePathWriter {
                                 // 高校名を取得する
                                 String highschoolName = highSchoolService.getPublicHighSchoolOne(futurePathData.getThirdChoice()).getHighschoolName();
                                 // 公立高校１箇所目
-                                writePublicHighSchool1st(sheet, highSchoolService.getPublicHighSchoolOne(futurePathData.getThirdChoice()), publicRowCount + i);
+                                writePublicHighSchool1st(sheet, highSchoolService.getPublicHighSchoolOne(futurePathData.getThirdChoice()), publicRowCount);
                                 // ２箇所目（名前のみ）
                                 poiMethods.getCell(sheet, publicRowCount + 15, 0).setCellValue(highschoolName);
                                 // ３箇所目（名前のみ）
@@ -584,10 +584,10 @@ public class MeetingSheetFuturePathWriter {
         poiMethods.getCell(sheet, row, 2).setCellValue((publicHighSchool.getRatio()));
 
         // 平均内申の算出・入力
-        poiMethods.getCell(sheet, row, 20).setCellValue((int)Math.ceil(getHighschoolAverage(publicHighSchool, 1)));
+        poiMethods.getCell(sheet, row, 8).setCellValue((int)Math.ceil(getHighschoolAverage(publicHighSchool, 1)));
 
         // 平均得点の算出・入力
-        poiMethods.getCell(sheet, row, 20).setCellValue((int)Math.ceil(getHighschoolAverage(publicHighSchool, 2)));
+        poiMethods.getCell(sheet, row, 14).setCellValue((int)Math.ceil(getHighschoolAverage(publicHighSchool, 2)));
     }
 
     /**
@@ -822,10 +822,18 @@ public class MeetingSheetFuturePathWriter {
     private double getAverage(List<Double> list) {
         if (list.size() != 0) {
             double sum = 0;
+            // -1(不明)の数を数える変数
+            int minusCount = 0;
             for (double num : list) {
-                sum += num;
+                if(num == -1) {
+                    // 数値が-1の場合、minusCountを１増やす
+                    minusCount++;
+                    continue;
+                } else {
+                    sum += num;
+                }
             }
-            return sum / list.size();
+            return sum / (list.size() - minusCount);
         }
         // リストが空だった場合は 0 を返す
         return 0.0;

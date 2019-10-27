@@ -543,6 +543,33 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row col-sm-12" th:if="*{grade == '小５' or grade == '小６'}">
+                        <ul class="cp_list">
+                            <li>模擬試験の結果</li>
+                        </ul>
+                        <div class="col-sm-10">
+                            <div th:if="*{entryTime != '小６'}">
+                                <p style="font-size: medium">＜小学５年生＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <!--
+                                    <tr th:if="${practiceExamList_1st}">
+                                    </tr>
+                                    -->
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">
+                            <div th:if="*{grade == '小６'}">
+                                <p style="font-size: medium">＜小学６年生＞</p>
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <!--
+                                    <tr th:if="${practiceExamList_1st}">
+                                    </tr>
+                                    -->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row col-sm-10">
                         <form method="post" th:action="@{/studentDetail}">
                             <!-- 編集ボタン -->

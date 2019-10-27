@@ -54,13 +54,19 @@ public class PrivateHighSchoolCalculation {
 
             // リストに特定の高校が含まれている場合は、特定のメソッドで判定する
             switch (standardList.get(i)[0]) {
-                case "7420":
+                case "7420":  // 山手学院の場合
                     result = yamateHighSchoolJudgement(numList);
                     resultList.add(result);
                     break;
-                case "7141":
+                case "7141":  // 日大藤沢の場合
                     String grade = studentService.selectOne(studentId).getGrade();
                     result = nichifujiHighSchoolJudgement(grade, numList);
+                    resultList.add(result);
+                    break;
+                case "6825": // 桐蔭学園（プログレス）の場合
+                case "6833": // 桐蔭学園（アドバンス）の場合
+                case "6821": // 桐蔭学園（スタンダード）の場合
+                    result = toinHighSchoolJudgement(standardList.get(i)[0], numList);
                     resultList.add(result);
                     break;
                 default:
@@ -106,13 +112,12 @@ public class PrivateHighSchoolCalculation {
         // 基準値を抽出したものを格納するリストの作成
         List<String[]> standardList = new ArrayList<>();
 
-
         // 高校IDのリストをループで回して、基準値の配列を作り格納する
         String[] school = new String[1]; // 特定の高校のIDを格納する配列を作成
         for (int i = 0; i < privateHighSchoolList.size(); i++) {
 
             // 特定の高校の場合、高校IDをそのまま格納（あとで別処理をする）
-            switch(privateHighSchoolList.get(i)) {
+            switch (privateHighSchoolList.get(i)) {
                 case "7410":
                     // 7410を含む配列をつくり、格納する（山手学院）
                     school[0] = "7410";
@@ -121,6 +126,21 @@ public class PrivateHighSchoolCalculation {
                 case "7141":
                     // 7141を含む配列をつくり、格納する（日本大学藤沢）
                     school[0] = "7141";
+                    standardList.add(school);
+                    break;
+                case "6825" :
+                    // 6825を含む配列をつくり、格納する（桐蔭学園（プログレス））
+                    school[0] = "6825";
+                    standardList.add(school);
+                    break;
+                case "6833" :
+                    // 6833を含む配列をつくり、格納する（桐蔭学園（アドバンス））
+                    school[0] = "6833";
+                    standardList.add(school);
+                    break;
+                case "6821" :
+                    // 6821を含む配列をつくり、格納する（桐蔭学園（スタンダード））
+                    school[0] = "6821";
                     standardList.add(school);
                     break;
                 default:
@@ -244,7 +264,7 @@ public class PrivateHighSchoolCalculation {
 
             if (judgmentResult(numList, standard, i).equals("○")) {
                 // 基準値の判定結果が「○」なら、その時点で○を返し、処理を終了する
-                return "○";
+                return "◯";
             } else {
                 // 基準値に満たない場合は、必要な数値の文字列をリストに格納する
                 resultList.add(judgmentResult(numList, standard, i));
@@ -368,56 +388,54 @@ public class PrivateHighSchoolCalculation {
 
         // numListの中身：(/45, /135, /25, /50, /75, /15, /30 の順）
         // 合格しているかどうかの判定
-        if(numList.get(1) >= 128) {
+        if (numList.get(1) >= 128) {
             // 128/135をクリアした場合
-            result = "◯";
-        } else if (numList.get(3) >= 49) {
+            return "◯";
+        }
+        if (numList.get(3) >= 49) {
             // 49/50をクリアした場合
-            result = "◯";
-        } else if (numList.get(0) >= 42 && numList.get(2) >= 24) {
-            result = "◯";
+            return "◯";
+        }
+        if (numList.get(0) >= 42 && numList.get(2) >= 24) {
+            // ５科目と９科目の基準をクリアした場合
+            return "◯";
         }
 
-        if(result.equals("◯")) {
-            // 結果が ◯ の場合、そのまま返却
-            return result;
-        } else {
-            // 結果が ○ でない場合、それぞれの基準値の差を計算する
-            int gap1 = (int)Math.ceil((128 - numList.get(1))/2);  // ９科目合計で必要な内申
-            int gap2 = 49 - numList.get(3);   // ５科目合計で必要な内申
-            int gap3 = 42 - numList.get(0);
-            int gap4 = 24 - numList.get(2);
-            int gap5 = gap3 + gap4;
-
-            // ３つの最小値を求める
-            int[] gaps = {gap1, gap2, gap5};
-            int min = gaps[0];   // 最小値の初期化
-            int num = 0;   // 最小値の配列の添字を代入する変数
-            for(int i = 1; i < gaps.length; i++) {
-                if(min > gaps[i]) {
-                    min = gaps[i];
-                    num = i;
-                }
+        // 基準に満たなかった場合、それぞれの基準値の差を計算する
+        int gap1 = (int) Math.ceil((128 - numList.get(1)) / 2);  // ９科目合計で必要な内申
+        int gap2 = 49 - numList.get(3);   // ５科目合計で必要な内申
+        int gap3 = 42 - numList.get(0);
+        int gap4 = 24 - numList.get(2);
+        int gap5 = gap3 + gap4;
+        // ３つの最小値を求める
+        int[] gaps = {gap1, gap2, gap5};
+        int min = gaps[0];   // 最小値の初期化
+        int num = 0;   // 最小値の配列の添字を代入する変数
+        for (int i = 1; i < gaps.length; i++) {
+            if (min > gaps[i]) {
+                min = gaps[i];
+                num = i;
             }
-            // resultに代入する文字列を確定する
-            switch (num) {
-                case 0:
-                    result = "9科目であと " + num;
-                    break;
-                case 1:
-                    result = "5科目であと " + num;
-                    break;
-                case 2:
-                    result = "9科目であと " + gap3 + " かつ " + "5科目であと " + gap4;
-            }
-            return result;
         }
+        // resultに代入する文字列を確定する
+        switch (num) {
+            case 0:
+                result = "9科目であと " + num;
+                break;
+            case 1:
+                result = "5科目であと " + num;
+                break;
+            case 2:
+                result = "9科目であと " + gap3 + " かつ " + "5科目であと " + gap4;
+        }
+        return result;
+
     }
 
     /**
      * 日本大学藤沢の処理
      *
-     * @param grade 生徒の学年
+     * @param grade   生徒の学年
      * @param numList 生徒の成績リスト
      * @return 判定の結果
      */
@@ -428,16 +446,16 @@ public class PrivateHighSchoolCalculation {
 
         // numListの中身：(/45, /135, /25, /50, /75, /15, /30 の順）
         // 学年によって処理が分かれる
-        if(grade.equals("中３")) {
+        if (grade.equals("中３")) {
             // 中３の基準で計算する
             int gap1 = 40 - numList.get(0);
             int gap2 = 23 - numList.get(2);
-            if(gap1 <= 0 && gap2 <= 0) {
+            if (gap1 <= 0 && gap2 <= 0) {
                 // 基準を満たしている場合
                 result = "◯";
             } else {
                 // 基準を満たしていない場合
-                if(gap1 > 0 && gap2 > 0) {
+                if (gap1 > 0 && gap2 > 0) {
                     // 両方満たしていない場合
                     result = "9科目であと " + gap1 + " かつ " + "5科目であと " + gap2;
                 } else if (gap1 > 0) {
@@ -452,12 +470,12 @@ public class PrivateHighSchoolCalculation {
             // 中１・２の場合、中２の基準で計算する
             int gap1 = 37 - numList.get(0);
             int gap2 = 21 - numList.get(2);
-            if(gap1 <= 0 && gap2 <= 0) {
+            if (gap1 <= 0 && gap2 <= 0) {
                 // 基準を満たしている場合
                 result = "◯";
             } else {
                 // 基準を満たしていない場合
-                if(gap1 > 0 && gap2 > 0) {
+                if (gap1 > 0 && gap2 > 0) {
                     // 両方満たしていない場合
                     result = "9科目であと " + gap1 + " かつ " + "5科目であと " + gap2;
                 } else if (gap1 > 0) {
@@ -468,6 +486,63 @@ public class PrivateHighSchoolCalculation {
                     result = "5科目であと " + gap2;
                 }
             }
+        }
+        return result;
+    }
+
+    /**
+     * 桐蔭学園の処理
+     *
+     * @param id      高校のid
+     * @param numList 生徒の成績リスト
+     * @return 判定の結果
+     */
+    private String toinHighSchoolJudgement(String id, List<Integer> numList) {
+
+        // 結果を返す変数を初期化する
+        String result = "";
+
+        // ５科目の基準値
+        int standardFive = 0;
+
+        // ９科目の基準値
+        int standardNine = 0;
+
+        if (id.equals("6825")) {
+            // プログレスの場合
+            standardFive = 25;
+            standardNine = 44;
+        } else if (id.equals("6833")) {
+            // アドバンスの場合
+            standardFive = 23;
+            standardNine = 41;
+        } else {
+            // スタンダードの場合
+            standardFive = 22;
+            standardNine = 40;
+        }
+
+        // numListの中身：(/45, /135, /25, /50, /75, /15, /30 の順）
+        // 合格かどうかの判定
+        if(numList.get(2) >= standardFive) {
+            // ５科目の基準をクリアした場合
+            return "○";
+        }
+        if(numList.get(0) >= standardNine) {
+            // ９科目の基準をクリアした場合
+            return "○";
+        }
+
+        // 基準に満たなかった場合、それぞれの基準値の差を計算する
+        int gap1 = standardNine - numList.get(0);  // ９科目合計で必要な内申
+        int gap2 = standardFive - numList.get(2);   // ５科目合計で必要な内申
+        // 差が少ないほうの基準の不足を結果として返す
+        if(gap1 <= gap2) {
+            // ９科目の基準の差のほうが小さい場合
+            result = "９科目であと " + gap1;
+        } else {
+            // ５科目の基準の差のほうが小さい場合
+            result = "５科目であと " + gap2;
         }
         return result;
     }
