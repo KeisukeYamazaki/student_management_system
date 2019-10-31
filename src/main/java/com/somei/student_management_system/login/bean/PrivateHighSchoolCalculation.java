@@ -54,7 +54,7 @@ public class PrivateHighSchoolCalculation {
 
             // リストに特定の高校が含まれている場合は、特定のメソッドで判定する
             switch (standardList.get(i)[0]) {
-                case "7420":  // 山手学院の場合
+                case "7410":  // 山手学院の場合
                     result = yamateHighSchoolJudgement(numList);
                     resultList.add(result);
                     break;
