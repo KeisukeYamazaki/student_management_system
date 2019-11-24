@@ -224,6 +224,71 @@ public class StudentDaoJdbcImpl implements StudentDao {
         }
     }
 
+    // 指定学年の最終ID番号+1を取得
+    @Override
+    public String selectLastId(String grade) throws DataAccessException {
+
+        String sqlGrade = null;
+
+        switch (grade) {
+            case "中３":
+                sqlGrade = "22";
+                break;
+            case "中２":
+                sqlGrade = "23";
+                break;
+            case "中１":
+                sqlGrade = "24";
+                break;
+            case "小６":
+                sqlGrade = "25";
+                break;
+            case "小５":
+                sqlGrade = "26";
+                break;
+            case "小４":
+                sqlGrade = "27";
+                break;
+            case "小３":
+                sqlGrade = "28";
+                break;
+        }
+
+        // ワイルドカード１
+        sqlGrade = sqlGrade + "%";
+        // ワイルドカード２
+        String minusSqlGrade = "-" + sqlGrade;
+
+        try {
+
+            String sql = "SELECT MAX(ABS(to_number(student_id, '9999'))) FROM student WHERE student_id ~~* any(array[?, ?]);";
+
+            //SQLを実行して、その値に１を加え変数に代入
+
+            String id = jdbc.queryForObject(sql, String.class, sqlGrade, minusSqlGrade);
+
+            if(id != null) {
+
+                // idがnullでなければ、Integerに変換して１を加える
+                Integer newId = Integer.parseInt(id) + 1;
+
+                // Stringに変換して返す
+                return String.valueOf(newId);
+
+            } else {
+
+                // null の場合（＝その学年で１人目の生徒の場合）、sqlGrade に 01 を加えて返す
+                return sqlGrade.replace("%", "01");
+
+            }
+
+        } catch (DataAccessException e) {
+
+            //例外が発生したらnullを返す
+            return null;
+        }
+    }
+
     // 生徒１件更新
     @Override
     public int updateOne(Student student) throws DataAccessException {
@@ -343,57 +408,62 @@ public class StudentDaoJdbcImpl implements StudentDao {
     @Override
     public int insertPathOne(String studentId) throws DataAccessException {
 
-        int rowNumber = jdbc.update("INSERT INTO future_path (studnet_id, record_date) VALUES (?, current_timestamp AT TIME ZONE 'Asia/Tokyo')", studentId);
+        int rowNumber = jdbc.update("INSERT INTO future_path (student_id, record_date) VALUES (?, current_timestamp AT TIME ZONE 'Asia/Tokyo')", studentId);
 
         return rowNumber;
     }
 
     // 生徒データ１件削除（IDの前に-をつけて、一覧に表示させないようにする）
     @Override
-    public int deleteOne(String studentId) throws DataAccessException {
+    public List<Integer> deleteOne(String studentId) throws DataAccessException {
 
         String deleteId = "-" + studentId ;
 
-        int rowNumber = 0;
+        List<Integer> resultList = new ArrayList<>();
         //１件削除
         // student テーブルの処理
         try {
-            rowNumber = jdbc.update("UPDATE student SET student_id = ? WHERE student_id = ?", deleteId, studentId);
+            resultList.add(jdbc.update("UPDATE student SET student_id = ? WHERE student_id = ?", deleteId, studentId));
         } catch (DataAccessException e) {
             System.out.println("studentに " + studentId + " はありませんでした");
         }
 
         // future_path テーブルの処理
         try {
-            rowNumber = jdbc.update("UPDATE future_path SET student_id = ? WHERE student_id = ?", deleteId, studentId);
+            resultList.add(jdbc.update("UPDATE future_path SET student_id = ? WHERE student_id = ?", deleteId, studentId));
         } catch (DataAccessException e) {
             System.out.println("future_pathに " + studentId + " はありませんでした");
         }
 
+        // practice_registry テーブルの処理
+        try {
+            resultList.add(jdbc.update("UPDATE practice_registry SET id = ? WHERE id = ?", deleteId, studentId));
+        } catch (DataAccessException e) {
+            System.out.println("practice_registryに " + studentId + " はありませんでした");
+        }
+
         // practice_exam テーブルの処理
         try {
-            rowNumber = jdbc.update("UPDATE practice_exam SET student_id = ? WHERE student_id = ?", deleteId, studentId);
+            resultList.add(jdbc.update("UPDATE practice_exam SET student_id = ? WHERE student_id = ?", deleteId, studentId));
         } catch (DataAccessException e) {
             System.out.println("practice_examに  " + studentId + " はありませんでした");
         }
 
         // regular_exam テーブルの処理
         try {
-            rowNumber = jdbc.update("UPDATE regular_exam SET student_id = ? WHERE student_id = ?", deleteId, studentId);
+            resultList.add(jdbc.update("UPDATE regular_exam SET student_id = ? WHERE student_id = ?", deleteId, studentId));
         } catch (DataAccessException e) {
             System.out.println("regular_examに " + studentId + " はありませんでした");
         }
 
         // school_record テーブルの処理
         try {
-            rowNumber = jdbc.update("UPDATE school_record SET student_id = ? WHERE student_id = ?", deleteId, studentId);
+            resultList.add(jdbc.update("UPDATE school_record SET student_id = ? WHERE student_id = ?", deleteId, studentId));
         } catch (DataAccessException e) {
             System.out.println("school_recordに " + studentId + " はありませんでした");
         }
 
-
-
-        return rowNumber;
+        return resultList;
     }
 }
 

@@ -3,7 +3,6 @@ package com.somei.student_management_system.login.domain.service;
 import com.somei.student_management_system.login.bean.EntranceExamCalculation;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.FuturePathWithData;
-import com.somei.student_management_system.login.domain.model.Highschools;
 import com.somei.student_management_system.login.domain.model.NameList;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.repository.StudentDao;
@@ -85,6 +84,14 @@ public class StudentService {
 
         // 計算した数値を含めて送る
         return entranceExamCalculation.getFuturePathDate(studentId);
+    }
+
+    /**
+     * 指定学年の最終ID番号+1取得用メソッド.
+     */
+    public String selectLastId(String grade) {
+        //selectLastIdを実行
+        return dao.selectLastId(grade);
     }
 
     /**
@@ -209,16 +216,15 @@ public class StudentService {
     public boolean deleteOne(String studentId) {
 
         //１件削除
-        int rowNumber = dao.deleteOne(studentId);
+        List<Integer> resultList = dao.deleteOne(studentId);
 
-        //判定用変数
-        boolean result = false;
-
-        if (rowNumber > 0) {
-            //delete成功
-            result = true;
+        // '1'の数(sql成功の数)が3以上ならtrueを返す
+        if(resultList.stream().filter(i -> i == 1).count() >= 3) {
+            return true;
         }
-        return result;
+
+        // そうでない場合はfalseを返す
+        return false;
     }
 
 }

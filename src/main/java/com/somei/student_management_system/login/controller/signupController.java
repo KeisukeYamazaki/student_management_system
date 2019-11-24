@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -39,10 +40,51 @@ public class signupController {
      * 生徒登録用のGETメソッド.
      */
     @GetMapping("/signup")
+    public String getFirstSignup(Model model) {
+
+        // コンテンツ部分に新規登録を表示するための文字列を登録
+        model.addAttribute("contents", "login/signup :: studentRegister_contents");
+
+        return "login/homeLayout";
+    }
+
+    /**
+     * 生徒登録用のGETメソッド.
+     */
     public String getSignup(@ModelAttribute SignupForm form, Model model) {
 
         // コンテンツ部分に新規登録を表示するための文字列を登録
         model.addAttribute("contents", "login/signup :: studentRegister_contents");
+
+        // ドロップダウンリストの内容を登録
+        model.addAttribute("grades", getSelectedGrades());
+        model.addAttribute("schools", getSelectedSchools());
+        model.addAttribute("homeRooms", getSelectedHomeRooms());
+        model.addAttribute("entryTimes", getSelectedEntryTimes());
+        model.addAttribute("years", getSelectedYears());
+        model.addAttribute("months", getSelectedMonths());
+        model.addAttribute("days", getSelectedDays());
+
+        return "login/homeLayout";
+    }
+
+    /**
+     * 登録生徒の学年選択メソッド
+     */
+    @PostMapping("/signupGrade")
+    public String postSignupGrade(@ModelAttribute SignupForm form, Model model, @RequestParam("grade")String grade) {
+
+        // コンテンツ部分に新規登録を表示するための文字列を登録
+        model.addAttribute("contents", "login/signup :: studentRegister_contents");
+
+        // 選択された学年を送る
+        model.addAttribute("grade", grade);
+
+        // 生徒IDを取得する
+        String newId = studentService.selectLastId(grade);
+
+        // 新しいIDを送る
+        model.addAttribute("studentId", newId);
 
         // ドロップダウンリストの内容を登録
         model.addAttribute("grades", getSelectedGrades());

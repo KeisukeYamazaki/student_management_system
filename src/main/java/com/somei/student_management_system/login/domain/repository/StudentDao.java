@@ -34,6 +34,9 @@ public interface StudentDao {
     // future_pathテーブルのデータを１件取得
     public FuturePath selectPathOne(String studentId) throws DataAccessException;
 
+    // 指定学年の最終ID番号+1を取得
+    public String selectLastId(String grade) throws DataAccessException;
+
     // studentテーブルを１件更新.
     public int updateOne(Student student) throws DataAccessException;
 
@@ -47,5 +50,5 @@ public interface StudentDao {
     public int insertPathOne(String studentId) throws DataAccessException;
 
     // studentテーブルを１件削除.
-    public int deleteOne(String studentId) throws DataAccessException;
+    public List<Integer> deleteOne(String studentId) throws DataAccessException;
 }
