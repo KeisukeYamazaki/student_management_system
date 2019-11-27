@@ -8,15 +8,15 @@ public class SchoolRecord {
     private String studentId;
     private String grade;
     private String termName;
-    private int english;
-    private int math;
-    private int japanese;
-    private int science;
-    private int socialStudies;
-    private int music;
-    private int art;
-    private int pe;
-    private int techHome;
+    private Integer english;
+    private Integer math;
+    private Integer japanese;
+    private Integer science;
+    private Integer socialStudies;
+    private Integer music;
+    private Integer art;
+    private Integer pe;
+    private Integer techHome;
     private int sumFive;
     private int sumAll;
 

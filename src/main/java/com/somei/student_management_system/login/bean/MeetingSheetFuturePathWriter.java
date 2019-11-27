@@ -250,6 +250,7 @@ public class MeetingSheetFuturePathWriter {
         // 公立高校の平均内申までに必要な数値、中位合格数点数、ボーダー点数を入力する
         publicHighSchoolCalculation(sheet, publicHighSchoolIds, allList, grade);
 
+        /*
         // 私立高校の合否の結果を取得
         List<String> privateHighSchoolResultList
                 = privateHighSchoolCalculation.privateHighSchoolCalculation(futurePathData.getStudentId(), privateHighSchoolIds);
@@ -259,6 +260,7 @@ public class MeetingSheetFuturePathWriter {
         for (int i = 0; i < privateHighSchoolResultList.size(); i++) {
             poiMethods.getCell(sheet, startCol + i, 13).setCellValue(privateHighSchoolResultList.get(i));
         }
+        */
     }
 
     /**
