@@ -234,7 +234,7 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
 
             SchoolRecordWithName srwn = list.get(i);
 
-            if(srwn.getSumFive().equals("")) {
+            if(srwn.getSumFive() == null || srwn.getSumFive().equals("")) {
                 int sumFive = Integer.parseInt(srwn.getEnglish())
                         + Integer.parseInt(srwn.getMath())
                         + Integer.parseInt(srwn.getJapanese())
@@ -243,7 +243,7 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                 srwn.setSumFive(String.valueOf(sumFive));
             }
 
-            if(srwn.getSumAll().equals("")) {
+            if(srwn.getSumAll() == null || srwn.getSumAll().equals("")) {
                 int sumAll = Integer.parseInt(srwn.getEnglish())
                         + Integer.parseInt(srwn.getMath())
                         + Integer.parseInt(srwn.getJapanese())
@@ -339,6 +339,8 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
 
         return resultList;
     }
+
+
 
     @Override
     public int updateSome(Student student) throws DataAccessException {

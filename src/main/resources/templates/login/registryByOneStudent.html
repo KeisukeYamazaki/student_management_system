@@ -36,7 +36,7 @@
     </div>
     <div class="row col-sm-12">
         <form method="post" th:action="@{/registry/byOneStudent/grade}">
-            <div class="form-group">
+            <div class="form-group" style="display: block">
                 <label for="grade" class="control-label col-xs-2"
                        style="margin: 7px 0 0 20px">登録する生徒の学年：</label>
                 <div class="col-sm-2 col-xs-4">
@@ -50,10 +50,8 @@
             </div>
         </form>
     </div>
+    <div class="row col-sm-12 text-info" th:if="${result}" th:text="${result}" style="font-weight: bold; margin-left: 18px"></div>
     <div th:if="${gradeList}" class="panel panel-container col-sm-10" style="margin-top: 15px">
-        <!-- 結果表示用 -->
-        <span class="text-info" th:if="${result}" th:text="${result}"
-              style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
         <div class="col-sm-10">
             <table class="table table-bordered table-condensed table-hover table-striped" style="margin-top: 15px">
                 <tr>
@@ -99,7 +97,7 @@
                 </div>
             </div>
             <div th:if="${schoolRecord}" class="col-sm-12">
-                <form method="post" th:action="@{/registry/byOneStudent/schoolRecord}" th:object="${schoolRecord}">
+                <form method="post" th:action="@{/schoolRecordRegistry}" th:object="${schoolRecord}">
                     <!-- ３学期制の場合 -->
                     <div th:if="${thirdTerm}" class="row col-sm-10" style="margin-top: 20px">
                         <p style="font-size: medium">＜成績(内申)登録＞</p>
@@ -107,6 +105,7 @@
                             <p style="font-size: small">＜中学１年＞</p>
                             <table class="table table-bordered table-condensed table-hover table-striped">
                                 <tr>
+                                    <th class="info">年度</th>
                                     <th class="info">学期</th>
                                     <th class="info">英語</th>
                                     <th class="info">数学</th>
@@ -118,58 +117,95 @@
                                     <th class="info">保体</th>
                                     <th class="info">技家</th>
                                 </tr>
-                                <tr th:object="${schoolRecord0}">
+                                <tr>
                                     <input type="hidden" name="grade" value="中１">
+                                    <input type="hidden" name="recordYear" th:value="${year1}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year1}"></td>
                                     <td width="7%">1<input type="hidden" name="termName" value="１学期"></td>
-                                    <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
+                                    <td><input class="form-control" type="text" name="english"
+                                               th:value="${schoolRecord0.english}"/>
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{math}" name="math"></td>
-                                    <td><input class="form-control" type="text" th:value="*{japanese}" name="japanese">
+                                    <td><input class="form-control" type="text" name="math"
+                                               th:value="${schoolRecord0.math}"></td>
+                                    <td><input class="form-control" type="text" name="japanese"
+                                               th:value="${schoolRecord0.japanese}">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{science}" name="science">
+                                    <td><input class="form-control" type="text" name="science"
+                                               th:value="${schoolRecord0.science}">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{socialStudies}"
-                                               name="socialStudies"></td>
-                                    <td><input class="form-control" type="text" th:value="*{music}" name="music"></td>
-                                    <td><input class="form-control" type="text" th:value="*{art}" name="art"></td>
-                                    <td><input class="form-control" type="text" th:value="*{pe}" name="pe"></td>
-                                    <td><input class="form-control" type="text" th:value="*{techHome}" name="techHome">
+                                    <td><input class="form-control" type="text" name="socialStudies"
+                                               th:value="${schoolRecord0.socialStudies}"></td>
+                                    <td><input class="form-control" type="text" name="music"
+                                               th:value="${schoolRecord0.music}"></td>
+                                    <td><input class="form-control" type="text" name="art"
+                                               th:value="${schoolRecord0.art}"></td>
+                                    <td><input class="form-control" type="text" name="pe"
+                                               th:value="${schoolRecord0.pe}"></td>
+                                    <td><input class="form-control" type="text" name="techHome"
+                                               th:value="${schoolRecord0.techHome}">
                                     </td>
                                 </tr>
-                                <tr th:object="${schoolRecord1}">
+                                <tr>
                                     <input type="hidden" name="grade" value="中１">
+                                    <input type="hidden" name="recordYear" th:value="${year1}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year1}"></td>
                                     <td width="7%">2<input type="hidden" name="termName" value="２学期"></td>
-                                    <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
+                                    <td><input class="form-control" type="text" name="english"
+                                               th:value="${schoolRecord1.english}"/>
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{math}" name="math"></td>
-                                    <td><input class="form-control" type="text" th:value="*{japanese}" name="japanese">
+                                    <td><input class="form-control" type="text" name="math"
+                                               th:value="${schoolRecord1.math}"></td>
+                                    <td><input class="form-control" type="text" name="japanese"
+                                               th:value="${schoolRecord1.japanese}">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{science}" name="science">
+                                    <td><input class="form-control" type="text" name="science"
+                                               th:value="${schoolRecord1.science}">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{socialStudies}"
-                                               name="socialStudies"></td>
-                                    <td><input class="form-control" type="text" th:value="*{music}" name="music"></td>
-                                    <td><input class="form-control" type="text" th:value="*{art}" name="art"></td>
-                                    <td><input class="form-control" type="text" th:value="*{pe}" name="pe"></td>
-                                    <td><input class="form-control" type="text" th:value="*{techHome}" name="techHome">
+                                    <td><input class="form-control" type="text" name="socialStudies"
+                                               th:value="${schoolRecord1.socialStudies}"></td>
+                                    <td><input class="form-control" type="text" name="music"
+                                               th:value="${schoolRecord1.music}"></td>
+                                    <td><input class="form-control" type="text" name="art"
+                                               th:value="${schoolRecord1.art}"></td>
+                                    <td><input class="form-control" type="text" name="pe"
+                                               th:value="${schoolRecord1.pe}"></td>
+                                    <td><input class="form-control" type="text" name="techHome"
+                                               th:value="${schoolRecord1.techHome}">
                                     </td>
                                 </tr>
-                                <tr th:object="${schoolRecord2}">
+                                <tr>
                                     <input type="hidden" name="grade" value="中１">
+                                    <input type="hidden" name="recordYear" th:value="${year1}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year1}"></td>
                                     <td width="7%">3<input type="hidden" name="termName" value="３学期"></td>
-                                    <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord2.english}"
+                                               name="english"/>
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{math}" name="math"></td>
-                                    <td><input class="form-control" type="text" th:value="*{japanese}" name="japanese">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord2.math}"
+                                               name="math"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord2.japanese}"
+                                               name="japanese">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{science}" name="science">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord2.science}"
+                                               name="science">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{socialStudies}"
+                                    <td><input class="form-control" type="text"
+                                               th:value="${schoolRecord2.socialStudies}"
                                                name="socialStudies"></td>
-                                    <td><input class="form-control" type="text" th:value="*{music}" name="music"></td>
-                                    <td><input class="form-control" type="text" th:value="*{art}" name="art"></td>
-                                    <td><input class="form-control" type="text" th:value="*{pe}" name="pe"></td>
-                                    <td><input class="form-control" type="text" th:value="*{techHome}" name="techHome">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord2.music}"
+                                               name="music"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord2.art}"
+                                               name="art"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord2.pe}"
+                                               name="pe"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord2.techHome}"
+                                               name="techHome">
                                     </td>
                                 </tr>
                             </table>
@@ -178,6 +214,7 @@
                             <p style="font-size: small">＜中学２年＞</p>
                             <table class="table table-bordered table-condensed table-hover table-striped">
                                 <tr>
+                                    <th class="info">年度</th>
                                     <th class="info">学期</th>
                                     <th class="info">英語</th>
                                     <th class="info">数学</th>
@@ -189,58 +226,97 @@
                                     <th class="info">保体</th>
                                     <th class="info">技家</th>
                                 </tr>
-                                <tr th:object="${schoolRecord3}">
+                                <tr>
                                     <input type="hidden" name="grade" value="中２">
+                                    <input type="hidden" name="recordYear" th:value="${year2}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year2}"></td>
                                     <td width="7%">1<input type="hidden" name="termName" value="１学期"></td>
-                                    <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord3.english}"
+                                               name="english"/>
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{math}" name="math"></td>
-                                    <td><input class="form-control" type="text" th:value="*{japanese}" name="japanese">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord3.math}"
+                                               name="math"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord3.japanese}"
+                                               name="japanese">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{science}" name="science">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord3.science}"
+                                               name="science">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{socialStudies}"
+                                    <td><input class="form-control" type="text"
+                                               th:value="${schoolRecord3.socialStudies}"
                                                name="socialStudies"></td>
-                                    <td><input class="form-control" type="text" th:value="*{music}" name="music"></td>
-                                    <td><input class="form-control" type="text" th:value="*{art}" name="art"></td>
-                                    <td><input class="form-control" type="text" th:value="*{pe}" name="pe"></td>
-                                    <td><input class="form-control" type="text" th:value="*{techHome}" name="techHome">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord3.music}"
+                                               name="music"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord3.art}"
+                                               name="art"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord3.pe}"
+                                               name="pe"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord3.techHome}"
+                                               name="techHome">
                                     </td>
                                 </tr>
-                                <tr th:object="${schoolRecord4}">
+                                <tr>
                                     <input type="hidden" name="grade" value="中２">
+                                    <input type="hidden" name="recordYear" th:value="${year2}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year2}"></td>
                                     <td width="7%">2<input type="hidden" name="termName" value="２学期"></td>
-                                    <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord4.english}"
+                                               name="english"/>
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{math}" name="math"></td>
-                                    <td><input class="form-control" type="text" th:value="*{japanese}" name="japanese">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord4.math}"
+                                               name="math"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord4.japanese}"
+                                               name="japanese">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{science}" name="science">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord4.science}"
+                                               name="science">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{socialStudies}"
+                                    <td><input class="form-control" type="text"
+                                               th:value="${schoolRecord4.socialStudies}"
                                                name="socialStudies"></td>
-                                    <td><input class="form-control" type="text" th:value="*{music}" name="music"></td>
-                                    <td><input class="form-control" type="text" th:value="*{art}" name="art"></td>
-                                    <td><input class="form-control" type="text" th:value="*{pe}" name="pe"></td>
-                                    <td><input class="form-control" type="text" th:value="*{techHome}" name="techHome">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord4.music}"
+                                               name="music"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord4.art}"
+                                               name="art"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord4.pe}"
+                                               name="pe"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord4.techHome}"
+                                               name="techHome">
                                     </td>
                                 </tr>
-                                <tr th:object="${schoolRecord5}">
+                                <tr>
                                     <input type="hidden" name="grade" value="中２">
+                                    <input type="hidden" name="recordYear" th:value="${year2}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year2}"></td>
                                     <td width="7%">3<input type="hidden" name="termName" value="３学期"></td>
-                                    <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord5.english}"
+                                               name="english"/>
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{math}" name="math"></td>
-                                    <td><input class="form-control" type="text" th:value="*{japanese}" name="japanese">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord5.math}"
+                                               name="math"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord5.japanese}"
+                                               name="japanese">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{science}" name="science">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord5.science}"
+                                               name="science">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{socialStudies}"
+                                    <td><input class="form-control" type="text"
+                                               th:value="${schoolRecord5.socialStudies}"
                                                name="socialStudies"></td>
-                                    <td><input class="form-control" type="text" th:value="*{music}" name="music"></td>
-                                    <td><input class="form-control" type="text" th:value="*{art}" name="art"></td>
-                                    <td><input class="form-control" type="text" th:value="*{pe}" name="pe"></td>
-                                    <td><input class="form-control" type="text" th:value="*{techHome}" name="techHome">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord5.music}"
+                                               name="music"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord5.art}"
+                                               name="art"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord5.pe}"
+                                               name="pe"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord5.techHome}"
+                                               name="techHome">
                                     </td>
                                 </tr>
                             </table>
@@ -249,6 +325,7 @@
                             <p style="font-size: small">＜中学３年＞</p>
                             <table class="table table-bordered table-condensed table-hover table-striped">
                                 <tr>
+                                    <th class="info">年度</th>
                                     <th class="info">学期</th>
                                     <th class="info">英語</th>
                                     <th class="info">数学</th>
@@ -260,40 +337,66 @@
                                     <th class="info">保体</th>
                                     <th class="info">技家</th>
                                 </tr>
-                                <tr th:object="${schoolRecord6}">
+                                <tr>
                                     <input type="hidden" name="grade" value="中３">
+                                    <input type="hidden" name="recordYear" th:value="${year3}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year3}"></td>
                                     <td width="7%">1<input type="hidden" name="termName" value="１学期"></td>
-                                    <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord6.english}"
+                                               name="english"/>
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{math}" name="math"></td>
-                                    <td><input class="form-control" type="text" th:value="*{japanese}" name="japanese">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord6.math}"
+                                               name="math"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord6.japanese}"
+                                               name="japanese">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{science}" name="science">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord6.science}"
+                                               name="science">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{socialStudies}"
+                                    <td><input class="form-control" type="text"
+                                               th:value="${schoolRecord6.socialStudies}"
                                                name="socialStudies"></td>
-                                    <td><input class="form-control" type="text" th:value="*{music}" name="music"></td>
-                                    <td><input class="form-control" type="text" th:value="*{art}" name="art"></td>
-                                    <td><input class="form-control" type="text" th:value="*{pe}" name="pe"></td>
-                                    <td><input class="form-control" type="text" th:value="*{techHome}" name="techHome">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord6.music}"
+                                               name="music"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord6.art}"
+                                               name="art"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord6.pe}"
+                                               name="pe"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord6.techHome}"
+                                               name="techHome">
                                     </td>
                                 </tr>
-                                <tr th:object="${schoolRecord7}">
+                                <tr>
                                     <input type="hidden" name="grade" value="中３">
+                                    <input type="hidden" name="recordYear" th:value="${year3}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year3}"></td>
                                     <td width="7%">2<input type="hidden" name="termName" value="２学期"></td>
-                                    <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord7.english}"
+                                               name="english"/>
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{math}" name="math"></td>
-                                    <td><input class="form-control" type="text" th:value="*{japanese}" name="japanese">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord7.math}"
+                                               name="math"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord7.japanese}"
+                                               name="japanese">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{science}" name="science">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord7.science}"
+                                               name="science">
                                     </td>
-                                    <td><input class="form-control" type="text" th:value="*{socialStudies}"
+                                    <td><input class="form-control" type="text"
+                                               th:value="${schoolRecord7.socialStudies}"
                                                name="socialStudies"></td>
-                                    <td><input class="form-control" type="text" th:value="*{music}" name="music"></td>
-                                    <td><input class="form-control" type="text" th:value="*{art}" name="art"></td>
-                                    <td><input class="form-control" type="text" th:value="*{pe}" name="pe"></td>
-                                    <td><input class="form-control" type="text" th:value="*{techHome}" name="techHome">
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord7.music}"
+                                               name="music"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord7.art}"
+                                               name="art"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord7.pe}"
+                                               name="pe"></td>
+                                    <td><input class="form-control" type="text" th:value="${schoolRecord7.techHome}"
+                                               name="techHome">
                                     </td>
                                 </tr>
                             </table>
@@ -308,6 +411,7 @@
                             <p style="font-size: small">＜中学１年＞</p>
                             <table class="table table-bordered table-condensed table-hover table-striped">
                                 <tr>
+                                    <th class="info">年度</th>
                                     <th class="info">学期</th>
                                     <th class="info">英語</th>
                                     <th class="info">数学</th>
@@ -321,6 +425,10 @@
                                 </tr>
                                 <tr th:object="${schoolRecord0}">
                                     <input type="hidden" name="grade" value="中１">
+                                    <input type="hidden" name="recordYear" th:value="${year1}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year1}"></td>
                                     <td width="7%">前期<input type="hidden" name="termName" value="前期"></td>
                                     <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
                                     </td>
@@ -339,6 +447,10 @@
                                 </tr>
                                 <tr th:object="${schoolRecord1}">
                                     <input type="hidden" name="grade" value="中１">
+                                    <input type="hidden" name="recordYear" th:value="${year1}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year1}"></td>
                                     <td width="7%">後期<input type="hidden" name="termName" value="後期"></td>
                                     <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
                                     </td>
@@ -361,6 +473,7 @@
                             <p style="font-size: small">＜中学２年＞</p>
                             <table class="table table-bordered table-condensed table-hover table-striped">
                                 <tr>
+                                    <th class="info">年度</th>
                                     <th class="info">学期</th>
                                     <th class="info">英語</th>
                                     <th class="info">数学</th>
@@ -374,6 +487,10 @@
                                 </tr>
                                 <tr th:object="${schoolRecord2}">
                                     <input type="hidden" name="grade" value="中２">
+                                    <input type="hidden" name="recordYear" th:value="${year2}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year2}"></td>
                                     <td width="7%">前期<input type="hidden" name="termName" value="前期"></td>
                                     <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
                                     </td>
@@ -392,6 +509,10 @@
                                 </tr>
                                 <tr th:object="${schoolRecord3}">
                                     <input type="hidden" name="grade" value="中２">
+                                    <input type="hidden" name="recordYear" th:value="${year2}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year2}"></td>
                                     <td width="7%">後期<input type="hidden" name="termName" value="後期"></td>
                                     <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
                                     </td>
@@ -414,6 +535,7 @@
                             <p style="font-size: small">＜中学３年＞</p>
                             <table class="table table-bordered table-condensed table-hover table-striped">
                                 <tr>
+                                    <th class="info">年度</th>
                                     <th class="info">学期</th>
                                     <th class="info">英語</th>
                                     <th class="info">数学</th>
@@ -427,6 +549,10 @@
                                 </tr>
                                 <tr th:object="${schoolRecord4}">
                                     <input type="hidden" name="grade" value="中３">
+                                    <input type="hidden" name="recordYear" th:value="${year3}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year3}"></td>
                                     <td width="7%">前期<input type="hidden" name="termName" value="前期"></td>
                                     <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
                                     </td>
@@ -445,6 +571,10 @@
                                 </tr>
                                 <tr th:object="${schoolRecord5}">
                                     <input type="hidden" name="grade" value="中３">
+                                    <input type="hidden" name="recordYear" th:value="${year3}">
+                                    <input type="hidden" name="studentId" th:value="${studentId}">
+                                    <input type="hidden" name="studentName" th:value="${studentName}">
+                                    <td width="7%" th:text="${year3}"></td>
                                     <td width="7%">後期<input type="hidden" name="termName" value="後期"></td>
                                     <td><input class="form-control" type="text" th:value="*{english}" name="english"/>
                                     </td>
@@ -476,6 +606,7 @@
             <div th:if="${practiceExam}" class="col-sm-12">
                 <div class="row col-sm-10" style="margin-top: 20px">
                     <p style="font-size: medium">＜模擬試験結果登録＞</p>
+
                 </div>
             </div>
         </div>

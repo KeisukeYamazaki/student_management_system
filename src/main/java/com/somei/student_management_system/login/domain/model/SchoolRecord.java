@@ -7,6 +7,7 @@ public class SchoolRecord {
 
     private String studentId;
     private String grade;
+    private Integer recordYear;
     private String termName;
     private Integer english;
     private Integer math;
@@ -17,7 +18,7 @@ public class SchoolRecord {
     private Integer art;
     private Integer pe;
     private Integer techHome;
-    private int sumFive;
-    private int sumAll;
+    private Integer sumFive;
+    private Integer sumAll;
 
 }

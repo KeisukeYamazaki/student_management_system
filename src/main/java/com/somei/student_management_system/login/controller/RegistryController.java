@@ -224,7 +224,10 @@ public class RegistryController {
 
         }
 
-        return getRegistry(model);
+        if(sessionData.getStr3() == null) {
+            return getRegistry(model);
+        }
+        return postRegistryByOneStudentKind("schoolRecord" ,model);
     }
 
     /**
@@ -403,8 +406,26 @@ public class RegistryController {
             // schoolRecord を true にして画面表示させる
             model.addAttribute("schoolRecord", true);
 
-            // 学年を送る
+            // ID・学年・名前を送る
+            model.addAttribute("studentId", student.getStudentId());
             model.addAttribute("studentGrade", student.getGrade());
+            model.addAttribute("studentName", student.getStudentName());
+
+            // 年度(西暦)を送る
+            List<Integer> yearList = Arrays.asList(2017, 2018, 2019);
+            if (student.getGrade().equals("中３")) {
+                // 中３の場合は
+                model.addAttribute("year1", yearList.get(0));
+                model.addAttribute("year2", yearList.get(1));
+                model.addAttribute("year3", yearList.get(2));
+            } else if (student.getGrade().equals("中２")) {
+                // 中２の場合
+                model.addAttribute("year1", yearList.get(1));
+                model.addAttribute("year2", yearList.get(2));
+            } else {
+                // 中１の場合
+                model.addAttribute("year1", yearList.get(2));
+            }
 
             // ２学期制か３学期制かを送る
             if (student.getLocalSchool().equals("東野中")) {
@@ -415,7 +436,6 @@ public class RegistryController {
                 model.addAttribute("thirdTerm", true);
             }
 
-            // 成績登録の場合
             // 学年、学期のListを作成
             List<String> gradeList = Arrays.asList("中１", "中２", "中３");
             List<String> termList;
@@ -445,6 +465,8 @@ public class RegistryController {
         } else {
             // practiceExam を true にする
             model.addAttribute("practiceExam", true);
+
+            // 模試結果リストの取得
         }
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
@@ -455,69 +477,5 @@ public class RegistryController {
         model.addAttribute("grade", student.getGrade());
 
         return "login/homeLayout";
-    }
-
-    /**
-     * 個人登録画面の成績登録処理
-     *
-     * @param schoolRecord 成績
-     * @param model        モデル
-     * @return 生徒の各種登録画面
-     */
-    @PostMapping("/registry/byOneStudent/schoolRecord")
-    public String RegistryByOneStudentRecord(@ModelAttribute SchoolRecord schoolRecord,
-                                             Model model) {
-        // 生徒情報の取得
-        Student student = studentService.selectOne(sessionData.getStr3());
-
-        // 送られてきた値をリストに格納
-        List<String> gradeList = Arrays.asList(schoolRecord.getGrade().split(","));
-        List<String> termList = Arrays.asList(schoolRecord.getTermName().split(","));
-        List<String> englishList = Arrays.asList(String.valueOf(schoolRecord.getEnglish()).split(","));
-        List<String> mathList = Arrays.asList(String.valueOf(schoolRecord.getMath()).split(","));
-        List<String> japaneseList = Arrays.asList(String.valueOf(schoolRecord.getJapanese()).split(","));
-        List<String> scienceList = Arrays.asList(String.valueOf(schoolRecord.getScience()).split(","));
-        List<String> socialStudiesList = Arrays.asList(String.valueOf(schoolRecord.getSocialStudies()).split(","));
-        List<String> musicList = Arrays.asList(String.valueOf(schoolRecord.getMusic()).split(","));
-        List<String> artList = Arrays.asList(String.valueOf(schoolRecord.getArt()).split(","));
-        List<String> peList = Arrays.asList(String.valueOf(schoolRecord.getPe()).split(","));
-        List<String> techHomeList = Arrays.asList(String.valueOf(schoolRecord.getTechHome()).split(","));
-
-        // 渡すためのリストを作成
-        List<SchoolRecord> registryList = new ArrayList<>();
-
-        for (int i = 0; i < gradeList.size(); i++) {
-            SchoolRecord inList = new SchoolRecord();
-            // SchoolRecordクラスにデータを代入してリストに格納
-            if (englishList.get(i) == null) {
-                // 英語がnullでない(=成績が登録されている)場合、リストに格納
-                inList.setStudentId(student.getStudentId());
-                inList.setGrade(gradeList.get(i));
-                inList.setTermName(termList.get(i));
-                inList.setEnglish(Integer.parseInt(englishList.get(i)));
-                inList.setMath(Integer.parseInt(mathList.get(i)));
-                inList.setJapanese(Integer.parseInt(japaneseList.get(i)));
-                inList.setScience(Integer.parseInt(scienceList.get(i)));
-                inList.setSocialStudies(Integer.parseInt(socialStudiesList.get(i)));
-                inList.setMusic(Integer.parseInt(musicList.get(i)));
-                inList.setArt(Integer.parseInt(artList.get(i)));
-                inList.setPe(Integer.parseInt(peList.get(i)));
-                inList.setTechHome(Integer.parseInt(techHomeList.get(i)));
-                // リストに格納する
-                registryList.add(inList);
-            }
-
-            try {
-
-
-
-            } catch (DataAccessException e) {
-
-                model.addAttribute("result", "更新失敗");
-            }
-
-        }
-
-        return postRegistryByOneStudentKind("schoolRecord", model);
     }
 }
