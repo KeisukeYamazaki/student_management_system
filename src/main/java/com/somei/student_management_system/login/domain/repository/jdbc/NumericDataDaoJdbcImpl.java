@@ -392,7 +392,6 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
         // 結果返却用のリストを生成
         List<Integer> resultList = new ArrayList<>();
 
-
         // リストの数の分のinsertを行う
         for (int i = 0; i < list.size(); i++) {
 
@@ -419,8 +418,8 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                             + " social_deviation)"
                             + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                     , ipe.getStudentId()
-                    , ipe.getGrade()
-                    , ipe.getExamYear()
+                    , Integer.parseInt(ipe.getGrade())
+                    , Integer.parseInt(ipe.getExamYear())
                     , ipe.getMonthName()
                     , ipe.getEnglishScore()
                     , ipe.getMathScore()

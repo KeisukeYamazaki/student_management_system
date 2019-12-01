@@ -50,7 +50,8 @@
             </div>
         </form>
     </div>
-    <div class="row col-sm-12 text-info" th:if="${result}" th:text="${result}" style="font-weight: bold; margin-left: 18px"></div>
+    <div class="row col-sm-12 text-info" th:if="${result}" th:text="${result}"
+         style="font-weight: bold; margin-left: 18px"></div>
     <div th:if="${gradeList}" class="panel panel-container col-sm-10" style="margin-top: 15px">
         <div class="col-sm-10">
             <table class="table table-bordered table-condensed table-hover table-striped" style="margin-top: 15px">
@@ -604,9 +605,107 @@
                 </div>
             </div>
             <div th:if="${practiceExam}" class="col-sm-12">
-                <div class="row col-sm-10" style="margin-top: 20px">
+                <div class="row col-sm-12" style="margin-top: 20px">
                     <p style="font-size: medium">＜模擬試験結果登録＞</p>
-
+                    <div class="col-sm-12">
+                        <p style="font-size: small">＜登録されている結果＞</p>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">学年</th>
+                                <th class="info col-sm-1">実施月</th>
+                                <th class="info col">英語</th>
+                                <th class="info col">数学</th>
+                                <th class="info col">国語</th>
+                                <th class="info col">理科</th>
+                                <th class="info col">社会</th>
+                                <th class="info col">３科</th>
+                                <th class="info col">５科</th>
+                                <th class="info col">３科<br/>偏差</th>
+                                <th class="info col">５科<br/>偏差</th>
+                                <th class="info col">英語<br/>偏差</th>
+                                <th class="info col">数学<br/>偏差</th>
+                                <th class="info col">国語<br/>偏差</th>
+                                <th class="info col">理科<br/>偏差</th>
+                                <th class="info col">社会<br/>偏差</th>
+                            </tr>
+                            <tr th:each="practice : ${practiceExam}">
+                                <td th:text="${practice.grade}"></td>
+                                <td th:text="${practice.monthName}"></td>
+                                <td th:text="${practice.englishScore}"></td>
+                                <td th:text="${practice.mathScore}"></td>
+                                <td th:text="${practice.japaneseScore}"></td>
+                                <td th:text="${practice.scienceScore}"></td>
+                                <td th:text="${practice.socialScore}"></td>
+                                <td th:text="${practice.sumThree}"></td>
+                                <td th:text="${practice.sumAll}"></td>
+                                <td th:text="${practice.devThree}"></td>
+                                <td th:text="${practice.devFive}"></td>
+                                <td th:text="${practice.englishDeviation}"></td>
+                                <td th:text="${practice.mathDeviation}"></td>
+                                <td th:text="${practice.japaneseDeviation}"></td>
+                                <td th:text="${practice.scienceDeviation}"></td>
+                                <td th:text="${practice.socialDeviation}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-12">
+                        <p style="font-size: small">＜登録する結果＞</p>
+                        <form method="post" th:action="@{/practiceExam/ByOneStudent}">
+                            <table class="table table-bordered table-condensed table-hover table-striped" id="tblForm1">
+                                <thead>
+                                <tr>
+                                    <th class="info">学年</th>
+                                    <th class="info" width="8%">実施年</th>
+                                    <th class="info col-sm-1">実施月</th>
+                                    <th class="info col">英語</th>
+                                    <th class="info col">数学</th>
+                                    <th class="info col">国語</th>
+                                    <th class="info col">理科</th>
+                                    <th class="info col">社会</th>
+                                    <th class="info col">３科<br/>偏差</th>
+                                    <th class="info col">５科<br/>偏差</th>
+                                    <th class="info col">英語<br/>偏差</th>
+                                    <th class="info col">数学<br/>偏差</th>
+                                    <th class="info col">国語<br/>偏差</th>
+                                    <th class="info col">理科<br/>偏差</th>
+                                    <th class="info col">社会<br/>偏差</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input class="form-control" type="text" name="grade"></td>
+                                    <td><input class="form-control" type="text" name="examYear"></td>
+                                    <td>
+                                        <select class="form-control" name="monthName">
+                                            <option value="">選択</option>
+                                            <option value="1">７月</option>
+                                            <option value="2">８月</option>
+                                            <option value="3">10月</option>
+                                            <option value="4">12月</option>
+                                            <option value="5">１月</option>
+                                            <option value="6">３月</option>
+                                        </select>
+                                    </td>
+                                    <td><input class="form-control" type="text" name="englishScore"></td>
+                                    <td><input class="form-control" type="text" name="mathScore"></td>
+                                    <td><input class="form-control" type="text" name="japaneseScore"></td>
+                                    <td><input class="form-control" type="text" name="scienceScore"></td>
+                                    <td><input class="form-control" type="text" name="socialScore"></td>
+                                    <td><input class="form-control" type="text" name="devThree"></td>
+                                    <td><input class="form-control" type="text" name="devFive"></td>
+                                    <td><input class="form-control" type="text" name="englishDeviation"></td>
+                                    <td><input class="form-control" type="text" name="mathDeviation"></td>
+                                    <td><input class="form-control" type="text" name="japaneseDeviation"></td>
+                                    <td><input class="form-control" type="text" name="scienceDeviation"></td>
+                                    <td><input class="form-control" type="text" name="socialDeviation"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <input id="btnAdd1" type="button" value="行追加" style="margin-bottom: 20px" />
+                            <br/>
+                            <button class="btn btn-primary btn-lg" type="submit">登録</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

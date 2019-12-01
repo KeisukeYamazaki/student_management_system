@@ -6,6 +6,7 @@ import com.somei.student_management_system.login.bean.IOCsv;
 import com.somei.student_management_system.login.bean.RecordRegistry;
 import com.somei.student_management_system.login.bean.excelProcessing;
 import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
+import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
 import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.model.SessionData;
@@ -304,7 +305,7 @@ public class RegistryController {
             e.printStackTrace();
         } catch (DataAccessException e) {
 
-            model.addAttribute("result", "更新失敗(トランザクションテスト)");
+            model.addAttribute("result", "更新失敗");
 
         }
 
@@ -467,6 +468,10 @@ public class RegistryController {
             model.addAttribute("practiceExam", true);
 
             // 模試結果リストの取得
+            List<PracticeExam> practiceExamList = numericDataService.selectPracticeOne(student.getStudentId());
+
+            // 送る
+            model.addAttribute("practiceExam", practiceExamList);
         }
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
@@ -477,5 +482,33 @@ public class RegistryController {
         model.addAttribute("grade", student.getGrade());
 
         return "login/homeLayout";
+    }
+
+    /**
+     * 個人登録模試登録メソッド
+     *
+     * @param exam  模試結果
+     * @param model モデル
+     * @return 生徒の各種登録画面
+     */
+    @PostMapping("/practiceExam/ByOneStudent")
+    public String postPracticeExamByOneStudent(@ModelAttribute ImportPracticeExam exam, Model model){
+
+        List<ImportPracticeExam> practiceExamList = recordRegistry.practiceRegistration(exam);
+
+        try {
+
+            boolean result = numericDataService.insertPracticeMany(practiceExamList);
+
+            if (result == true) {
+                model.addAttribute("result", "模擬試験データを登録しました");
+            } else {
+                model.addAttribute("result", "模擬試験データの登録に失敗しました");
+            }
+
+        } catch (DataAccessException e) {
+            model.addAttribute("result", "更新失敗");
+        }
+        return postRegistryByOneStudentKind("practiceExam" ,model);
     }
 }

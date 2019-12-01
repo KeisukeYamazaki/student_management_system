@@ -13,10 +13,10 @@ public class ImportPracticeExam {
     private String studentId;
 
     @CsvBindByName(column = "学年", required = true)
-    private int grade;
+    private String grade;
 
     @CsvBindByName(column = "実施年", required = true)
-    private int examYear;
+    private String examYear;
 
     @CsvBindByName(column = "実施月", required = true)
     private String monthName;
