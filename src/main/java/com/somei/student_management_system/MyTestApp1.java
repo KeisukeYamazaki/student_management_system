@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,22 +41,39 @@ public class MyTestApp1 {
         SLF4JBridgeHandler.install();
 
         final String folderName = "フォルダ1";
-        final String spreadsheetName = "スプレッドシート1";
-        final String worksheetName = "ワークシート1";
+        final String spreadsheetName = "2019_中学部_定期試験結果まとめ";
+        final String worksheetName = "２学期期末・後期中間";
 
         // Build a new authorized API client service.
         GoogleService googleService = getGoogleService();
         SheetsWrapper sheetsWrapper = googleService.getSheetsWrapperWithWorksheet(folderName, spreadsheetName, worksheetName);
         int lastRowNumWithValue = sheetsWrapper.getLastRowNumberWithValue(worksheetName, 1);
 
+        /*
         // 値の入っている最後の行の次の行から書き込み
         Object[][] values = { { 1, "A" }, { 2.1D, "B" }, { 2.50E-3, "C" } };
         sheetsWrapper.setValues(worksheetName, 1, lastRowNumWithValue + 1, values);
         LOGGER.info("書き込みました。");
+        */
 
         //値を取得
-        List<List<Object>> valueList = sheetsWrapper.getValues("ワークシート1", 1,1,5,5);
-        System.out.println(valueList);
+        List<List<Object>> valueList1 = sheetsWrapper.getValues("２学期期末・後期中間", 4, 4, 27, 63);
+        List<List<Object>> valueList2 = sheetsWrapper.getValues("２学期期末・後期中間", 32, 4, 55, 63);
+        for(List<Object> list : valueList1) {
+            System.out.println(list);
+        }
+        System.out.println(valueList1);
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < valueList1.get(0).size(); i++) {
+            String str = String.valueOf(valueList1.get(0).get(i));
+            if (str.contains(".")) {
+                continue;
+            }
+            if (i == 0 || i >= 13) {
+                list.add(str);
+            }
+        }
+        System.out.println(list);
     }
 
     static GoogleService getGoogleService() {

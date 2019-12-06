@@ -4,6 +4,7 @@ import com.somei.student_management_system.login.domain.model.FuturePathWithData
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
+import com.somei.student_management_system.login.domain.model.SessionData;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.service.NumericDataService;
 import com.somei.student_management_system.login.domain.service.StudentService;
@@ -38,6 +39,12 @@ public class MeetingSheetWriter {
 
     @Autowired
     MeetingSheetFuturePathWriter meetingSheetFuturePathWriter;
+
+    @Autowired
+    EntranceExamCalculation entranceExamCalculation;
+
+    @Autowired
+    SessionData sessionData;
 
     public XSSFWorkbook writeMeetingSheet(Student student, XSSFWorkbook wb, String termName) {
 
@@ -95,13 +102,25 @@ public class MeetingSheetWriter {
         FuturePathWithData futurePathData = studentService.selectPathDataOne(student.getStudentId());
 
         //ブックの再計算を許可
-        wb.setForceFormulaRecalculation(true);
+        //wb.setForceFormulaRecalculation(true);
 
         // シートの取得
         XSSFSheet sheet = wb.getSheetAt(0);
 
         //シートの再計算を許可
-        sheet.setForceFormulaRecalculation(true);
+        //sheet.setForceFormulaRecalculation(true);
+
+        // 名前の入力
+        poiMethods.getCell(sheet, 1, 22).setCellValue(student.getStudentName());
+
+        // 入試の際に必要な数値を取得して、入力する
+        List<Integer> calculatedList = entranceExamCalculation.Calculation(schoolRecordList);
+        poiMethods.getCell(sheet, 3, 1).setCellValue(calculatedList.get(1));  // /135の値
+        poiMethods.getCell(sheet, 5, 1).setCellValue(calculatedList.get(0));  // /45の値
+        poiMethods.getCell(sheet, 7, 1).setCellValue(calculatedList.get(3));  // /50の値
+        poiMethods.getCell(sheet, 9, 1).setCellValue(calculatedList.get(2));  // /25の値
+        double aNum = Math.round(calculatedList.get(1) * 100.0 / 135.0);
+        poiMethods.getCell(sheet, 11, 1).setCellValue((int) aNum);  // /A値
 
         // 学年によって処理を分岐
         if (student.getGrade().equals("中３")) {
@@ -110,9 +129,6 @@ public class MeetingSheetWriter {
             if (termName.equals("３学期制")) {
 
                 // ３学期制の場合
-                // 名前の入力
-                poiMethods.getCell(sheet, 1, 22).setCellValue(student.getStudentName());
-
                 // 成績の入力
                 // 中１の成績の入力
                 recordWriter.write1stSchoolRecord3terms(wb, sheet, schoolRecordList_1st, 3);
@@ -134,7 +150,7 @@ public class MeetingSheetWriter {
                 regularExamWriter.writeRegularExam3terms(wb, sheet, regularExamList_3rd, 3, 3);
 
                 // 模試結果の入力
-                practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_2nd, practiceExamList_3rd, 3);
+                practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_2nd, practiceExamList_3rd, 3, aNum);
 
                 // 進路情報の入力
                 meetingSheetFuturePathWriter.writeFuturePath(sheet, futurePathData, allRecordList, 3);
@@ -142,9 +158,6 @@ public class MeetingSheetWriter {
             } else {
 
                 // ２学期制の場合
-                // 名前の入力
-                poiMethods.getCell(sheet, 1, 22).setCellValue(student.getStudentName());
-
                 // 成績の入力
                 // 中１の成績の入力
                 recordWriter.write1stSchoolRecord2terms(wb, sheet, schoolRecordList_1st, 3);
@@ -166,7 +179,7 @@ public class MeetingSheetWriter {
                 regularExamWriter.writeRegularExam2terms(wb, sheet, regularExamList_3rd, 3, 3);
 
                 // 模試結果の入力
-                practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_2nd, practiceExamList_3rd, 2);
+                practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_2nd, practiceExamList_3rd, 2, aNum);
 
                 // 進路情報の入力
                 meetingSheetFuturePathWriter.writeFuturePath(sheet, futurePathData, allRecordList, 3);
@@ -179,8 +192,6 @@ public class MeetingSheetWriter {
             if (termName.equals("３学期制")) {
 
                 // ３学期制の場合
-                // 名前の入力
-                poiMethods.getCell(sheet, 1, 22).setCellValue(student.getStudentName());
                 // 成績の入力
                 // 中１の成績の入力
                 recordWriter.write1stSchoolRecord3terms(wb, sheet, schoolRecordList_1st, 2);
@@ -196,7 +207,7 @@ public class MeetingSheetWriter {
                 regularExamWriter.writeRegularExam3terms(wb, sheet, regularExamList_2nd, 2, 2);
 
                 // 模試結果の入力
-                practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_1st, practiceExamList_2nd, 3);
+                practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_1st, practiceExamList_2nd, 3, aNum);
 
                 // 進路情報の入力
                 meetingSheetFuturePathWriter.writeFuturePath(sheet, futurePathData, allRecordList, 2);
@@ -204,9 +215,6 @@ public class MeetingSheetWriter {
             } else {
 
                 // ２学期制の場合
-                // 名前の入力
-                poiMethods.getCell(sheet, 1, 22).setCellValue(student.getStudentName());
-
                 // 成績の入力
                 // 中１の成績の入力
                 recordWriter.write1stSchoolRecord2terms(wb, sheet, schoolRecordList_1st, 2);
@@ -222,7 +230,7 @@ public class MeetingSheetWriter {
                 regularExamWriter.writeRegularExam2terms(wb, sheet, regularExamList_2nd, 2, 2);
 
                 // 模試結果の入力
-                practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_1st, practiceExamList_2nd, 2);
+                practiceExamWriter.write2nd3rdPracticeExam(wb, sheet, practiceExamList_1st, practiceExamList_2nd, 2 , aNum);
 
                 // 進路情報の入力
                 meetingSheetFuturePathWriter.writeFuturePath(sheet, futurePathData, allRecordList, 2);
@@ -236,9 +244,6 @@ public class MeetingSheetWriter {
             if (termName.equals("３学期制")) {
 
                 // ３学期制の場合
-                // 名前の入力
-                poiMethods.getCell(sheet, 1, 22).setCellValue(student.getStudentName());
-
                 // 成績の入力
                 recordWriter.write1stSchoolRecord3terms(wb, sheet, schoolRecordList_1st, 1);
 
@@ -246,7 +251,7 @@ public class MeetingSheetWriter {
                 regularExamWriter.writeRegularExam3terms(wb, sheet, regularExamList_1st, 1, 1);
 
                 // 模試結果の入力
-                practiceExamWriter.write1stPracticeExam(wb, sheet, practiceExamList_1st, 3);
+                practiceExamWriter.write1stPracticeExam(wb, sheet, practiceExamList_1st, 3, aNum);
 
                 // 進路情報の入力
                 meetingSheetFuturePathWriter.writeFuturePath1st(sheet, futurePathData, allRecordList);
@@ -254,9 +259,6 @@ public class MeetingSheetWriter {
             } else {
 
                 // ２学期制の場合
-                // 名前の入力
-                poiMethods.getCell(sheet, 1, 22).setCellValue(student.getStudentName());
-
                 // 成績の入力
                 recordWriter.write1stSchoolRecord2terms(wb, sheet, schoolRecordList_1st, 1);
 
@@ -264,12 +266,18 @@ public class MeetingSheetWriter {
                 regularExamWriter.writeRegularExam2terms(wb, sheet, regularExamList_1st, 1, 1);
 
                 // 模試結果の入力
-                practiceExamWriter.write1stPracticeExam(wb, sheet, practiceExamList_1st, 2);
+                practiceExamWriter.write1stPracticeExam(wb, sheet, practiceExamList_1st, 2, aNum);
 
                 // 進路情報の入力
                 meetingSheetFuturePathWriter.writeFuturePath1st(sheet, futurePathData, allRecordList);
             }
         }
+
+        // 3:5, 4:4, 5:3の数値をセッションから取り出して入力する
+        poiMethods.getCell(sheet, 13, 1).setCellValue(sessionData.getNum35());  // /3:5の値
+        poiMethods.getCell(sheet, 15, 1).setCellValue(sessionData.getNum44());  // /3:5の値
+        poiMethods.getCell(sheet, 17, 1).setCellValue(sessionData.getNum53());  // /3:5の値
+
         return wb;
     }
 

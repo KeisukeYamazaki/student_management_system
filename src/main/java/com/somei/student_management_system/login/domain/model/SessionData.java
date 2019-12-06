@@ -15,4 +15,7 @@ public class SessionData implements Serializable {
     String str1;
     String str2;
     String str3;
+    double num35;
+    double num44;
+    double num53;
 }
