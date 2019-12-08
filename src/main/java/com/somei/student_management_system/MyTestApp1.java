@@ -1,5 +1,6 @@
 package com.somei.student_management_system;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -45,7 +46,7 @@ public class MyTestApp1 {
     private static final List<String> AUTHORIZATION_SCOPE_LIST = Arrays.asList(DriveScopes.DRIVE, SheetsScopes.SPREADSHEETS);
 
     // Directory to store Google user credentials for this application.
-    private static final String CREDENTIAL_STORE_DIRECTORY = System.getProperty("user.home") + "/.google_credentials/" + APPLICATION_NAME;
+    private static final String CREDENTIAL_STORE_DIRECTORY = System.getProperty("user.dir") + "/.google_credentials/" + APPLICATION_NAME;
 
     public List<RegularExam> getRegularByGoogle() throws IOException, GeneralSecurityException {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
