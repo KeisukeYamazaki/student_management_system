@@ -126,15 +126,22 @@ public class ZenkenService {
     public String makeCsv(String school, String grade) throws SQLException {
 
         // ファイル名を決める
-        LocalDate data = LocalDate.now();
+        LocalDate date = LocalDate.now();
         String schoolName = school.equals("橋戸校") ? "hashido" : school.equals("瀬谷校") ? "seya" : "yamato";
         int grade_num = grade.equals("中３") ? 3 : grade.equals("中２") ? 2 : 1;
-        String fileName = DateTimeFormatter.ofPattern("yyyyMMdd").format(data) + schoolName + grade_num + ".csv";
+        String fileName = DateTimeFormatter.ofPattern("yyyyMMdd").format(date) + schoolName + grade_num + ".csv";
 
         // CSVの１行目を作成
         int csvSchool = school.equals("橋戸校") ? 1 : school.equals("瀬谷校") ? 2 : 3;
         int csvGrade = grade.equals("中３") ? 23 : grade.equals("中２") ? 22 : 21;
-        String firstLine = csvGrade + "," + 128 + "," + csvSchool + "," + "2a";
+
+        // 中２の11月~3月は 2a ではなく 2b になる
+        String firstLine = csvGrade + "," + 128 + "," + csvSchool + ",";
+        if(grade.equals("中２") && (date.getMonthValue() <=3 || date.getMonthValue() >= 11)) {
+            firstLine += "2b";
+        } else {
+            firstLine += "2a";
+        }
 
         List<Zenken> studentList = zenkendao.selectMany(school, grade);
         List<SchoolRecord> recordList = numericDataDao.selectRecordMany(school, grade);

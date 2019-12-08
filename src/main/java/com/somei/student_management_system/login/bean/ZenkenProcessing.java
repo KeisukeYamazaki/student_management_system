@@ -277,7 +277,7 @@ public class ZenkenProcessing {
             String strId = String.valueOf(record.getStudentId());
 
             if ((grade == 2 && month <= 3 || month >= 11) || grade == 1) {
-                // Id・学年・学期が合致した成績データを見つけたら、recordsに代入
+                // 中２の11月~3月の登録は１学期のみ
                 if (strId.equals(studentId) &&
                         record.getGrade().equals(terms.get(0).get(0)) &&
                         (record.getTermName().equals(terms.get(0).get(1)))) {
@@ -285,6 +285,7 @@ public class ZenkenProcessing {
                     appendRecords(records, record, term);
                 }
             } else {
+                // それ以外
                 if (strId.equals(studentId) &&
                         record.getGrade().equals(terms.get(0).get(0)) &&
                         (record.getTermName().equals(terms.get(0).get(1)) ||
@@ -306,7 +307,7 @@ public class ZenkenProcessing {
             String strId = String.valueOf(record.getStudentId());
 
             if (grade == 2 && month >= 4 && month <= 10) {
-                // 中２の４〜10月の場合
+                // 中２の４〜10月の登録の場合は１学期のみ
                 if (strId.equals(studentId) &&
                         record.getGrade().equals(terms.get(1).get(0)) &&
                         (record.getTermName().equals(terms.get(1).get(1)))) {
