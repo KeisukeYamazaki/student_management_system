@@ -1,5 +1,6 @@
 package com.somei.student_management_system.login.controller;
 
+import com.somei.student_management_system.MyTestApp1;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.FuturePathWithData;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
@@ -46,6 +47,9 @@ public class StudentController {
 
     @Autowired
     signupController signupController;
+
+    @Autowired
+    MyTestApp1 myTestApp1;
 
     /**
      * 生徒一覧画面のGETメソッド用処理.

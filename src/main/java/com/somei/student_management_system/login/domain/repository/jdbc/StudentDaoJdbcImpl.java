@@ -289,6 +289,18 @@ public class StudentDaoJdbcImpl implements StudentDao {
         }
     }
 
+    @Override
+    public List<Student> selectIdName() throws DataAccessException {
+
+        String sql = "SELECT student_id, student_name FROM student WHERE char_length(student_id) = 4";
+
+        //RowMapperの生成
+        RowMapper<Student> rowMapper = new BeanPropertyRowMapper<>(Student.class);
+
+        //SQL実行
+        return jdbc.query(sql, rowMapper);
+    }
+
     // 生徒１件更新
     @Override
     public int updateOne(Student student) throws DataAccessException {

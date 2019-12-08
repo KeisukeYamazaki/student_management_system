@@ -37,6 +37,9 @@ public interface StudentDao {
     // 指定学年の最終ID番号+1を取得
     public String selectLastId(String grade) throws DataAccessException;
 
+    // 全生徒のIDと名前を取得
+    public List<Student> selectIdName() throws DataAccessException;
+
     // studentテーブルを１件更新.
     public int updateOne(Student student) throws DataAccessException;
 

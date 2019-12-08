@@ -1,5 +1,6 @@
 package com.somei.student_management_system.login.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
@@ -9,6 +10,7 @@ public class RegularExam {
     private int grade;
     private int examYear;
     private String examName;
+    private String regular_id;
     private String english;
     private String math;
     private String japanese;

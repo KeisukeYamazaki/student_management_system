@@ -149,6 +149,12 @@ public class StudentService {
         return dao.selectManyByHomeRoom(homeRoom);
     }
 
+    /**
+     * 全生徒のIDと名前のリストの取得メソッド
+     */
+    public List<Student> selectIdName() {
+        return dao.selectIdName();
+    }
 
     /**
      * クラス別名簿作成メソッド

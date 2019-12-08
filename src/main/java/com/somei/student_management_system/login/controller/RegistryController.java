@@ -1,12 +1,15 @@
 package com.somei.student_management_system.login.controller;
 
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.opencsv.exceptions.CsvException;
+import com.somei.student_management_system.MyTestApp1;
 import com.somei.student_management_system.login.bean.ByOneStudentRegistryProcessing;
 import com.somei.student_management_system.login.bean.IOCsv;
 import com.somei.student_management_system.login.bean.RecordRegistry;
 import com.somei.student_management_system.login.bean.excelProcessing;
 import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
+import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecord;
 import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.model.SessionData;
@@ -30,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +62,9 @@ public class RegistryController {
 
     @Autowired
     SessionData sessionData;
+
+    @Autowired
+    MyTestApp1 myTestApp1;
 
 
     /**
@@ -310,6 +317,31 @@ public class RegistryController {
         }
 
         return getRegistry(model);
+    }
+
+    // 定期試験のグーグルシートでの登録メソッド
+    @GetMapping("/registryRegularExamByGoogle")
+    public String getRegistryRegularExamByGoogle(Model model) {
+
+        List<RegularExam> regularExamList = new ArrayList<>();
+
+        try {
+            regularExamList = myTestApp1.getRegularByGoogle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (GeneralSecurityException e2) {
+            e2.printStackTrace();
+        }
+
+        boolean result = numericDataService.insertRegularMany(regularExamList);
+
+        if (result == true) {
+            model.addAttribute("result", "定期試験データを登録しました");
+        } else {
+            model.addAttribute("result", "定期試験データの登録に失敗しました");
+        }
+
+        return getRegistryRegularExam(model);
     }
 
     /**

@@ -31,7 +31,6 @@ public class NumericDataService {
     }
 
 
-
     /**
      * 複数の成績を取得.
      */
@@ -42,6 +41,7 @@ public class NumericDataService {
 
     /**
      * 複数の成績を挿入
+     *
      * @param list 成績のリスト
      * @return 更新の結果
      */
@@ -85,6 +85,7 @@ public class NumericDataService {
 
     /**
      * 複数人の模試データ挿入メソッド.
+     *
      * @param list 模試データのリスト
      */
     public boolean insertPracticeMany(List<ImportPracticeExam> list) {
@@ -118,5 +119,32 @@ public class NumericDataService {
     public List<RegularExam> selectRegularOne(String studentId) {
         //全件取得
         return dao.selectRegularOne(studentId);
+    }
+
+    /**
+     * 複数人の定期試験登録メソッド
+     */
+    public boolean insertRegularMany(List<RegularExam> list) {
+        //判定用変数
+        boolean result = false;
+
+        // 複数更新
+        List<Integer> rowNumbers = dao.insertRegularMany(list);
+
+        for (Integer rowNumber : rowNumbers) {
+
+            if (rowNumber > 0) {
+
+                //update成功
+                result = true;
+
+            } else {
+                // もし更新できない行があったら、falseを返す
+                return false;
+            }
+
+        }
+
+        return result;
     }
 }

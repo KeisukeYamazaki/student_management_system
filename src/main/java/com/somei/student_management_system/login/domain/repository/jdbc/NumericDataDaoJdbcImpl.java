@@ -7,6 +7,7 @@ import com.somei.student_management_system.login.domain.model.SchoolRecord;
 import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.repository.NumericDataDao;
+import com.somei.student_management_system.login.domain.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -22,6 +23,9 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
 
     @Autowired
     private JdbcTemplate jdbc;
+
+    @Autowired
+    StudentService studentService;
 
 
     @Override
@@ -440,6 +444,80 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
 
         }
 
+        return resultList;
+    }
+
+    @Override
+    public List<Integer> insertRegularMany(List<RegularExam> list) throws DataAccessException {
+
+        // 結果返却用のリストを生成
+        List<Integer> resultList = new ArrayList<>();
+
+        // リストの数の分のinsertを行う
+        for (int i = 0; i < list.size(); i++) {
+            RegularExam regularExam = list.get(i);
+
+            // 生徒情報の取得
+            Student student = studentService.selectOne(regularExam.getStudentId());
+
+            // クエリーを実行
+            int rowNumber = jdbc.update("INSERT INTO regular_exam(student_id,"
+                    + " grade,"
+                    + " exam_year,"
+                    + " regular_id,"
+                    + " english,"
+                    + " math,"
+                    + " japanese,"
+                    + " science,"
+                    + " social_studies,"
+                    + " sum_five,"
+                    + " music,"
+                    + " art,"
+                    + " pe,"
+                    + " tech,"
+                    + " home)"
+                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    + " ON CONFLICT ON CONSTRAINT regular_const"
+                    + " DO UPDATE SET english = ?,"
+                    + " math = ?,"
+                    + " japanese = ?,"
+                    + " science = ?,"
+                    + " social_studies = ?,"
+                    + " sum_five = ?,"
+                    + " music = ?,"
+                    + " art = ?,"
+                    + " pe = ?,"
+                    + " tech = ?,"
+                    + " home = ?;"
+            , regularExam.getStudentId()
+            , regularExam.getGrade()
+            , regularExam.getExamYear()
+            , regularExam.getRegular_id()
+            , regularExam.getEnglish()
+            , regularExam.getMath()
+            , regularExam.getJapanese()
+            , regularExam.getScience()
+            , regularExam.getSocialStudies()
+            , regularExam.getSumFive()
+            , regularExam.getMusic()
+            , regularExam.getArt()
+            , regularExam.getPe()
+            , regularExam.getTech()
+            , regularExam.getHome()
+            , regularExam.getEnglish()
+            , regularExam.getMath()
+            , regularExam.getJapanese()
+            , regularExam.getScience()
+            , regularExam.getSocialStudies()
+            , regularExam.getSumFive()
+            , regularExam.getMusic()
+            , regularExam.getArt()
+            , regularExam.getPe()
+            , regularExam.getTech()
+            , regularExam.getHome());
+
+            resultList.add(rowNumber);
+        }
         return resultList;
     }
 
