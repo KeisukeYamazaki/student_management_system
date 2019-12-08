@@ -28,17 +28,8 @@ public class ZenkenProcessing {
             // Id・学年・学期が合致した成績データを見つけたら、recordsに代入
             if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
 
-                records.append("," + term + ",");
-                records.append(record.getEnglish() + ",");
-                records.append(record.getMath() + ",");
-                records.append(record.getJapanese() + ",");
-                records.append(record.getScience() + ",");
-                records.append(record.getSocialStudies() + ",");
-                records.append(record.getMusic() + ",");
-                records.append(record.getArt() + ",");
-                records.append(record.getPe() + ",");
-                records.append(record.getTechHome());
-
+                //recordsに代入
+                appendRecords(records, record, term);
             }
         }
 
@@ -56,17 +47,8 @@ public class ZenkenProcessing {
 
             if (strId.equals(studentId) && record.getGrade().equals("中３") && (record.getTermName().equals("１学期") || record.getTermName().equals("前期"))) {
 
-                records.append("," + term + ",");
-                records.append(record.getEnglish() + ",");
-                records.append(record.getMath() + ",");
-                records.append(record.getJapanese() + ",");
-                records.append(record.getScience() + ",");
-                records.append(record.getSocialStudies() + ",");
-                records.append(record.getMusic() + ",");
-                records.append(record.getArt() + ",");
-                records.append(record.getPe() + ",");
-                records.append(record.getTechHome());
-
+                //recordsに代入
+                appendRecords(records, record, term);
             }
         }
 
@@ -84,17 +66,8 @@ public class ZenkenProcessing {
 
             if (strId.equals(studentId) && record.getGrade().equals("中３") && (record.getTermName().equals("２学期") || record.getTermName().equals("後期"))) {
 
-                records.append("," + term  + ",");
-                records.append(record.getEnglish() + ",");
-                records.append(record.getMath() + ",");
-                records.append(record.getJapanese() + ",");
-                records.append(record.getScience() + ",");
-                records.append(record.getSocialStudies() + ",");
-                records.append(record.getMusic() + ",");
-                records.append(record.getArt() + ",");
-                records.append(record.getPe() + ",");
-                records.append(record.getTechHome() + ",");
-
+                //recordsに代入
+                appendRecords(records, record, term);
             }
         }
 
@@ -122,17 +95,8 @@ public class ZenkenProcessing {
 
             if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
 
-                records.append("," + term + ",");
-                records.append(record.getEnglish() + ",");
-                records.append(record.getMath() + ",");
-                records.append(record.getJapanese() + ",");
-                records.append(record.getScience() + ",");
-                records.append(record.getSocialStudies() + ",");
-                records.append(record.getMusic() + ",");
-                records.append(record.getArt() + ",");
-                records.append(record.getPe() + ",");
-                records.append(record.getTechHome());
-
+                //recordsに代入
+                appendRecords(records, record, term);
             }
         }
 
@@ -150,17 +114,8 @@ public class ZenkenProcessing {
 
             if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("１学期"))) {
 
-                records.append("," + term  + ",");
-                records.append(record.getEnglish() + ",");
-                records.append(record.getMath() + ",");
-                records.append(record.getJapanese() + ",");
-                records.append(record.getScience() + ",");
-                records.append(record.getSocialStudies() + ",");
-                records.append(record.getMusic() + ",");
-                records.append(record.getArt() + ",");
-                records.append(record.getPe() + ",");
-                records.append(record.getTechHome());
-
+                //recordsに代入
+                appendRecords(records, record, term);
             }
         }
 
@@ -178,17 +133,8 @@ public class ZenkenProcessing {
 
             if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("２学期") || record.getTermName().equals("前期"))) {
 
-                records.append("," + term  + ",");
-                records.append(record.getEnglish() + ",");
-                records.append(record.getMath() + ",");
-                records.append(record.getJapanese() + ",");
-                records.append(record.getScience() + ",");
-                records.append(record.getSocialStudies() + ",");
-                records.append(record.getMusic() + ",");
-                records.append(record.getArt() + ",");
-                records.append(record.getPe() + ",");
-                records.append(record.getTechHome() + ",");
-
+                //recordsに代入
+                appendRecords(records, record, term);
             }
         }
 
@@ -214,19 +160,10 @@ public class ZenkenProcessing {
             SchoolRecord record = recordList.get(i);
             String strId = String.valueOf(record.getStudentId());
 
-            if (strId.equals(studentId) && record.getGrade().equals("中２") && (record.getTermName().equals("１学期"))) {
+            if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("１学期"))) {
 
-                records.append("," + term + ",");
-                records.append(record.getEnglish() + ",");
-                records.append(record.getMath() + ",");
-                records.append(record.getJapanese() + ",");
-                records.append(record.getScience() + ",");
-                records.append(record.getSocialStudies() + ",");
-                records.append(record.getMusic() + ",");
-                records.append(record.getArt() + ",");
-                records.append(record.getPe() + ",");
-                records.append(record.getTechHome());
-
+                //recordsに代入
+                appendRecords(records, record, term);
             }
         }
 
@@ -244,17 +181,8 @@ public class ZenkenProcessing {
 
             if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("２学期") || record.getTermName().equals("前期"))) {
 
-                records.append("," + term  + ",");
-                records.append(record.getEnglish() + ",");
-                records.append(record.getMath() + ",");
-                records.append(record.getJapanese() + ",");
-                records.append(record.getScience() + ",");
-                records.append(record.getSocialStudies() + ",");
-                records.append(record.getMusic() + ",");
-                records.append(record.getArt() + ",");
-                records.append(record.getPe() + ",");
-                records.append(record.getTechHome());
-
+                //recordsに代入
+                appendRecords(records, record, term);
             }
         }
 
@@ -272,17 +200,8 @@ public class ZenkenProcessing {
 
             if (strId.equals(studentId) && record.getGrade().equals("中１") && (record.getTermName().equals("３学期") || record.getTermName().equals("後期"))) {
 
-                records.append("," + term  + ",");
-                records.append(record.getEnglish() + ",");
-                records.append(record.getMath() + ",");
-                records.append(record.getJapanese() + ",");
-                records.append(record.getScience() + ",");
-                records.append(record.getSocialStudies() + ",");
-                records.append(record.getMusic() + ",");
-                records.append(record.getArt() + ",");
-                records.append(record.getPe() + ",");
-                records.append(record.getTechHome() + ",");
-
+                //recordsに代入
+                appendRecords(records, record, term);
             }
         }
 
@@ -409,7 +328,7 @@ public class ZenkenProcessing {
     }
 
     /**
-     * 中２内申処理（画面表示用）.
+     * 中１内申処理（画面表示用）.
      */
     public RecordExistence recordExistence1st(String studentId, List<SchoolRecord> recordList) {
 
@@ -463,5 +382,19 @@ public class ZenkenProcessing {
         }
 
         return existence;
+    }
+
+    private void appendRecords(StringBuilder records, SchoolRecord record, String term) {
+
+        records.append("," + term  + ",");
+        records.append(record.getEnglish() + ",");
+        records.append(record.getMath() + ",");
+        records.append(record.getJapanese() + ",");
+        records.append(record.getScience() + ",");
+        records.append(record.getSocialStudies() + ",");
+        records.append(record.getMusic() + ",");
+        records.append(record.getArt() + ",");
+        records.append(record.getPe() + ",");
+        records.append(record.getTechHome());
     }
 }
