@@ -30,6 +30,9 @@ public class MyTestApp1 {
     @Autowired
     StudentService studentService;
 
+    @Autowired
+    CreateCredentialFile createCredentialFile;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MyTestApp1.class);
 
     // Application name.
@@ -50,6 +53,8 @@ public class MyTestApp1 {
     public List<RegularExam> getRegularByGoogle() throws IOException, GeneralSecurityException {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
+
+        createCredentialFile.makeCreateCredentialFile();
 
         final String folderName = "フォルダ1";
         final String spreadsheetName = "2019_中学部_定期試験結果まとめ";
