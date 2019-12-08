@@ -37,6 +37,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Controller
@@ -319,8 +320,9 @@ public class RegistryController {
         return getRegistry(model);
     }
 
+    /*
     // 定期試験のグーグルシートでの登録メソッド
-    @GetMapping("/registryRegularExamByGoogle")
+    @GetMapping
     public String getRegistryRegularExamByGoogle(Model model) {
 
         List<RegularExam> regularExamList = new ArrayList<>();
@@ -331,6 +333,61 @@ public class RegistryController {
             e.printStackTrace();
         } catch (GeneralSecurityException e2) {
             e2.printStackTrace();
+        }
+
+        boolean result = numericDataService.insertRegularMany(regularExamList);
+
+        if (result == true) {
+            model.addAttribute("result", "定期試験データを登録しました");
+        } else {
+            model.addAttribute("result", "定期試験データの登録に失敗しました");
+        }
+
+        return getRegistryRegularExam(model);
+    }
+    */
+
+    @PostMapping("/registryRegularExam")
+    public String postRegistryRegularExam(@RequestParam("regulars")String regulars, Model model) {
+
+        List<String> list = Arrays.asList(regulars.split("\r\n"));
+        List<List<String>> strList = list.stream().map(l -> Arrays.asList(l.split("\t"))).collect(Collectors.toList());
+
+        // データ登録用のリストを作成
+        List<RegularExam> regularExamList = new ArrayList<>();
+
+        for(int i = 1; i < strList.size(); i++) {
+            if (strList.get(i).size() == 0) {
+                // 空のリストは飛ばす
+                continue;
+            } else {
+                RegularExam regularExam = new RegularExam();
+                // 生徒情報の取得
+                Student student = studentService.selectOne(myTestApp1.getId(strList.get(i).get(1)));
+                // 試験Idをセットする
+                if (student.getLocalSchool().contains("東野")) {
+                    regularExam.setRegular_id(myTestApp1.searchRegularExamId(strList.get(0).get(3)));
+                } else {
+                    regularExam.setRegular_id(myTestApp1.searchRegularExamId(strList.get(0).get(2)));
+                }
+                regularExam.setStudentId(myTestApp1.getId(strList.get(i).get(1)));
+                regularExam.setGrade(Integer.parseInt(strList.get(i).get(0)));
+                regularExam.setExamYear(Integer.parseInt(strList.get(0).get(1)));
+                regularExam.setEnglish(strList.get(i).get(2));
+                regularExam.setMath(strList.get(i).get(3));
+                regularExam.setJapanese(strList.get(i).get(4));
+                regularExam.setScience(strList.get(i).get(5));
+                regularExam.setSocialStudies(strList.get(i).get(6));
+                regularExam.setMusic(strList.get(i).get(7));
+                regularExam.setArt(strList.get(i).get(8));
+                regularExam.setPe(strList.get(i).get(9));
+                regularExam.setTech(strList.get(i).get(10));
+                regularExam.setHome(strList.get(i).get(11));
+                regularExam.setSumFive(strList.get(i).get(12));
+
+                // リストに格納する
+                regularExamList.add(regularExam);
+            }
         }
 
         boolean result = numericDataService.insertRegularMany(regularExamList);

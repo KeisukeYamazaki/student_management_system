@@ -54,8 +54,6 @@ public class MyTestApp1 {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
 
-        createCredentialFile.makeCreateCredentialFile();
-
         final String folderName = "フォルダ1";
         final String spreadsheetName = "2019_中学部_定期試験結果まとめ";
         final String worksheetName = "２学期期末・後期中間";
