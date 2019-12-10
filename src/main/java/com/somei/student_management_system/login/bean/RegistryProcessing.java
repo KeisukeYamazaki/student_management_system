@@ -1,6 +1,9 @@
 package com.somei.student_management_system.login.bean;
 
+import com.somei.student_management_system.MyTestApp1;
 import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
+import com.somei.student_management_system.login.domain.model.PracticeExam;
+import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.model.SessionData;
 import com.somei.student_management_system.login.domain.model.Student;
@@ -11,15 +14,19 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
-public class RecordRegistry {
+public class RegistryProcessing {
 
     @Autowired
     StudentService studentService;
 
     @Autowired
     SessionData sessionData;
+
+    @Autowired
+    MyTestApp1 myTestApp1;
 
     /**
      * 成績登録メソッド.
@@ -166,6 +173,146 @@ public class RecordRegistry {
     }
 
     /**
+     * 定期試験結果登録メソッド
+     *
+     * @param regulars 定期試験のペーストデータ
+     * @return 定期試験の結果リスト
+     */
+    public List<RegularExam> regularRegistration(String regulars) {
+        List<String> list = Arrays.asList(regulars.split("\r\n"));
+        List<List<String>> strList = list.stream().map(l -> Arrays.asList(l.split("\t"))).collect(Collectors.toList());
+
+        // データ登録用のリストを作成
+        List<RegularExam> regularExamList = new ArrayList<>();
+
+        for (int i = 1; i < strList.size(); i++) {
+            if (strList.get(i).size() == 0) {
+                // 空のリストは飛ばす
+                continue;
+            } else {
+                RegularExam regularExam = new RegularExam();
+                // 生徒情報の取得
+                Student student = studentService.selectOne(myTestApp1.getId(strList.get(i).get(1)));
+                // 試験Idをセットする
+                if (student.getLocalSchool().contains("東野")) {
+                    regularExam.setRegular_id(myTestApp1.searchRegularExamId(strList.get(0).get(3)));
+                } else {
+                    regularExam.setRegular_id(myTestApp1.searchRegularExamId(strList.get(0).get(2)));
+                }
+                regularExam.setStudentId(myTestApp1.getId(strList.get(i).get(1)));
+                regularExam.setGrade(Integer.parseInt(strList.get(i).get(0)));
+                regularExam.setExamYear(Integer.parseInt(strList.get(0).get(1)));
+                regularExam.setEnglish(strList.get(i).get(2));
+                regularExam.setMath(strList.get(i).get(3));
+                regularExam.setJapanese(strList.get(i).get(4));
+                regularExam.setScience(strList.get(i).get(5));
+                regularExam.setSocialStudies(strList.get(i).get(6));
+                regularExam.setMusic(strList.get(i).get(7));
+                regularExam.setArt(strList.get(i).get(8));
+                regularExam.setPe(strList.get(i).get(9));
+                regularExam.setTech(strList.get(i).get(10));
+                regularExam.setHome(strList.get(i).get(11));
+                regularExam.setSumFive(strList.get(i).get(12));
+
+                // リストに格納する
+                regularExamList.add(regularExam);
+            }
+        }
+        return regularExamList;
+    }
+
+    /**
+     * 模擬試験ペーストリスト作成メソッド.
+     *
+     * @param practices 模試の全県サイトからのペーストデータ
+     * @param grade 学年
+     * @param year 年度
+     * @param month 実施月
+     * @return 模試登録確認画面へ遷移
+     */
+    public List<ImportPracticeExam> makePracticeList(String practices,
+                                               String grade,
+                                               String year,
+                                               String month) {
+
+        // １人ずつのリストにする
+        List<String> list = Arrays.asList(practices.split("\r\n[0-9]+\t\r\n[0-9]+\r\n"));
+        List<List<String>> strList = list.stream()
+                .map(l -> new ArrayList<>(Arrays.asList(l.split("\t|\n|\r"))))
+                .collect(Collectors.toList());
+
+        // ""は除外する
+        List<List<String>> newStrList = new ArrayList<>();
+        for (List<String> inList : strList) {
+            // E1は" "にする、 "[", "]"は削除する
+            inList.stream().map(i -> i.replace("E1", " "));
+            // ""は削除する
+            inList.removeIf(i -> i.equals(""));
+
+            // 格納する
+            newStrList.add(inList);
+        }
+
+        // １つめの先頭の要素を２つ削除(1, 1)を削除
+        newStrList.get(0).remove(0);
+        newStrList.get(0).remove(0);
+
+        // 返却用のリストを作成
+        List<ImportPracticeExam> practiceExamList = new ArrayList<>();
+
+        // 志望校が３つの場合の添字
+        List<Integer> numList_3schools = Arrays.asList(0, 21, 22, 24, 25, 27, 28, 30, 31, 33, 34, 36, 37, 39, 40);
+        // 志望校が２つの場合の添字
+        List<Integer> numList_2schools = numList_3schools.stream().map(num -> num -= 1).collect(Collectors.toList());
+        // 志望校が１つの場合の添字
+        List<Integer> numList_1school = numList_3schools.stream().map(num -> num -= 2).collect(Collectors.toList());
+
+        for (int i = 0; i < newStrList.size(); i++) {
+            ImportPracticeExam practiceExam = new ImportPracticeExam();
+
+            // 生徒情報を取得
+            Student student = studentService.selectOne(myTestApp1.getId(newStrList.get(i).get(0)));
+
+            // 添字のリストを代入するリスト
+            List<Integer> numList = new ArrayList<>();
+
+            if(newStrList.get(i).size() == 40) {
+                // 志望校が１つの場合
+                numList = numList_1school;
+            } else if (newStrList.get(i).size() == 41) {
+                // 志望校が２つの場合
+                numList = numList_2schools;
+            } else {
+                // 志望校が３つの場合
+                numList = numList_3schools;
+            }
+
+            // ImportPracticeExamの各項目をセットする
+            practiceExam.setStudentId(student.getStudentId());
+            practiceExam.setGrade(grade);
+            practiceExam.setExamYear(year);
+            practiceExam.setMonthName(month);
+            practiceExam.setEnglishScore(newStrList.get(i).get(numList.get(1)));
+            practiceExam.setEnglishDeviation(removeBrackets(newStrList.get(i).get(numList.get(2))));
+            practiceExam.setMathScore(newStrList.get(i).get(numList.get(3)));
+            practiceExam.setMathDeviation(removeBrackets(newStrList.get(i).get(numList.get(4))));
+            practiceExam.setJapaneseScore(newStrList.get(i).get(numList.get(5)));
+            practiceExam.setJapaneseDeviation(removeBrackets(newStrList.get(i).get(numList.get(6))));
+            practiceExam.setScienceScore(newStrList.get(i).get(numList.get(7)));
+            practiceExam.setScienceDeviation(removeBrackets(newStrList.get(i).get(numList.get(8))));
+            practiceExam.setSocialScore(newStrList.get(i).get(numList.get(9)));
+            practiceExam.setSocialDeviation(removeBrackets(newStrList.get(i).get(numList.get(10))));
+            practiceExam.setSumThree(newStrList.get(i).get(numList.get(11)));
+            practiceExam.setDevThree(removeBrackets(newStrList.get(i).get(numList.get(12))));
+            practiceExam.setSumAll(newStrList.get(i).get(numList.get(13)));
+            practiceExam.setDevFive(removeBrackets(newStrList.get(i).get(numList.get(14))));
+
+            practiceExamList.add(practiceExam);
+        }
+        return practiceExamList;
+    }
+
+    /**
      * リスト内の数値の合計計算メソッド.
      *
      * @param subjects ５科目の成績のリスト
@@ -190,5 +337,16 @@ public class RecordRegistry {
         return fourSubjects.stream()
                 .mapToInt(Integer::parseInt)
                 .sum() + sumFive;
+    }
+
+    /**
+     * [ ]除去メソッド
+     *
+     * @param str      [ ]付きの文字列
+     * @return [ ]を除去した文字列
+     */
+    private String removeBrackets(String str) {
+        String removedStr = str.replace("[", "").trim();
+        return removedStr.replace("]", "").trim();
     }
 }

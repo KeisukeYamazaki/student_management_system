@@ -37,7 +37,7 @@
         <span class="text-info" th:if="${result}" th:text="${result}"
               style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
     </div>
-    <div class="panel panel-container col-sm-12" style="margin-top: 15px; padding-top: 7px; padding-left: 5px">
+    <div class="panel panel-container col-sm-10" style="margin-top: 15px; padding-top: 7px; padding-left: 5px">
         <form method="post" th:action="@{/registryRegularExam}">
             <div style="margin-bottom: 17px">スプレッドシートをコピーして、下のスペースに貼り付けてください</div>
             <textarea id="textarea1" class="form-control" rows="20" name="regulars" style="width: 600px"></textarea>

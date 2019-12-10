@@ -1,11 +1,10 @@
 package com.somei.student_management_system.login.controller;
 
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.opencsv.exceptions.CsvException;
 import com.somei.student_management_system.MyTestApp1;
 import com.somei.student_management_system.login.bean.ByOneStudentRegistryProcessing;
 import com.somei.student_management_system.login.bean.IOCsv;
-import com.somei.student_management_system.login.bean.RecordRegistry;
+import com.somei.student_management_system.login.bean.RegistryProcessing;
 import com.somei.student_management_system.login.bean.excelProcessing;
 import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
@@ -33,12 +32,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 public class RegistryController {
@@ -53,7 +50,7 @@ public class RegistryController {
     IOCsv ioCsv;
 
     @Autowired
-    RecordRegistry recordRegistry;
+    RegistryProcessing registryProcessing;
 
     @Autowired
     StudentService studentService;
@@ -213,7 +210,7 @@ public class RegistryController {
     public String RecordProcessing(@ModelAttribute SchoolRecordWithName schoolRecordWithName, Model model) {
 
         // リストに登録処理するためのリストを作成
-        List<SchoolRecordWithName> SchoolRecordWithNameList = recordRegistry.recordRegistration(schoolRecordWithName);
+        List<SchoolRecordWithName> SchoolRecordWithNameList = registryProcessing.recordRegistration(schoolRecordWithName);
 
         // 成績の登録処理
         try {
@@ -233,10 +230,10 @@ public class RegistryController {
 
         }
 
-        if(sessionData.getStr3() == null) {
+        if (sessionData.getStr3() == null) {
             return getRegistry(model);
         }
-        return postRegistryByOneStudentKind("schoolRecord" ,model);
+        return postRegistryByOneStudentKind("schoolRecord", model);
     }
 
     /**
@@ -273,6 +270,34 @@ public class RegistryController {
      */
     @GetMapping("/registry/practiceExam")
     public String getRegistryPracticeExam(Model model) {
+
+        //コンテンツ部分に生徒一覧を表示するための文字列を登録
+        model.addAttribute("contents", "login/registryPracticeExam :: registryPracticeExam_contents");
+
+        return "login/homeLayout";
+    }
+
+    /**
+     * 模試登録画面：登録方法のPOSTメソッド.
+     *
+     * @param way   学年別・ファイルで一括の方法のいずれか
+     * @param model モデル
+     * @return いずれかの方法を表示する画面に遷移
+     */
+    @PostMapping("/registry/practiceExam/way")
+    public String getRegistryPracticeExamWay(@RequestParam("radioName") String way, Model model) {
+
+        // 登録方法によってmodelに登録するものを変える
+        if (way.equals("ByZenkenSite")) {
+
+            // 学年別の場合
+            model.addAttribute("ByZenkenSite", true);
+
+        } else {
+
+            // 一括別の場合
+            model.addAttribute("ByCsvFile", true);
+        }
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
         model.addAttribute("contents", "login/registryPracticeExam :: registryPracticeExam_contents");
@@ -320,6 +345,34 @@ public class RegistryController {
         return getRegistry(model);
     }
 
+    /**
+     * 模擬試験ペースト登録メソッド.
+     *
+     * @param practices 模試の全県サイトからのペーストデータ
+     * @param model     モデル
+     * @return 模試登録確認画面へ遷移
+     */
+    @PostMapping("/practicePasteRegistry")
+    public String postPastePracticeRegistry(@RequestParam("practices") String practices,
+                                            @RequestParam("year") String year ,
+                                            @RequestParam("month") String month ,
+                                            @RequestParam("grade") String grade ,
+                                            Model model) {
+        // ペーストデータをリストにして取得
+        List<ImportPracticeExam> practiceExamList = registryProcessing.makePracticeList(practices, grade, year ,month);
+
+        // 登録
+        boolean result = numericDataService.insertPracticeMany(practiceExamList);
+
+        if (result == true) {
+            model.addAttribute("result", "模擬試験データを登録しました");
+        } else {
+            model.addAttribute("result", "模擬試験データの登録に失敗しました");
+        }
+
+        return getRegistryPracticeExamWay("ByZenkenSite", model);
+    }
+
     /*
     // 定期試験のグーグルシートでの登録メソッド
     @GetMapping
@@ -347,48 +400,18 @@ public class RegistryController {
     }
     */
 
+    /**
+     * 定期試験結果登録メソッド
+     *
+     * @param regulars 定期試験のペーストデータ
+     * @param model    モデル
+     * @return 模試登録確認画面へ遷移
+     */
     @PostMapping("/registryRegularExam")
-    public String postRegistryRegularExam(@RequestParam("regulars")String regulars, Model model) {
+    public String postRegistryRegularExam(@RequestParam("regulars") String regulars, Model model) {
 
-        List<String> list = Arrays.asList(regulars.split("\r\n"));
-        List<List<String>> strList = list.stream().map(l -> Arrays.asList(l.split("\t"))).collect(Collectors.toList());
-
-        // データ登録用のリストを作成
-        List<RegularExam> regularExamList = new ArrayList<>();
-
-        for(int i = 1; i < strList.size(); i++) {
-            if (strList.get(i).size() == 0) {
-                // 空のリストは飛ばす
-                continue;
-            } else {
-                RegularExam regularExam = new RegularExam();
-                // 生徒情報の取得
-                Student student = studentService.selectOne(myTestApp1.getId(strList.get(i).get(1)));
-                // 試験Idをセットする
-                if (student.getLocalSchool().contains("東野")) {
-                    regularExam.setRegular_id(myTestApp1.searchRegularExamId(strList.get(0).get(3)));
-                } else {
-                    regularExam.setRegular_id(myTestApp1.searchRegularExamId(strList.get(0).get(2)));
-                }
-                regularExam.setStudentId(myTestApp1.getId(strList.get(i).get(1)));
-                regularExam.setGrade(Integer.parseInt(strList.get(i).get(0)));
-                regularExam.setExamYear(Integer.parseInt(strList.get(0).get(1)));
-                regularExam.setEnglish(strList.get(i).get(2));
-                regularExam.setMath(strList.get(i).get(3));
-                regularExam.setJapanese(strList.get(i).get(4));
-                regularExam.setScience(strList.get(i).get(5));
-                regularExam.setSocialStudies(strList.get(i).get(6));
-                regularExam.setMusic(strList.get(i).get(7));
-                regularExam.setArt(strList.get(i).get(8));
-                regularExam.setPe(strList.get(i).get(9));
-                regularExam.setTech(strList.get(i).get(10));
-                regularExam.setHome(strList.get(i).get(11));
-                regularExam.setSumFive(strList.get(i).get(12));
-
-                // リストに格納する
-                regularExamList.add(regularExam);
-            }
-        }
+        // regularを定期試験データのリストにして取得
+        List<RegularExam> regularExamList = registryProcessing.regularRegistration(regulars);
 
         boolean result = numericDataService.insertRegularMany(regularExamList);
 
@@ -581,9 +604,9 @@ public class RegistryController {
      * @return 生徒の各種登録画面
      */
     @PostMapping("/practiceExam/ByOneStudent")
-    public String postPracticeExamByOneStudent(@ModelAttribute ImportPracticeExam exam, Model model){
+    public String postPracticeExamByOneStudent(@ModelAttribute ImportPracticeExam exam, Model model) {
 
-        List<ImportPracticeExam> practiceExamList = recordRegistry.practiceRegistration(exam);
+        List<ImportPracticeExam> practiceExamList = registryProcessing.practiceRegistration(exam);
 
         try {
 
@@ -598,6 +621,6 @@ public class RegistryController {
         } catch (DataAccessException e) {
             model.addAttribute("result", "更新失敗");
         }
-        return postRegistryByOneStudentKind("practiceExam" ,model);
+        return postRegistryByOneStudentKind("practiceExam", model);
     }
 }

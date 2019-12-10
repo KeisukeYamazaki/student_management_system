@@ -19,7 +19,7 @@
         <p style="margin-left: 3px">このページで成績、試験結果などを登録できます</p>
     </div>
     <div class="row col-sm-10">
-        <div class="btn-group btn-group-justified" role="group">
+        <div class="btn-group btn-group-justified" role="group" style="margin-bottom: 10px">
             <a type="button" class="btn btn-primary" th:href="@{'/registry/schoolRecord'}"
                style="border-color: white">成績
             </a>
@@ -37,38 +37,90 @@
         <span class="text-info" th:if="${result}" th:text="${result}"
               style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
     </div>
-    <div class="panel panel-container col-sm-12" style="margin-top: 15px; padding-top: 7px; padding-left: 5px">
-        <div class="col-sm-10">
-            <ol class="defaultlist list10">
-                <li class="list10-count">Googleスプレッドシートでの登録
-                    <p style="color: #444444; margin: 10px 0 10px 0px">
-                        下記のリンクからシートにアクセスして必要事項を入力後、下の「登録」ボタンを押してください。</p>
-                    <a href="https://docs.google.com/spreadsheets/d/1mo_zeobRayVBhKC9MZbozQa5OPs6C9npsIyn0jQqkiA/edit?usp=sharing"
-                       class="btn-link" target="_blank" style="margin-left: 2px">模試結果登録シート</a>
-                </li>
-                <li class="list10-count">CSVファイルでの登録
-                    <p style="color: #444444; margin: 10px 0 10px 0px">
-                        <strong>１</strong>．作成したファイルを下のボックスにアップロードしてください。</p>
-                    <p style="color: #444444; margin: 10px 0 30px 0px">
-                        <strong>２</strong>．登録ボタンを押してください。
-                    </p>
-                    <form method="post" enctype="multipart/form-data" th:action="@{/practiceCsvUpload}">
-                        <div class="input-group col-sm-5">
-                            <input id="upload" type="file" name="file" style="display:none">
-                            <input type="text" id="upload_file" name="upload_file" class="form-control"
-                                   placeholder="select file..." readonly>
-                            <span class="input-group-btn">
+    <div class="row col-sm-10" style="margin-top: 5px">
+        <div>【登録方法の選択】 どちらの方法で登録しますか？</div>
+        <form method="post" th:action="@{/registry/practiceExam/way}" style="margin-top: 5px">
+            <label class="radio-inline radio_text" style="margin-left: 7px">
+                <input type="radio" name="radioName" value="ByZenkenSite" th:checked="${ByZenkenSite}"
+                       onchange="this.form.submit()"> 全県模試サイトから貼り付け
+            </label>
+            <label class="radio-inline radio_text" style="margin-left: 5px">
+                <input type="radio" name="radioName" value="ByCsvFile" th:checked="${ByCsvFile}"
+                       onchange="this.form.submit()"> CSVファイルでの登録
+            </label>
+        </form>
+    </div>
+    <div th:if="${ByZenkenSite}" class="panel panel-container col-sm-12" style="margin-top: 15px">
+        <p style="font-size: large">全県模試サイトから登録</p>
+        <form method="post" th:action="@{/practicePasteRegistry}">
+            <div style="margin-bottom: 17px">登録する年度・実施月・学年を選択してください</div>
+            <div class="form-group">
+                <label for="year" class="control-label col-xs-1"
+                       style="text-align: right; margin-top: 7px">年度：</label>
+                <div class="col-sm-2 col-xs-4">
+                    <input class="form-control" type="text" id="year" name="year" placeholder="半角数字4ケタ"
+                           pattern="\d{4}" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="month" class="control-label col-xs-1"
+                       style="text-align: right; margin: 7px 0 0 20px">実施月：</label>
+                <div class="col-sm-2 col-xs-4">
+                    <select class="form-control" id="month" name="month" required>
+                        <option value="">実施月</option>
+                        <option value="1">７月</option>
+                        <option value="2">８月</option>
+                        <option value="3">10月</option>
+                        <option value="4">12月</option>
+                        <option value="5">１月</option>
+                        <option value="6">３月</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="grade" class="control-label col-xs-1"
+                       style="text-align: right; margin: 7px 0 0 20px">学年：</label>
+                <div class="col-sm-2 col-xs-4">
+                    <select class="form-control" id="grade" name="grade" required>
+                        <option value="">学年</option>
+                        <option value="3">中３</option>
+                        <option value="2">中２</option>
+                        <option value="1">中１</option>
+                    </select>
+                </div>
+            </div>
+            <br/><br/><br/>
+            <div>全県模試サイトの指定の位置をコピーして、下のスペースに貼り付けてください</div>
+            <br/>
+            <textarea id="textarea1" class="form-control" rows="20" name="practices"
+                      style="width: 800px"></textarea>
+            <button class="btn btn-primary btn-lg" type="submit" style="margin-top: 20px">登録</button>
+        </form>
+    </div>
+    <div th:if="${ByCsvFile}" class="panel panel-container col-sm-10" style="margin-top: 15px">
+        <p style="font-size: large">CSVファイルでの登録</p>
+        <p style="color: #444444; margin: 10px 0 10px 0px">
+            <strong>１</strong>．作成したファイルを下のボックスにアップロードしてください。</p>
+        <p style="color: #444444; margin: 10px 0 30px 0px">
+            <strong>２</strong>．登録ボタンを押してください。
+        </p>
+        <form method="post" enctype="multipart/form-data" th:action="@{/practiceCsvUpload}">
+            <div class="input-group col-sm-5">
+                <input id="upload" type="file" name="file" style="display:none">
+                <input type="text" id="upload_file" name="upload_file" class="form-control"
+                       placeholder="select file..." readonly>
+                <span class="input-group-btn">
                             <button type="button" class="btn btn-default btn-sm" id="button"
                                     style="height: 34px; border-color: #9d9d9d">ファイル選択</button>
                             </span>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="margin: 40px 0 0 0px">登録
-                        </button>
-                    </form>
-                </li>
-            </ol>
-        </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin: 40px 0 0 0px">登録
+            </button>
+        </form>
+        </li>
+
     </div>
+</div>
 </div>
 </body>
 </html>

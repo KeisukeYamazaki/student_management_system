@@ -421,6 +421,21 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                             + " science_deviation,"
                             + " social_deviation)"
                             + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                            + " ON CONFLICT ON CONSTRAINT practice_const"
+                            + " DO UPDATE SET english_score = ?,"
+                            + " math_score = ?,"
+                            + " japanese_score = ?,"
+                            + " science_score = ?,"
+                            + " social_score = ?,"
+                            + " sum_three = ?,"
+                            + " sum_all = ?,"
+                            + " dev_three = ?,"
+                            + " dev_five = ?,"
+                            + " english_deviation = ?,"
+                            + " math_deviation = ?,"
+                            + " japanese_deviation = ?,"
+                            + " science_deviation = ?,"
+                            + " social_deviation = ?;"
                     , ipe.getStudentId()
                     , Integer.parseInt(ipe.getGrade())
                     , Integer.parseInt(ipe.getExamYear())
@@ -438,10 +453,23 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                     , ipe.getMathDeviation()
                     , ipe.getJapaneseDeviation()
                     , ipe.getScienceDeviation()
+                    , ipe.getSocialDeviation()
+                    , ipe.getEnglishScore()
+                    , ipe.getMathScore()
+                    , ipe.getJapaneseScore()
+                    , ipe.getScienceScore()
+                    , ipe.getSocialScore()
+                    , ipe.getSumThree()
+                    , ipe.getSumAll()
+                    , ipe.getDevThree()
+                    , ipe.getDevFive()
+                    , ipe.getEnglishDeviation()
+                    , ipe.getMathDeviation()
+                    , ipe.getJapaneseDeviation()
+                    , ipe.getScienceDeviation()
                     , ipe.getSocialDeviation());
 
             resultList.add(rowNumber);
-
         }
 
         return resultList;
