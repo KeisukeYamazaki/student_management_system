@@ -391,7 +391,7 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
     }
 
     @Override
-    public List<Integer> insertPracticeMany(List<ImportPracticeExam> list) throws DataAccessException {
+    public List<Integer> insertPracticeMany(List<? extends ImportPracticeExam> list) throws DataAccessException {
 
         // 結果返却用のリストを生成
         List<Integer> resultList = new ArrayList<>();

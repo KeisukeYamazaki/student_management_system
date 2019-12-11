@@ -6,6 +6,7 @@ import com.somei.student_management_system.login.bean.ByOneStudentRegistryProces
 import com.somei.student_management_system.login.bean.IOCsv;
 import com.somei.student_management_system.login.bean.RegistryProcessing;
 import com.somei.student_management_system.login.bean.excelProcessing;
+import com.somei.student_management_system.login.domain.model.IkushinPracticeExam;
 import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
@@ -296,7 +297,7 @@ public class RegistryController {
         } else {
 
             // 一括別の場合
-            model.addAttribute("ByCsvFile", true);
+            model.addAttribute("ByFile", true);
         }
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
@@ -308,12 +309,13 @@ public class RegistryController {
     /**
      * 模擬試験登録画面のPOSTメソッド.
      *
-     * @param multipartFile 模試のCSVデータ
+     * @param multipartFile 模試のデータ
      * @param model         モデル
      * @return 模試登録確認画面へ遷移
      */
-    @PostMapping("/practiceCsvUpload")
+    @PostMapping("/practiceFileUpload")
     public String postRegistryPracticeExam(@RequestParam("file") MultipartFile multipartFile,
+                                           @RequestParam("fileType") String fileType,
                                            Model model) {
 
         ImportPracticeExam ipe = new ImportPracticeExam();
@@ -322,26 +324,54 @@ public class RegistryController {
              InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
              Reader reader = new BufferedReader(ireader);) {
 
-            List<ImportPracticeExam> exams = ioCsv.read(reader);
+            List<?> exams = new ArrayList<>();
+            boolean result = false;
 
-            boolean result = numericDataService.insertPracticeMany(exams);
+            if(fileType.equals("ikushin")) {
+                // 育伸社CSVファイルの場合
+                exams = ioCsv.ikushinRead(reader);
+                for(IkushinPracticeExam ikushinPracticeExam : (List<IkushinPracticeExam>)exams) {
+                    Student student = studentService.selectOne(myTestApp1.getId(ikushinPracticeExam.getStudentName()));
+                    ikushinPracticeExam.setStudentId(student.getStudentId());
+                    // 年度の修正
+                    ikushinPracticeExam.setExamYear(ikushinPracticeExam.getExamYear().substring(0, 3));
+                    // 実施月の修正・セット
+                    String examMonth = null;
+                    if(ikushinPracticeExam.getExamYear().substring(4, 5).equals("07")) {
+                        // 実施月が「07」の場合は「１」とする
+                        examMonth = "1";
+                    } else {
+                        // そうでなければ「３(=10月実施)」とする
+                        examMonth = "3";
+                    }
+                    ikushinPracticeExam.setExamYear(examMonth);
+                    // 学年の修正
+                    if(ikushinPracticeExam.getGrade().equals("中３")) {
+                        ikushinPracticeExam.setGrade("3");
+                    } else if(ikushinPracticeExam.getGrade().equals("中２")) {
+                        ikushinPracticeExam.setGrade("2");
+                    } else {
+                        ikushinPracticeExam.setGrade("1");
+                    }
+                }
+                result = numericDataService.insertPracticeMany((List<? extends ImportPracticeExam>) exams);
+
+            } else {
+                // 全県模試エクセルファイルの場合
+            }
 
             if (result == true) {
                 model.addAttribute("result", "模擬試験データを登録しました");
             } else {
                 model.addAttribute("result", "模擬試験データの登録に失敗しました");
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (CsvException e) {
             e.printStackTrace();
         } catch (DataAccessException e) {
-
             model.addAttribute("result", "更新失敗");
-
         }
-
         return getRegistry(model);
     }
 
@@ -421,7 +451,7 @@ public class RegistryController {
             model.addAttribute("result", "定期試験データの登録に失敗しました");
         }
 
-        return getRegistryRegularExam(model);
+        return getRegistryPracticeExamWay("ByFile", model);
     }
 
     /**

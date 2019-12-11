@@ -45,8 +45,8 @@
                        onchange="this.form.submit()"> 全県模試サイトから貼り付け
             </label>
             <label class="radio-inline radio_text" style="margin-left: 5px">
-                <input type="radio" name="radioName" value="ByCsvFile" th:checked="${ByCsvFile}"
-                       onchange="this.form.submit()"> CSVファイルでの登録
+                <input type="radio" name="radioName" value="ByCsvFile" th:checked="${ByFile}"
+                       onchange="this.form.submit()"> ファイルでの登録
             </label>
         </form>
     </div>
@@ -59,7 +59,7 @@
                        style="text-align: right; margin-top: 7px">年度：</label>
                 <div class="col-sm-2 col-xs-4">
                     <input class="form-control" type="text" id="year" name="year" placeholder="半角数字4ケタ"
-                           pattern="\d{4}" required />
+                           pattern="\d{4}" required/>
                 </div>
             </div>
             <div class="form-group">
@@ -97,28 +97,39 @@
             <button class="btn btn-primary btn-lg" type="submit" style="margin-top: 20px">登録</button>
         </form>
     </div>
-    <div th:if="${ByCsvFile}" class="panel panel-container col-sm-10" style="margin-top: 15px">
-        <p style="font-size: large">CSVファイルでの登録</p>
+    <div th:if="${ByFile}" class="panel panel-container col-sm-10" style="margin-top: 15px">
+        <p style="font-size: large">ファイルでの登録</p>
         <p style="color: #444444; margin: 10px 0 10px 0px">
-            <strong>１</strong>．作成したファイルを下のボックスにアップロードしてください。</p>
+            <strong>１</strong>．ファイルの種類を選んで下さい。</p>
+        <p style="color: #444444; margin: 10px 0 10px 0px">
+            <strong>２</strong>．ファイルを下のボックスにアップロードしてください。</p>
         <p style="color: #444444; margin: 10px 0 30px 0px">
-            <strong>２</strong>．登録ボタンを押してください。
+            <strong>３</strong>．登録ボタンを押してください。
         </p>
-        <form method="post" enctype="multipart/form-data" th:action="@{/practiceCsvUpload}">
-            <div class="input-group col-sm-5">
-                <input id="upload" type="file" name="file" style="display:none">
-                <input type="text" id="upload_file" name="upload_file" class="form-control"
-                       placeholder="select file..." readonly>
-                <span class="input-group-btn">
-                            <button type="button" class="btn btn-default btn-sm" id="button"
-                                    style="height: 34px; border-color: #9d9d9d">ファイル選択</button>
-                            </span>
+        <form method="post" enctype="multipart/form-data" th:action="@{/practiceFileUpload}">
+            <div style="display: flex">
+                <div class="form-group">
+                    <select class="form-control" id="fileType" name="fileType" required>
+                        <option value="">ファイルの種類</option>
+                        <option value="zenken">全県模試エクセル</option>
+                        <option value="ikushin">育伸社CSV</option>
+                    </select>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="margin: 40px 0 0 0px">登録
-            </button>
+            <div>
+                <div class="input-group col-sm-5">
+                    <input id="upload" type="file" name="file" style="display:none">
+                    <input type="text" id="upload_file" name="upload_file" class="form-control"
+                           placeholder="select file..." readonly>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn btn-default btn-sm" id="button"
+                            style="height: 34px; border-color: #9d9d9d">ファイル選択</button>
+                </span>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin: 40px 0 0 0px">登録
+                </button>
+            </div>
         </form>
-        </li>
-
     </div>
 </div>
 </div>

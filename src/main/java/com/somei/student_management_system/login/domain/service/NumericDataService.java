@@ -88,7 +88,7 @@ public class NumericDataService {
      *
      * @param list 模試データのリスト
      */
-    public boolean insertPracticeMany(List<ImportPracticeExam> list) {
+    public boolean insertPracticeMany(List<? extends ImportPracticeExam> list) {
 
         //判定用変数
         boolean result = false;

@@ -37,7 +37,7 @@ public interface NumericDataDao {
     public List<PracticeExam> selectPracticeOne(String studentId) throws DataAccessException;
 
     // practice_examテーブルに複数人の模試データを挿入.
-    public List<Integer> insertPracticeMany(List<ImportPracticeExam> list) throws DataAccessException;
+    public List<Integer> insertPracticeMany(List<? extends ImportPracticeExam> list) throws DataAccessException;
 
     // regular_examテーブルに複数人の模試データを挿入.
     public List<Integer> insertRegularMany(List<RegularExam> list) throws DataAccessException;
