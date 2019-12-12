@@ -1,5 +1,6 @@
 package com.somei.student_management_system.login.bean;
 
+import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
@@ -43,7 +44,7 @@ public class IOCsv {
      *
      * @param reader
      */
-    public List<IkushinPracticeExam> ikushinRead(Reader reader) throws CsvException {
+    public List<IkushinPracticeExam> ikushinRead(CSVReader reader) throws CsvException {
         CsvToBean<IkushinPracticeExam> csvToBean = new CsvToBeanBuilder<IkushinPracticeExam>(reader)
                 .withType(IkushinPracticeExam.class).build();
         return csvToBean.parse();

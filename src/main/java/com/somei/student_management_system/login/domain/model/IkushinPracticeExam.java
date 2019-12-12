@@ -1,6 +1,5 @@
 package com.somei.student_management_system.login.domain.model;
 
-import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import lombok.Data;
 
@@ -9,57 +8,58 @@ public class IkushinPracticeExam extends ImportPracticeExam {
 
     private String studentId;
 
-    @CsvBindByPosition(position = 7, required = true)
+    @CsvBindByPosition(position = 7)
     private String studentName;
 
-    @CsvBindByPosition(position = 3, required = true)
+    @CsvBindByPosition(position = 3)
     private String grade;
 
-    @CsvBindByPosition(position = 0, required = true)
+    @CsvBindByPosition(position = 0)
+    private String yearMonth;
+
     private String examYear;
 
-    @CsvBindByPosition(position = 0, required = true)
     private String monthName;
 
-    @CsvBindByPosition(position = 10, required = true)
+    @CsvBindByPosition(position = 10)
     private String englishScore;
 
-    @CsvBindByPosition(position = 9, required = true)
+    @CsvBindByPosition(position = 9)
     private String mathScore;
 
-    @CsvBindByPosition(position = 8, required = true)
+    @CsvBindByPosition(position = 8)
     private String japaneseScore;
 
-    @CsvBindByPosition(position = 11, required = true)
+    @CsvBindByPosition(position = 11)
     private String scienceScore;
 
-    @CsvBindByPosition(position = 12, required = true)
+    @CsvBindByPosition(position = 12)
     private String socialScore;
 
-    @CsvBindByPosition(position = 13, required = true)
+    @CsvBindByPosition(position = 13)
     private String sumThree;
 
-    @CsvBindByPosition(position = 15, required = true)
+    @CsvBindByPosition(position = 15)
     private String sumAll;
 
-    @CsvBindByPosition(position = 21, required = true)
+    @CsvBindByPosition(position = 21)
     private String devThree;
 
-    @CsvBindByPosition(position = 23, required = true)
+    @CsvBindByPosition(position = 23)
     private String devFive;
 
-    @CsvBindByPosition(position = 18, required = true)
+    @CsvBindByPosition(position = 18)
     private String englishDeviation;
 
-    @CsvBindByPosition(position = 17, required = true)
+    @CsvBindByPosition(position = 17)
     private String mathDeviation;
 
-    @CsvBindByPosition(position = 16, required = true)
+    @CsvBindByPosition(position = 16)
     private String japaneseDeviation;
 
-    @CsvBindByPosition(position = 19, required = true)
+    @CsvBindByPosition(position = 19)
     private String scienceDeviation;
 
-    @CsvBindByPosition(position = 20, required = true)
+    @CsvBindByPosition(position = 20)
     private String socialDeviation;
 }

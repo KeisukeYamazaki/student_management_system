@@ -136,7 +136,8 @@ public class MyTestApp1 {
         for(Student student : idNameList) {
             String name1 = student.getStudentName().replaceAll(" ", "").replaceAll("　", "");
             String name2 = name1.replace("﨑", "崎").replace( "髙",  "高");
-            if(name1.equals(replacedName) || name2.equals(replacedName)) {
+            String name3 = name2.replace("国", "國");
+            if(name1.equals(replacedName) || name2.equals(replacedName) || name3.equals(replacedName)) {
                 id = student.getStudentId();
                 break;
             }

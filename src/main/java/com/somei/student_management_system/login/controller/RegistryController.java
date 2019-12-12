@@ -1,5 +1,6 @@
 package com.somei.student_management_system.login.controller;
 
+import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.somei.student_management_system.MyTestApp1;
 import com.somei.student_management_system.login.bean.ByOneStudentRegistryProcessing;
@@ -16,9 +17,11 @@ import com.somei.student_management_system.login.domain.model.SessionData;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.service.NumericDataService;
 import com.somei.student_management_system.login.domain.service.StudentService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -158,7 +161,7 @@ public class RegistryController {
         return "login/homeLayout";
     }
 
-    /**
+    /**Å
      * 成績登録確認画面表示.
      *
      * @param multipartFile アップロードされたエクセルファイル
@@ -318,33 +321,37 @@ public class RegistryController {
                                            @RequestParam("fileType") String fileType,
                                            Model model) {
 
-        ImportPracticeExam ipe = new ImportPracticeExam();
-
         try (InputStream is = multipartFile.getInputStream();
-             InputStreamReader ireader = new InputStreamReader(is, "UTF-8");
-             Reader reader = new BufferedReader(ireader);) {
+             InputStreamReader ireader = new InputStreamReader(is, "Shift_JIS");
+             CSVReader reader = new CSVReader(ireader,',','"',1)) {
 
-            List<?> exams = new ArrayList<>();
             boolean result = false;
+            List<String> notRegistryList = new ArrayList<>();
 
             if(fileType.equals("ikushin")) {
                 // 育伸社CSVファイルの場合
-                exams = ioCsv.ikushinRead(reader);
+                List<?> exams = ioCsv.ikushinRead(reader);
                 for(IkushinPracticeExam ikushinPracticeExam : (List<IkushinPracticeExam>)exams) {
-                    Student student = studentService.selectOne(myTestApp1.getId(ikushinPracticeExam.getStudentName()));
+                    Student student = new Student();
+                    try {
+                        student = studentService.selectOne(myTestApp1.getId(ikushinPracticeExam.getStudentName()));
+                    } catch (EmptyResultDataAccessException e) {
+                        System.out.println(ikushinPracticeExam.getStudentName() + "を登録できませんでした");
+                        notRegistryList.add(ikushinPracticeExam.getStudentName().replace("　", ""));
+                    }
                     ikushinPracticeExam.setStudentId(student.getStudentId());
                     // 年度の修正
-                    ikushinPracticeExam.setExamYear(ikushinPracticeExam.getExamYear().substring(0, 3));
+                    ikushinPracticeExam.setExamYear(ikushinPracticeExam.getYearMonth().substring(0, 4));
                     // 実施月の修正・セット
                     String examMonth = null;
-                    if(ikushinPracticeExam.getExamYear().substring(4, 5).equals("07")) {
+                    if(ikushinPracticeExam.getYearMonth().substring(4, 6).equals("07")) {
                         // 実施月が「07」の場合は「１」とする
                         examMonth = "1";
                     } else {
                         // そうでなければ「３(=10月実施)」とする
                         examMonth = "3";
                     }
-                    ikushinPracticeExam.setExamYear(examMonth);
+                    ikushinPracticeExam.setMonthName(examMonth);
                     // 学年の修正
                     if(ikushinPracticeExam.getGrade().equals("中３")) {
                         ikushinPracticeExam.setGrade("3");
@@ -352,6 +359,12 @@ public class RegistryController {
                         ikushinPracticeExam.setGrade("2");
                     } else {
                         ikushinPracticeExam.setGrade("1");
+                        ikushinPracticeExam.setScienceScore("-");
+                        ikushinPracticeExam.setScienceDeviation("-");
+                        ikushinPracticeExam.setSocialScore("-");
+                        ikushinPracticeExam.setSocialDeviation("-");
+                        ikushinPracticeExam.setSumAll("-");
+                        ikushinPracticeExam.setDevFive("-");
                     }
                 }
                 result = numericDataService.insertPracticeMany((List<? extends ImportPracticeExam>) exams);
@@ -361,7 +374,12 @@ public class RegistryController {
             }
 
             if (result == true) {
-                model.addAttribute("result", "模擬試験データを登録しました");
+                if(notRegistryList.size() != 0) {
+                    model.addAttribute("result",
+                            "模擬試験データを登録しました  ※" + notRegistryList + " を登録できませんでした。");
+                } else {
+                    model.addAttribute("result", "模擬試験データを登録しました");
+                }
             } else {
                 model.addAttribute("result", "模擬試験データの登録に失敗しました");
             }
