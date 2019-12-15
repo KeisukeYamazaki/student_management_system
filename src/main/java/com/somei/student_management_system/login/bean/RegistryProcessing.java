@@ -2,19 +2,23 @@ package com.somei.student_management_system.login.bean;
 
 import com.somei.student_management_system.MyTestApp1;
 import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
-import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.model.SessionData;
 import com.somei.student_management_system.login.domain.model.Student;
 import com.somei.student_management_system.login.domain.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.Map.*;
 
 @Component
 public class RegistryProcessing {
@@ -178,12 +182,15 @@ public class RegistryProcessing {
      * @param regulars 定期試験のペーストデータ
      * @return 定期試験の結果リスト
      */
-    public List<RegularExam> regularRegistration(String regulars) {
+    public Map<List<RegularExam>, List<String>> regularRegistration(String regulars) {
         List<String> list = Arrays.asList(regulars.split("\r\n"));
         List<List<String>> strList = list.stream().map(l -> Arrays.asList(l.split("\t"))).collect(Collectors.toList());
 
         // データ登録用のリストを作成
         List<RegularExam> regularExamList = new ArrayList<>();
+
+        // 登録できなかった生徒の名前を格納するリストを作成
+        List<String> notRegistryList = new ArrayList<>();
 
         for (int i = 1; i < strList.size(); i++) {
             if (strList.get(i).size() == 0) {
@@ -191,8 +198,14 @@ public class RegistryProcessing {
                 continue;
             } else {
                 RegularExam regularExam = new RegularExam();
+                Student student = new Student();
                 // 生徒情報の取得
-                Student student = studentService.selectOne(myTestApp1.getId(strList.get(i).get(1)));
+                try {
+                    student = studentService.selectOne(myTestApp1.getId(strList.get(i).get(1)));
+                } catch (EmptyResultDataAccessException e) {
+                    notRegistryList.add(strList.get(i).get(1));
+                    break;
+                }
                 // 試験Idをセットする
                 if (student.getLocalSchool().contains("東野")) {
                     regularExam.setRegular_id(myTestApp1.searchRegularExamId(strList.get(0).get(3)));
@@ -218,22 +231,29 @@ public class RegistryProcessing {
                 regularExamList.add(regularExam);
             }
         }
-        return regularExamList;
+        // Mapに格納して返す
+        Map<List<RegularExam>, List<String>> returnMap1 = Map.of(regularExamList, notRegistryList);
+        /*Map<List<RegularExam>, List<String>> returnMap = new HashMap<List<RegularExam>, List<String>>() {
+            {
+                put(regularExamList, notRegistryList);
+            }
+        };*/
+        return returnMap1;
     }
 
     /**
      * 模擬試験ペーストリスト作成メソッド.
      *
      * @param practices 模試の全県サイトからのペーストデータ
-     * @param grade 学年
-     * @param year 年度
-     * @param month 実施月
+     * @param grade     学年
+     * @param year      年度
+     * @param month     実施月
      * @return 模試登録確認画面へ遷移
      */
     public List<ImportPracticeExam> makePracticeList(String practices,
-                                               String grade,
-                                               String year,
-                                               String month) {
+                                                     String grade,
+                                                     String year,
+                                                     String month) {
 
         // １人ずつのリストにする
         List<String> list = Arrays.asList(practices.split("\r\n[0-9]+\t\r\n[0-9]+\r\n"));
@@ -276,7 +296,7 @@ public class RegistryProcessing {
             // 添字のリストを代入するリスト
             List<Integer> numList = new ArrayList<>();
 
-            if(newStrList.get(i).size() == 40) {
+            if (newStrList.get(i).size() == 40) {
                 // 志望校が１つの場合
                 numList = numList_1school;
             } else if (newStrList.get(i).size() == 41) {
@@ -342,7 +362,7 @@ public class RegistryProcessing {
     /**
      * [ ]除去メソッド
      *
-     * @param str      [ ]付きの文字列
+     * @param str [ ]付きの文字列
      * @return [ ]を除去した文字列
      */
     private String removeBrackets(String str) {

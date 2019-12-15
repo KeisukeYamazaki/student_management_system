@@ -15,15 +15,16 @@ import com.somei.student_management_system.login.domain.model.SchoolRecord;
 import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
 import com.somei.student_management_system.login.domain.model.SessionData;
 import com.somei.student_management_system.login.domain.model.Student;
+import com.somei.student_management_system.login.domain.model.ZenkenExcelData;
 import com.somei.student_management_system.login.domain.service.NumericDataService;
 import com.somei.student_management_system.login.domain.service.StudentService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,15 +32,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Controller
 public class RegistryController {
@@ -161,7 +165,7 @@ public class RegistryController {
         return "login/homeLayout";
     }
 
-    /**Å
+    /**
      * 成績登録確認画面表示.
      *
      * @param multipartFile アップロードされたエクセルファイル
@@ -323,15 +327,15 @@ public class RegistryController {
 
         try (InputStream is = multipartFile.getInputStream();
              InputStreamReader ireader = new InputStreamReader(is, "Shift_JIS");
-             CSVReader reader = new CSVReader(ireader,',','"',1)) {
+             CSVReader reader = new CSVReader(ireader, ',', '"', 1)) {
 
             boolean result = false;
             List<String> notRegistryList = new ArrayList<>();
 
-            if(fileType.equals("ikushin")) {
+            if (fileType.equals("ikushin")) {
                 // 育伸社CSVファイルの場合
                 List<?> exams = ioCsv.ikushinRead(reader);
-                for(IkushinPracticeExam ikushinPracticeExam : (List<IkushinPracticeExam>)exams) {
+                for (IkushinPracticeExam ikushinPracticeExam : (List<IkushinPracticeExam>) exams) {
                     Student student = new Student();
                     try {
                         student = studentService.selectOne(myTestApp1.getId(ikushinPracticeExam.getStudentName()));
@@ -344,7 +348,7 @@ public class RegistryController {
                     ikushinPracticeExam.setExamYear(ikushinPracticeExam.getYearMonth().substring(0, 4));
                     // 実施月の修正・セット
                     String examMonth = null;
-                    if(ikushinPracticeExam.getYearMonth().substring(4, 6).equals("07")) {
+                    if (ikushinPracticeExam.getYearMonth().substring(4, 6).equals("07")) {
                         // 実施月が「07」の場合は「１」とする
                         examMonth = "1";
                     } else {
@@ -353,9 +357,9 @@ public class RegistryController {
                     }
                     ikushinPracticeExam.setMonthName(examMonth);
                     // 学年の修正
-                    if(ikushinPracticeExam.getGrade().equals("中３")) {
+                    if (ikushinPracticeExam.getGrade().equals("中３")) {
                         ikushinPracticeExam.setGrade("3");
-                    } else if(ikushinPracticeExam.getGrade().equals("中２")) {
+                    } else if (ikushinPracticeExam.getGrade().equals("中２")) {
                         ikushinPracticeExam.setGrade("2");
                     } else {
                         ikushinPracticeExam.setGrade("1");
@@ -370,11 +374,40 @@ public class RegistryController {
                 result = numericDataService.insertPracticeMany((List<? extends ImportPracticeExam>) exams);
 
             } else {
-                // 全県模試エクセルファイルの場合
+                // 全県模試の場合
+                if (multipartFile.isEmpty()) {
+                    // スプレッドシートでの登録処理
+                } else {
+                    // エクセルファイルの処理
+                    try {
+                        InputStream stream = multipartFile.getInputStream();
+
+                        // エクセルファイルを模試リストに変換して取得
+                        List<ZenkenExcelData> PracticeList;
+
+                        //確認画面へ渡す
+                        //model.addAttribute("schoolRecordList", PracticeList);
+
+                    } catch (Exception e) {
+                        // 不正な形式のファイルだった場合
+                        e.printStackTrace();
+
+                        //メッセージを表示する
+                        model.addAttribute("result", "正しい形式のファイルをアップロードしてください");
+
+                        return getRegistry(model);
+                    }
+                }
+
+                //コンテンツ部分に生徒一覧を表示するための文字列を登録
+                model.addAttribute("contents", "login/schoolRecordConfirm :: schoolRecordConfirm_contents");
+
+                return "login/homeLayout";
+
             }
 
             if (result == true) {
-                if(notRegistryList.size() != 0) {
+                if (notRegistryList.size() != 0) {
                     model.addAttribute("result",
                             "模擬試験データを登録しました  ※" + notRegistryList + " を登録できませんでした。");
                 } else {
@@ -402,12 +435,12 @@ public class RegistryController {
      */
     @PostMapping("/practicePasteRegistry")
     public String postPastePracticeRegistry(@RequestParam("practices") String practices,
-                                            @RequestParam("year") String year ,
-                                            @RequestParam("month") String month ,
-                                            @RequestParam("grade") String grade ,
+                                            @RequestParam("year") String year,
+                                            @RequestParam("month") String month,
+                                            @RequestParam("grade") String grade,
                                             Model model) {
         // ペーストデータをリストにして取得
-        List<ImportPracticeExam> practiceExamList = registryProcessing.makePracticeList(practices, grade, year ,month);
+        List<ImportPracticeExam> practiceExamList = registryProcessing.makePracticeList(practices, grade, year, month);
 
         // 登録
         boolean result = numericDataService.insertPracticeMany(practiceExamList);
@@ -459,17 +492,25 @@ public class RegistryController {
     public String postRegistryRegularExam(@RequestParam("regulars") String regulars, Model model) {
 
         // regularを定期試験データのリストにして取得
-        List<RegularExam> regularExamList = registryProcessing.regularRegistration(regulars);
+        List<RegularExam> regularExamList = new ArrayList<>();
+        List<String> notRegistryList = new ArrayList<>();
+        Map<List<RegularExam>, List<String>> regularExamMap = registryProcessing.regularRegistration(regulars);
+        for (Map.Entry<List<RegularExam>, List<String>> data : regularExamMap.entrySet()) {
+            regularExamList = data.getKey();
+            notRegistryList = data.getValue();
+        }
 
         boolean result = numericDataService.insertRegularMany(regularExamList);
 
-        if (result == true) {
+        if (result == true && notRegistryList.isEmpty()) {
             model.addAttribute("result", "定期試験データを登録しました");
+        } else if (result == true && notRegistryList.size() > 0){
+            model.addAttribute("result", "定期試験データを登録しました (" + notRegistryList + "を登録できませんでした )");
         } else {
             model.addAttribute("result", "定期試験データの登録に失敗しました");
         }
 
-        return getRegistryPracticeExamWay("ByFile", model);
+        return getRegistryRegularExam(model);
     }
 
     /**
