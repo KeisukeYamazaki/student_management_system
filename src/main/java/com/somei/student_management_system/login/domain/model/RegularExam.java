@@ -7,8 +7,8 @@ import lombok.Data;
 public class RegularExam {
 
     private String studentId;
-    private int grade;
-    private int examYear;
+    private String grade;
+    private String examYear;
     private String examName;
     private String regular_id;
     private String english;

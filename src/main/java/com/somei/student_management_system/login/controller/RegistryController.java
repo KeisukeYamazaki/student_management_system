@@ -664,7 +664,14 @@ public class RegistryController {
             // 定期試験の結果登録の場合
             // regularExam なら true にする
             model.addAttribute("regularExam", true);
+
+            // 定期試験結果リストを取得
+            List<RegularExam> regularExamList = numericDataService.selectRegularOne(student.getStudentId());
+
+            // 送る
+            model.addAttribute("regularExamList", regularExamList);
         } else {
+            // 模試の結果登録の場合
             // practiceExam を true にする
             model.addAttribute("practiceExam", true);
 
@@ -711,5 +718,35 @@ public class RegistryController {
             model.addAttribute("result", "更新失敗");
         }
         return postRegistryByOneStudentKind("practiceExam", model);
+    }
+
+    /**
+     * 個人登録定期試験登録メソッド
+     *
+     * @param exam  模試結果
+     * @param model モデル
+     * @return 生徒の各種登録画面
+     */
+    @PostMapping("/regularExam/ByOneStudent")
+    public String postRegularExamExamByOneStudent(@ModelAttribute RegularExam exam, Model model) {
+
+        // 定期試験結果のリストを取得
+        List<RegularExam> regularExamList = registryProcessing.regularRegistration(exam);
+
+        try {
+
+            boolean result = numericDataService.insertRegularMany(regularExamList);
+
+            if (result == true) {
+                model.addAttribute("result", "定期試験データを登録しました");
+            } else {
+                model.addAttribute("result", "定期試験データの登録に失敗しました");
+            }
+
+        } catch (DataAccessException e) {
+            model.addAttribute("result", "更新失敗");
+        }
+
+        return postRegistryByOneStudentKind("regularExam", model);
     }
 }

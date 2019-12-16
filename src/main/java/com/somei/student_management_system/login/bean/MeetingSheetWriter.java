@@ -74,9 +74,9 @@ public class MeetingSheetWriter {
         List<RegularExam> regularExamList_2nd = new ArrayList<>();
         List<RegularExam> regularExamList_3rd = new ArrayList<>();
         for (RegularExam rexam : regularExamList) {
-            if (rexam.getGrade() == 3) {
+            if (rexam.getGrade().equals("3")) {
                 regularExamList_3rd.add(rexam);
-            } else if (rexam.getGrade() == 2) {
+            } else if (rexam.getGrade().equals("2")) {
                 regularExamList_2nd.add(rexam);
             } else {
                 regularExamList_1st.add(rexam);

@@ -96,8 +96,8 @@ public class MyTestApp1 {
                     regularExam.setRegular_id(searchRegularExamId(strList.get(0).get(2)));
                 }
                 regularExam.setStudentId(getId(strList.get(i).get(1)));
-                regularExam.setGrade(Integer.parseInt(strList.get(i).get(0)));
-                regularExam.setExamYear(Integer.parseInt(strList.get(0).get(1)));
+                regularExam.setGrade(strList.get(i).get(0));
+                regularExam.setExamYear(strList.get(0).get(1));
                 regularExam.setEnglish(strList.get(i).get(2));
                 regularExam.setMath(strList.get(i).get(3));
                 regularExam.setJapanese(strList.get(i).get(4));

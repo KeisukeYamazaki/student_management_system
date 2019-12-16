@@ -600,8 +600,107 @@
                 </form>
             </div>
             <div th:if="${regularExam}" class="col-sm-12">
-                <div class="row col-sm-10" style="margin-top: 20px">
+                <div class="row col-sm-12" style="margin-top: 20px">
                     <p style="font-size: medium">＜定期試験結果登録＞</p>
+                    <div class="col-sm-12">
+                        <p style="font-size: small">＜登録されている結果＞</p>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+                            <tr>
+                                <th class="info">学年</th>
+                                <th class="info col-sm-2">時期</th>
+                                <th class="info col">英語</th>
+                                <th class="info col">数学</th>
+                                <th class="info col">国語</th>
+                                <th class="info col">理科</th>
+                                <th class="info col">社会</th>
+                                <th class="info col table_border_up">５科</th>
+                                <th class="info col">音楽</th>
+                                <th class="info col">美術</th>
+                                <th class="info col">保体</th>
+                                <th class="info col">技術</th>
+                                <th class="info col">家庭</th>
+                            </tr>
+                            <tr th:each="regular, regularStat : ${regularExamList}">
+                                <td th:text="${regular.grade}"></td>
+                                <td th:text="${regular.examName}"></td>
+                                <td th:text="${regular.english}"></td>
+                                <td th:text="${regular.math}"></td>
+                                <td th:text="${regular.japanese}"></td>
+                                <td th:text="${regular.science}"></td>
+                                <td th:text="${regular.socialStudies}"></td>
+                                <td th:classappend="${regularStat.last} ? table_border_down : table_border_middle"
+                                    th:text="${regular.sumFive}"></td>
+                                <td th:text="${regular.music}"></td>
+                                <td th:text="${regular.art}"></td>
+                                <td th:text="${regular.pe}"></td>
+                                <td th:text="${regular.tech}"></td>
+                                <td th:text="${regular.home}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-12">
+                        <p style="font-size: small">＜登録する結果＞</p>
+                        <form method="post" th:action="@{/regularExam/ByOneStudent}">
+                            <table class="table table-bordered table-condensed table-hover table-striped" id="tblForm1">
+                                <thead>
+                                <tr>
+                                    <th class="info" width="8%">学年</th>
+                                    <th class="info" width="10%">実施年度<p style="font-size: x-small">※ 半角数字4ケタ</p></th>
+                                    <th class="info" width="15%">時期</th>
+                                    <th class="info col">英語</th>
+                                    <th class="info col">数学</th>
+                                    <th class="info col">国語</th>
+                                    <th class="info col">理科</th>
+                                    <th class="info col">社会</th>
+                                    <th class="info col">音楽</th>
+                                    <th class="info col">美術</th>
+                                    <th class="info col">保体</th>
+                                    <th class="info col">技術</th>
+                                    <th class="info col">家庭</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <select class="form-control" name="grade">
+                                            <option value="">選択</option>
+                                            <option value="1">中１</option>
+                                            <option value="2">中２</option>
+                                            <option value="3">中３</option>
+                                        </select>
+                                    </td>
+                                    <td><input class="form-control" type="text" name="examYear"></td>
+                                    <td>
+                                        <select class="form-control" name="regular_id">
+                                            <option value="">選択</option>
+                                            <option value="1">１学期中間</option>
+                                            <option value="2">前期中間</option>
+                                            <option value="3">１学期期末</option>
+                                            <option value="4">前期期末</option>
+                                            <option value="5">２学期中間</option>
+                                            <option value="6">後期中間</option>
+                                            <option value="7">２学期期末</option>
+                                            <option value="8">学年末</option>
+                                        </select>
+                                    </td>
+                                    <td><input class="form-control" type="text" name="english"></td>
+                                    <td><input class="form-control" type="text" name="math"></td>
+                                    <td><input class="form-control" type="text" name="japanese"></td>
+                                    <td><input class="form-control" type="text" name="science"></td>
+                                    <td><input class="form-control" type="text" name="socialStudies"></td>
+                                    <td><input class="form-control" type="text" name="music"></td>
+                                    <td><input class="form-control" type="text" name="art"></td>
+                                    <td><input class="form-control" type="text" name="pe"></td>
+                                    <td><input class="form-control" type="text" name="tech"></td>
+                                    <td><input class="form-control" type="text" name="home"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <input id="btnAdd1" type="button" value="行追加" style="margin-bottom: 20px"/>
+                            <br/>
+                            <button class="btn btn-primary btn-lg" type="submit">登録</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div th:if="${practiceExam}" class="col-sm-12">
@@ -654,9 +753,9 @@
                             <table class="table table-bordered table-condensed table-hover table-striped" id="tblForm1">
                                 <thead>
                                 <tr>
-                                    <th class="info">学年</th>
-                                    <th class="info" width="8%">実施年</th>
-                                    <th class="info col-sm-1">実施月</th>
+                                    <th class="info" width="7%">学年</th>
+                                    <th class="info" width="10%">実施年度<p style="font-size: x-small">※ 半角数字4ケタ</p></th>
+                                    <th class="info" width="7%">実施月</th>
                                     <th class="info col">英語</th>
                                     <th class="info col">数学</th>
                                     <th class="info col">国語</th>
@@ -673,10 +772,17 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input class="form-control" type="text" name="grade"></td>
+                                    <td>
+                                        <select class="form-control" name="grade">
+                                            <option value="">選択</option>
+                                            <option value="1">中１</option>
+                                            <option value="2">中２</option>
+                                            <option value="3">中３</option>
+                                        </select>
+                                    </td>
                                     <td><input class="form-control" type="text" name="examYear"></td>
                                     <td>
-                                        <select class="form-control" name="monthName">
+                                        <select class="form-control" name="regularId">
                                             <option value="">選択</option>
                                             <option value="1">７月</option>
                                             <option value="2">８月</option>
@@ -701,7 +807,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <input id="btnAdd1" type="button" value="行追加" style="margin-bottom: 20px" />
+                            <input id="btnAdd1" type="button" value="行追加" style="margin-bottom: 20px"/>
                             <br/>
                             <button class="btn btn-primary btn-lg" type="submit">登録</button>
                         </form>

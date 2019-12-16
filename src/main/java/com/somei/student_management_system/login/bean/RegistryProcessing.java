@@ -177,7 +177,7 @@ public class RegistryProcessing {
     }
 
     /**
-     * 定期試験結果登録メソッド
+     * 定期試験結果ペーストデータ登録メソッド
      *
      * @param regulars 定期試験のペーストデータ
      * @return 定期試験の結果リスト
@@ -213,8 +213,8 @@ public class RegistryProcessing {
                     regularExam.setRegular_id(myTestApp1.searchRegularExamId(strList.get(0).get(2)));
                 }
                 regularExam.setStudentId(myTestApp1.getId(strList.get(i).get(1)));
-                regularExam.setGrade(Integer.parseInt(strList.get(i).get(0)));
-                regularExam.setExamYear(Integer.parseInt(strList.get(0).get(1)));
+                regularExam.setGrade(strList.get(i).get(0));
+                regularExam.setExamYear(strList.get(0).get(1));
                 regularExam.setEnglish(strList.get(i).get(2));
                 regularExam.setMath(strList.get(i).get(3));
                 regularExam.setJapanese(strList.get(i).get(4));
@@ -330,6 +330,71 @@ public class RegistryProcessing {
             practiceExamList.add(practiceExam);
         }
         return practiceExamList;
+    }
+
+    /**
+     * 定期試験結果登録メソッド
+     *
+     * @param exam 定期試験のデータ
+     * @return 定期試験の結果リスト
+     */
+    public List<RegularExam> regularRegistration(RegularExam exam) {
+
+        // 生徒を取得
+        Student student = studentService.selectOne(sessionData.getStr3());
+
+        // リスト化していく
+        List<String> gradeList = Arrays.asList(exam.getGrade().split(",", -1));
+        List<String> examYearList = Arrays.asList(exam.getExamYear().split(",", -1));
+        List<String> regularIdList = Arrays.asList(exam.getRegular_id().split(",", -1));
+        List<String> englishList = Arrays.asList(exam.getEnglish().split(",", -1));
+        List<String> mathList = Arrays.asList(exam.getMath().split(",", -1));
+        List<String> japaneseList = Arrays.asList(exam.getJapanese().split(",", -1));
+        List<String> scienceList = Arrays.asList(exam.getScience().split(",", -1));
+        List<String> socialStudiesList = Arrays.asList(exam.getSocialStudies().split(",", -1));
+        List<String> musicList = Arrays.asList(exam.getMusic().split(",", -1));
+        List<String> artList = Arrays.asList(exam.getArt().split(",", -1));
+        List<String> peList = Arrays.asList(exam.getPe().split(",", -1));
+        List<String> techList = Arrays.asList(exam.getTech().split(",", -1));
+        List<String> homeList = Arrays.asList(exam.getHome().split(",", -1));
+
+        // 返却用のリストを作成
+        List<RegularExam> regularExamList = new ArrayList<>();
+
+        for (int i = 0; i < gradeList.size(); i++) {
+
+            RegularExam inList = new RegularExam();
+
+            // ５科目の点数のリストを作成
+            List<String> fiveSubjects
+                    = Arrays.asList(englishList.get(i), mathList.get(i), japaneseList.get(i),
+                    scienceList.get(i), socialStudiesList.get(i));
+
+            //PracticeExamクラスにフィールド別のリストを代入してリストに格納
+            inList.setStudentId(student.getStudentId());
+            inList.setGrade(gradeList.get(i));
+            inList.setExamYear(examYearList.get(i));
+            inList.setRegular_id(regularIdList.get(i));
+            // 英語が空ならループを抜ける（成績が登録されていないとみなす）
+            if (englishList.get(i).equals("")) {
+                continue;
+            } else {
+                inList.setEnglish(englishList.get(i));
+            }
+            inList.setMath(mathList.get(i));
+            inList.setJapanese(japaneseList.get(i));
+            inList.setScience(scienceList.get(i));
+            inList.setSocialStudies(socialStudiesList.get(i));
+            inList.setSumFive(String.valueOf(sumSubjects(fiveSubjects)));
+            inList.setMusic(musicList.get(i));
+            inList.setArt(artList.get(i));
+            inList.setPe(peList.get(i));
+            inList.setTech(techList.get(i));
+            inList.setHome(homeList.get(i));
+
+            regularExamList.add(inList);
+        }
+        return regularExamList;
     }
 
     /**
