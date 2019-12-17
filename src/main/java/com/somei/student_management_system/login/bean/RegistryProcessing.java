@@ -232,13 +232,12 @@ public class RegistryProcessing {
             }
         }
         // Mapに格納して返す
-        Map<List<RegularExam>, List<String>> returnMap1 = Map.of(regularExamList, notRegistryList);
-        /*Map<List<RegularExam>, List<String>> returnMap = new HashMap<List<RegularExam>, List<String>>() {
+        Map<List<RegularExam>, List<String>> returnMap = new HashMap<List<RegularExam>, List<String>>() {
             {
                 put(regularExamList, notRegistryList);
             }
-        };*/
-        return returnMap1;
+        };
+        return returnMap;
     }
 
     /**
