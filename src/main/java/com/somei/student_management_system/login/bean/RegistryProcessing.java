@@ -280,52 +280,31 @@ public class RegistryProcessing {
         // 返却用のリストを作成
         List<ImportPracticeExam> practiceExamList = new ArrayList<>();
 
-        // 志望校が３つの場合の添字
-        List<Integer> numList_3schools = Arrays.asList(0, 21, 22, 24, 25, 27, 28, 30, 31, 33, 34, 36, 37, 39, 40);
-        // 志望校が２つの場合の添字
-        List<Integer> numList_2schools = numList_3schools.stream().map(num -> num -= 1).collect(Collectors.toList());
-        // 志望校が１つの場合の添字
-        List<Integer> numList_1school = numList_3schools.stream().map(num -> num -= 2).collect(Collectors.toList());
-
         for (int i = 0; i < newStrList.size(); i++) {
             ImportPracticeExam practiceExam = new ImportPracticeExam();
 
             // 生徒情報を取得
             Student student = studentService.selectOne(myTestApp1.getId(newStrList.get(i).get(0)));
 
-            // 添字のリストを代入するリスト
-            List<Integer> numList = new ArrayList<>();
-
-            if (newStrList.get(i).size() == 40) {
-                // 志望校が１つの場合
-                numList = numList_1school;
-            } else if (newStrList.get(i).size() == 41) {
-                // 志望校が２つの場合
-                numList = numList_2schools;
-            } else {
-                // 志望校が３つの場合
-                numList = numList_3schools;
-            }
-
             // ImportPracticeExamの各項目をセットする
             practiceExam.setStudentId(student.getStudentId());
             practiceExam.setGrade(grade);
             practiceExam.setExamYear(year);
             practiceExam.setMonthName(month);
-            practiceExam.setEnglishScore(newStrList.get(i).get(numList.get(1)));
-            practiceExam.setEnglishDeviation(removeBrackets(newStrList.get(i).get(numList.get(2))));
-            practiceExam.setMathScore(newStrList.get(i).get(numList.get(3)));
-            practiceExam.setMathDeviation(removeBrackets(newStrList.get(i).get(numList.get(4))));
-            practiceExam.setJapaneseScore(newStrList.get(i).get(numList.get(5)));
-            practiceExam.setJapaneseDeviation(removeBrackets(newStrList.get(i).get(numList.get(6))));
-            practiceExam.setScienceScore(newStrList.get(i).get(numList.get(7)));
-            practiceExam.setScienceDeviation(removeBrackets(newStrList.get(i).get(numList.get(8))));
-            practiceExam.setSocialScore(newStrList.get(i).get(numList.get(9)));
-            practiceExam.setSocialDeviation(removeBrackets(newStrList.get(i).get(numList.get(10))));
-            practiceExam.setSumThree(newStrList.get(i).get(numList.get(11)));
-            practiceExam.setDevThree(removeBrackets(newStrList.get(i).get(numList.get(12))));
-            practiceExam.setSumAll(newStrList.get(i).get(numList.get(13)));
-            practiceExam.setDevFive(removeBrackets(newStrList.get(i).get(numList.get(14))));
+            practiceExam.setEnglishScore(getFromLast(newStrList.get(i), -20));
+            practiceExam.setEnglishDeviation(removeBrackets(getFromLast(newStrList.get(i), -19)));
+            practiceExam.setMathScore(getFromLast(newStrList.get(i), -17));
+            practiceExam.setMathDeviation(removeBrackets(getFromLast(newStrList.get(i), -16)));
+            practiceExam.setJapaneseScore(getFromLast(newStrList.get(i), -14));
+            practiceExam.setJapaneseDeviation(removeBrackets(getFromLast(newStrList.get(i), -13)));
+            practiceExam.setScienceScore(getFromLast(newStrList.get(i), -11));
+            practiceExam.setScienceDeviation(removeBrackets(getFromLast(newStrList.get(i), -10)));
+            practiceExam.setSocialScore(getFromLast(newStrList.get(i), -8));
+            practiceExam.setSocialDeviation(removeBrackets(getFromLast(newStrList.get(i), -7)));
+            practiceExam.setSumThree(getFromLast(newStrList.get(i), -5));
+            practiceExam.setDevThree(removeBrackets(getFromLast(newStrList.get(i), -4)));
+            practiceExam.setSumAll(getFromLast(newStrList.get(i), -2));
+            practiceExam.setDevFive(removeBrackets(getFromLast(newStrList.get(i), -1)));
 
             practiceExamList.add(practiceExam);
         }
@@ -433,5 +412,17 @@ public class RegistryProcessing {
     private String removeBrackets(String str) {
         String removedStr = str.replace("[", "").trim();
         return removedStr.replace("]", "").trim();
+    }
+
+    /**
+     * リストを後ろから取得するメソッド
+     *
+     * @param list 値を取得するリスト
+     * @param num 最後から何番目かの数字
+     * @return 値
+     */
+    private String getFromLast(List<String> list, int num) {
+        int listSize = list.size();
+        return list.get(listSize - 1 + num);
     }
 }
