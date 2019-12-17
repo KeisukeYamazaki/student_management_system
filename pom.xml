@@ -161,21 +161,6 @@
             <artifactId>jsoup</artifactId>
             <version>1.7.2</version>
         </dependency>
-        <dependency>
-            <groupId>org.bbreak.excella</groupId>
-            <artifactId>excella-core</artifactId>
-            <version>1.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bbreak.excella</groupId>
-            <artifactId>excella-reports</artifactId>
-            <version>1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bbreak.excella</groupId>
-            <artifactId>excella-trans</artifactId>
-            <version>1.5</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -203,11 +188,6 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </repository>
-        <repository>
-            <id>excella.bbreak.org</id>
-            <name>bBreak Systems Excella</name>
-            <url>http://excella-core.github.io/maven2/</url>
         </repository>
     </repositories>
 </project>

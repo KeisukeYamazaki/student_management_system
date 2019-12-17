@@ -5,7 +5,6 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.bbreak.excella.core.util.PoiUtil;
 
 import org.springframework.stereotype.Component;
 
@@ -35,7 +34,7 @@ public class ZenkenExcelProcessing {
         Sheet sheet = workbook.getSheetAt(0);
 
         // 最終行の取得
-        int count = PoiUtil.getLastRowNum(sheet, 0, 0);
+
 
         return null;
 
