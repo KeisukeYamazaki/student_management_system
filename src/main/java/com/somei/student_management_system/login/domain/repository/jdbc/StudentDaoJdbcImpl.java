@@ -135,9 +135,11 @@ public class StudentDaoJdbcImpl implements StudentDao {
 
                 // ビューを作成する
                 String sqlCreateView = "CREATE VIEW nameList_3A AS"
-                        + " SELECT student_id, student_name, home_room FROM student WHERE home_room = '３特'"
+                        + " SELECT student_id, student_name, home_room FROM student "
+                        + " WHERE home_room = '３特' AND char_length(student_id) = 4"
                         + " UNION"
-                        + " SELECT student_id, student_name, home_room FROM student WHERE home_room = '３Ａ'";
+                        + " SELECT student_id, student_name, home_room FROM student"
+                        + " WHERE home_room = '３Ａ' AND char_length(student_id) = 4";
 
                 String sql = "SELECT student_id, student_name, home_room from namelist_3a"
                         + " ORDER BY home_room COLLATE \"C\", student_id";
