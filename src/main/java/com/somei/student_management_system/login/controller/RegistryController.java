@@ -6,6 +6,7 @@ import com.somei.student_management_system.MyTestApp1;
 import com.somei.student_management_system.login.bean.ByOneStudentRegistryProcessing;
 import com.somei.student_management_system.login.bean.IOCsv;
 import com.somei.student_management_system.login.bean.RegistryProcessing;
+import com.somei.student_management_system.login.bean.ZenkenExcelProcessing;
 import com.somei.student_management_system.login.bean.excelProcessing;
 import com.somei.student_management_system.login.domain.model.IkushinPracticeExam;
 import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
@@ -71,6 +72,9 @@ public class RegistryController {
 
     @Autowired
     MyTestApp1 myTestApp1;
+
+    @Autowired
+    ZenkenExcelProcessing zenkenExcelProcessing;
 
 
     /**
@@ -375,41 +379,30 @@ public class RegistryController {
 
             } else {
                 // 全県模試の場合
-                if (multipartFile.isEmpty()) {
-                    // スプレッドシートでの登録処理
-                } else {
-                    // エクセルファイルの処理
-                    try {
-                        InputStream stream = multipartFile.getInputStream();
+                // エクセルファイルの処理
+                try {
+                    InputStream stream = multipartFile.getInputStream();
 
-                        // エクセルファイルを模試リストに変換して取得
-                        List<ZenkenExcelData> PracticeList;
+                    // エクセルファイルを模試リストに変換して取得
+                    List<ZenkenExcelData> PracticeList = zenkenExcelProcessing.readExcelFile(stream);
 
-                        //確認画面へ渡す
-                        //model.addAttribute("schoolRecordList", PracticeList);
+                    result = numericDataService.insertPracticeMany(PracticeList);
 
-                    } catch (Exception e) {
-                        // 不正な形式のファイルだった場合
-                        e.printStackTrace();
+                } catch (Exception e) {
+                    // 不正な形式のファイルだった場合
+                    e.printStackTrace();
 
-                        //メッセージを表示する
-                        model.addAttribute("result", "正しい形式のファイルをアップロードしてください");
+                    //メッセージを表示する
+                    model.addAttribute("result", "正しい形式のファイルをアップロードしてください");
 
-                        return getRegistry(model);
-                    }
+                    return getRegistry(model);
                 }
-
-                //コンテンツ部分に生徒一覧を表示するための文字列を登録
-                model.addAttribute("contents", "login/schoolRecordConfirm :: schoolRecordConfirm_contents");
-
-                return "login/homeLayout";
-
             }
 
             if (result == true) {
                 if (notRegistryList.size() != 0) {
-                    model.addAttribute("result",
-                            "模擬試験データを登録しました  ※" + notRegistryList + " を登録できませんでした。");
+                    String notRegistryStr = "模擬試験データを登録しました  ※" + notRegistryList + " を登録できませんでした。";
+                    model.addAttribute("result", notRegistryStr);
                 } else {
                     model.addAttribute("result", "模擬試験データを登録しました");
                 }
@@ -504,7 +497,7 @@ public class RegistryController {
 
         if (result == true && notRegistryList.isEmpty()) {
             model.addAttribute("result", "定期試験データを登録しました");
-        } else if (result == true && notRegistryList.size() > 0){
+        } else if (result == true && notRegistryList.size() > 0) {
             model.addAttribute("result", "定期試験データを登録しました (" + notRegistryList + "を登録できませんでした )");
         } else {
             model.addAttribute("result", "定期試験データの登録に失敗しました");
