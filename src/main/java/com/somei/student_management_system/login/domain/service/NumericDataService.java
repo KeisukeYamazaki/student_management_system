@@ -34,9 +34,9 @@ public class NumericDataService {
     /**
      * 複数の成績を取得.
      */
-    public List<SchoolRecordWithName> selectRecordMany(String school, String grade, String termName) {
+    public List<SchoolRecordWithName> selectRecordManyForRegistry(String grade, String termName) {
         //全件取得
-        return dao.selectRecordMany(school, grade, termName);
+        return dao.selectRecordManyForRegistry(grade, termName);
     }
 
     /**
