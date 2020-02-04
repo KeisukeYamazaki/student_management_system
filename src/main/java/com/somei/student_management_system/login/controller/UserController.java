@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -135,7 +136,7 @@ public class UserController {
     /**
      * ユーザー更新用処理.
      */
-    @PostMapping(value = "/admin", params = "update")
+    @PostMapping(value = "/userEdit", params = "update")
     public String postUserDetailUpdate(@ModelAttribute UserForm form,
                                        Model model) {
 
@@ -175,7 +176,7 @@ public class UserController {
     /**
      * ユーザー削除用処理.
      */
-    @PostMapping(value = "/admin", params = "delete")
+    @PostMapping(value = "/userEdit", params = "delete")
     public String postUserDetailDelete(@ModelAttribute UserForm form,
                                        Model model) {
 
@@ -186,7 +187,7 @@ public class UserController {
 
         if (result == true) {
 
-            model.addAttribute("result", "削除成功");
+            model.addAttribute("result", "削除しました");
 
         } else {
 
@@ -198,7 +199,7 @@ public class UserController {
         return getUserList(model);
     }
 
-    // 校舎のドロップダウンリスト
+    // 権限のドロップダウンリスト
     public Map<String, String> getSelectedRole() {
         Map<String, String> selectMap = new LinkedHashMap<>();
         selectMap.put("ROLE_GENERAL", "ROLE_GENERAL");
