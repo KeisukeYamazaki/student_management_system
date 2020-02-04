@@ -186,7 +186,7 @@ public class StudentDaoJdbcImpl implements StudentDao {
 
             String sql = "SELECT * FROM student"
                     + " WHERE to_char(birthday, 'FMMM') = ? AND char_length(student_id) = 4"
-                    + " OR to_char(birthday, 'FMMM') = ?"
+                    + " OR to_char(birthday, 'FMMM') = ? AND char_length(student_id) = 4"
                     + " ORDER BY to_char(birthday, 'MM-dd')";
 
             //RowMapperの生成
