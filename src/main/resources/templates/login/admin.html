@@ -12,30 +12,28 @@
                 <h1>ユーザー管理</h1>
             </div>
             <div class="container-fluid panel panel-container">
-                <!-- 更新・削除処理の結果表示用 -->
-                <span class="text-info" th:if="${result}" th:text="${result}" style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
                 <div class="row box2">
-                    <form method="post" th:action="@{/admin}">
-                        <table class="table table-bordered table-hover table-striped table-condensed">
-                            <tr>
-                                <th class="info col-sm-2">アカウント</th>
-                                <th class="info col-sm-2">ユーザー名</th>
-                                <th class="info col-sm-2">パスワード</th>
-                                <th class="info col-sm-2">権限</th>
-                                <th class="info col-sm-2"></th>
-                            </tr>
-                            <tr th:each="user : ${userList}">
-                                <td th:text="${user.userId}"></td>
-                                <td th:text="${user.userName}"></td>
-                                <td th:text="${user.reallyPass}"></td>
-                                <td th:text="${user.role}"></td>
-                                <td>
-                                    <!-- 編集ボタン -->
-                                    <a class="btn btn-primary" th:href="@{'/userEdit/' + ${user.userId}}">編集</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
+                    <table class="table table-bordered table-hover table-striped table-condensed">
+                        <tr>
+                            <th class="info col-sm-2">アカウント</th>
+                            <th class="info col-sm-2">ユーザー名</th>
+                            <th class="info col-sm-2">パスワード</th>
+                            <th class="info col-sm-2">権限</th>
+                            <th class="info col-sm-2"></th>
+                        </tr>
+                        <tr th:each="user : ${userList}">
+                            <td th:text="${user.userId}"></td>
+                            <td th:text="${user.userName}"></td>
+                            <td th:text="${user.reallyPass}"></td>
+                            <td th:text="${user.role}"></td>
+                            <td>
+                                <!-- 更新ボタン -->
+                                <a class="btn btn-primary" th:href="@{'/userEdit/' + ${user.userId}}">編集</a>
+                                <!-- 削除ボタン -->
+                                <button class="btn btn-danger" type="submit" name="delete">削除</button>
+                            </td>
+                        </tr>
+                    </table>
                     <br/>
                     <!-- 新規登録ボタン -->
                     <a class="btn btn-info btn-lg" th:href="@{'/userSignup/'}">新規登録</a>
