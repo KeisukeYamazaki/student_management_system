@@ -1,7 +1,6 @@
 package com.somei.student_management_system.login.controller;
 
 import com.somei.student_management_system.MyTestApp1;
-import com.somei.student_management_system.login.bean.EntranceExamCalculation;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.FuturePathWithData;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
@@ -51,9 +50,6 @@ public class StudentController {
 
     @Autowired
     MyTestApp1 myTestApp1;
-
-    @Autowired
-    EntranceExamCalculation entranceExamCalculation;
 
     /**
      * 生徒一覧画面のGETメソッド用処理.
@@ -119,11 +115,6 @@ public class StudentController {
                     schoolRecordList_1st.add(record);
                 }
             }
-            // まとめたリストを作成
-            List<List<SchoolRecord>> allRecordList = new ArrayList<>();
-            allRecordList.add(schoolRecordList_1st);
-            allRecordList.add(schoolRecordList_2nd);
-            allRecordList.add(schoolRecordList_3rd);
 
             // 定期試験一覧の生成（学年別に作成）
             List<RegularExam> regularExamList = numericDataService.selectRegularOne(studentId);
@@ -158,23 +149,6 @@ public class StudentController {
             // 進路データの生成
             FuturePathWithData futurePathData = studentService.selectPathDataOne(studentId);
 
-            // 公立高校のIDリストを作成
-            List<String> highSchoolIdList = Arrays.asList(futurePathData.getFirstChoice(),
-                    futurePathData.getSecondChoice(),
-                    futurePathData.getThirdChoice());
-
-            // 必要内申、成績(実際とのギャップ)のリストを取得
-            if(highSchoolIdList.get(0) != null) {
-            List<List<String>> gapList
-                    = entranceExamCalculation.publicHighSchoolCalculation(highSchoolIdList, allRecordList);
-
-                for (int i = 0; i <= 2; i++) {
-                    model.addAttribute("neededRecord" + i, gapList.get(i).get(0));
-                    model.addAttribute("aveScore" + i, gapList.get(i).get(1));
-                    model.addAttribute("borScore" + i, gapList.get(i).get(2));
-                }
-            }
-
             // Modelに登録
             model.addAttribute("student", student);
             model.addAttribute("schoolRecordList_1st", schoolRecordList_1st);
@@ -187,8 +161,8 @@ public class StudentController {
             model.addAttribute("practiceExamList_2nd", practiceExamList_2nd);
             model.addAttribute("practiceExamList_3rd", practiceExamList_3rd);
             model.addAttribute("futurePathData", futurePathData);
-
         }
+
         return "login/homeLayout";
     }
 
