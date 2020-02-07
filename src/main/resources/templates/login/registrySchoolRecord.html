@@ -52,7 +52,19 @@
     </div>
     <div th:if="${ByGrade}" class="panel panel-container col-sm-12" style="margin-top: 15px">
         <form method="post" th:action="@{/registry/schoolRecord/way/ByGrade}">
-            <div style="margin-bottom: 17px">成績を登録する学年・学期を選択してください</div>
+            <div style="margin-bottom: 17px">成績を登録する校舎・学年・学期を選択してください</div>
+            <div class="form-group">
+                <label for="school" class="control-label col-xs-1"
+                       style="text-align: right; margin-top: 7px">校舎：</label>
+                <div class="col-sm-2 col-xs-4">
+                    <select class="form-control" id="school" name="school">
+                        <option value="">校舎</option>
+                        <option value="橋戸校" th:selected="${school} == '橋戸校'">橋戸校</option>
+                        <option value="瀬谷校" th:selected="${school} == '瀬谷校'">瀬谷校</option>
+                        <option value="大和校" th:selected="${school} == '大和校'">大和校</option>
+                    </select>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="grade" class="control-label col-xs-1"
                        style="text-align: right; margin: 7px 0 0 20px">学年：</label>

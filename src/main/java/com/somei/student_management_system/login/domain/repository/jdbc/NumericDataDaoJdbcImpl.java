@@ -108,13 +108,14 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
     /**
      * 複数の成績を取得（成績登録用）
      *
+     * @param school   対象の校舎
      * @param grade    対象の学年
      * @param termName 対象の学期
      * @return 実行結果のリスト
      * @throws
      */
     @Override
-    public List<SchoolRecordWithName> selectRecordManyForRegistry(String grade, String termName) throws DataAccessException {
+    public List<SchoolRecordWithName> selectRecordMany(String school, String grade, String termName) throws DataAccessException {
 
         String startNum = grade.equals("中３") ? "2201" : grade.equals("中２") ? "2301" : "2401";
         String endNum = grade.equals("中３") ? "2299" : grade.equals("中２") ? "2399" : "2499";
@@ -147,7 +148,8 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                         + " AND (school_record.record_id = 1 OR school_record.record_id = 2)"
                     + " LEFT OUTER JOIN record_group"
                     + " ON school_record.record_id = record_group.id"
-                        + " WHERE student.student_id BETWEEN ? AND ?"
+                    + " WHERE student.school = ?"
+                        + " AND student.student_id BETWEEN ? AND ?"
                         + " AND char_length(student.student_id) = 4"
                     + " ORDER BY student.student_id";
 
@@ -175,7 +177,8 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                         + " AND school_record.record_id = 3"
                     + " LEFT OUTER JOIN record_group"
                     + " ON school_record.record_id = record_group.id"
-                        + " WHERE student.student_id BETWEEN ? AND ?"
+                    + " WHERE student.school = ?"
+                        + " AND student.student_id BETWEEN ? AND ?"
                         + " AND char_length(student.student_id) = 4"
                     + " ORDER BY student.student_id";
 
@@ -203,16 +206,18 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                         + " AND (school_record.record_id = 4 OR school_record.record_id = 5)"
                     + " LEFT OUTER JOIN record_group"
                     + " ON school_record.record_id = record_group.id"
-                        + " WHERE student.student_id BETWEEN ? AND ?"
+                    + " WHERE student.school = ?"
+                        + " AND student.student_id BETWEEN ? AND ?"
                         + " AND char_length(student.student_id) = 4"
                     + " ORDER BY student.student_id";
+
         }
 
         // RowMapperの生成
         RowMapper<SchoolRecordWithName> rowMapper = new BeanPropertyRowMapper<>(SchoolRecordWithName.class);
 
         // SQL実行
-        return jdbc.query(sql, rowMapper, grade, startNum, endNum);
+        return jdbc.query(sql, rowMapper, grade, school, startNum, endNum);
     }
 
     /**
