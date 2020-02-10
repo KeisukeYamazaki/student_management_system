@@ -467,29 +467,43 @@
                                         <td th:text="*{thirty}"></td>
                                     </tr>
                                 </table>
-                                <div class="row col-sm-6">
+                                <div class="row col-sm-12">
                                     <p style="font-size: medium">＜志望校＞</p>
-                                    <table class="table table-bordered table-hover table-condensed">
+                                    <span style="padding: 0 0 10px 370px;">必要内申</span>
+                                    <span style="padding: 0 0 10px 75px;">中位合格</span>
+                                    <span style="padding: 0 0 10px 75px">ボーダー</span>
+                                    <table class="table table-bordered table-hover table-condensed"
+                                           style="margin-top: 5px">
                                         <tr>
                                             <th class="info col-sm-2 col-xs-3">第１志望</th>
-                                            <td class="col-sm-4 showfirstChoice" id="showfirstChoice" th:value="*{firstChoice}"></td>
+                                            <td class="col-sm-3 showfirstChoice" id="showfirstChoice"
+                                                th:value="${futurePathData.firstChoice}"></td>
+                                            <td class="col-sm-2" th:text="${neededRecord0}"></td>
+                                            <td class="col-sm-2" th:text="${aveScore0}"></td>
+                                            <td class="col-sm-2" th:text="${borScore0}"></td>
                                         </tr>
                                     </table>
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
                                             <th class="info col-sm-2 col-xs-3">第２志望</th>
-                                            <td class="col-sm-4 showsecondChoice" id="showsecondChoice" th:value="*{secondChoice}"></td>
+                                            <td class="col-sm-3 showsecondChoice" id="showsecondChoice" th:value="${futurePathData.secondChoice}"></td>
+                                            <td class="col-sm-2" th:text="${neededRecord1}"></td>
+                                            <td class="col-sm-2" th:text="${aveScore1}"></td>
+                                            <td class="col-sm-2" th:text="${borScore1}"></td>
                                         </tr>
                                     </table>
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
                                             <th class="info col-sm-2 col-xs-3">第３志望</th>
-                                            <td class="col-sm-4 showthirdChoice" id="showthirdChoice" th:value="*{thirdChoice}"></td>
+                                            <td class="col-sm-3 showthirdChoice" id="showthirdChoice" th:value="${futurePathData.thirdChoice}"></td>
+                                            <td class="col-sm-2" th:text="${neededRecord2}"></td>
+                                            <td class="col-sm-2" th:text="${aveScore2}"></td>
+                                            <td class="col-sm-2" th:text="${borScore2}"></td>
                                         </tr>
                                     </table>
                                     <div class="row col-sm-12 align">
                                         <p style="font-size: medium">＜その他の候補となる高校＞</p>
-                                        <table class="table table-bordered table-hover table-condensed">
+                                        <!--<table class="table table-bordered table-hover table-condensed">
                                             <tr>
                                                 <th class="info col-sm-2 col-xs-3" rowspan="3">公立高校</th>
                                                 <td class="col-sm-4 showpublicSchool1" id="showpublicSchool1" style="height: 27px"
@@ -503,25 +517,28 @@
                                                 <td style="height: 27px" class="showpublicSchool3" id="showpublicSchool3"
                                                     th:value="*{publicSchool3}"></td>
                                             </tr>
-                                        </table>
+                                        </table>-->
                                         <table class="table table-bordered table-hover table-condensed">
                                             <tr>
                                                 <th class="info col-sm-2 col-xs-3" rowspan="3">私立高校</th>
                                                 <td class="col-sm-4 showprivateSchool1" style="height: 27px" id="showprivateSchool1"
-                                                    th:value="*{privateSchool1}"></td>
+                                                    th:value="${futurePathData.privateSchool1}"></td>
+                                                <td class="col-sm-5"></td>
                                             </tr>
                                             <tr>
                                                 <td style="height: 27px" class="showprivateSchool2" id="showprivateSchool2"
-                                                    th:value="*{privateSchool2}"></td>
+                                                    th:value="${futurePathData.privateSchool2}"></td>
+                                                <td class="col-sm-5"></td>
                                             </tr>
                                             <tr>
                                                 <td style="height: 27px" class="showprivateSchool3" id="showprivateSchool3"
-                                                    th:value="*{privateSchool3}"></td>
+                                                    th:value="${futurePathData.privateSchool3}"></td>
+                                                <td class="col-sm-5"></td>
                                             </tr>
                                         </table>
                                     </div>
                                 </div>
-                                <div class="row col-sm-6 col-xs-12"
+                                <!--<div class="row col-sm-6 col-xs-12"
                                      style="margin: 5px 0px 0px 30px; float: right; padding: 0px">
                                     <table class="table table-bordered table-hover table-condensed">
                                         <tr>
@@ -539,7 +556,7 @@
                                             </td>
                                         </tr>
                                     </table>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </div>
