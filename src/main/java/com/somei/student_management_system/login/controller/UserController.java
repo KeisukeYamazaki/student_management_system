@@ -50,8 +50,8 @@ public class UserController {
      */
     @GetMapping("/userEdit/{id:.+}")
     public String getUserEdit(@ModelAttribute UserForm form,
-                                 Model model,
-                                 @PathVariable("id") String userId) {
+                              Model model,
+                              @PathVariable("id") String userId) {
 
         // ユーザーID確認（デバッグ）
         System.out.println("Edit_userId = " + userId);
