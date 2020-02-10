@@ -145,11 +145,12 @@ public class RegistryController {
      * @return 成績登録画面に遷移
      */
     @PostMapping("/registry/schoolRecord/way/ByGrade")
-    public String getRegistrySchoolRecordWay(@RequestParam("grade") String grade,
+    public String getRegistrySchoolRecordWay(@RequestParam("school") String school,
+                                             @RequestParam("grade") String grade,
                                              @RequestParam("termName") String termName,
                                              Model model) {
 
-        List<SchoolRecordWithName> recordList = numericDataService.selectRecordManyForRegistry(grade, termName);
+        List<SchoolRecordWithName> recordList = numericDataService.selectRecordMany(school, grade, termName);
 
         //コンテンツ部分に生徒一覧を表示するための文字列を登録
         model.addAttribute("contents", "login/registrySchoolRecord :: registrySchoolRecord_contents");
@@ -158,6 +159,7 @@ public class RegistryController {
         model.addAttribute("ByGrade", true);
 
         // 校舎・学年・学期
+        model.addAttribute("school", school);
         model.addAttribute("grade", grade);
         model.addAttribute("termName", termName);
 
