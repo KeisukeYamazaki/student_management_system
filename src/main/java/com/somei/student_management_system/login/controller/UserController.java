@@ -49,9 +49,9 @@ public class UserController {
      * ユーザー編集画面のGETメソッド用処理.
      */
     @GetMapping("/userEdit/{id:.+}")
-    public String getUserEdit(@ModelAttribute UserForm form,
-                              Model model,
-                              @PathVariable("id") String userId) {
+    public String getUserDelete(@ModelAttribute UserForm form,
+                                Model model,
+                                @PathVariable("id") String userId) {
 
         // ユーザーID確認（デバッグ）
         System.out.println("Edit_userId = " + userId);
@@ -80,6 +80,33 @@ public class UserController {
         }
 
         return "login/homeLayout";
+    }
+
+    /**
+     * ユーザー削除のGETメソッド用処理.
+     */
+    @GetMapping("/userDelete/{id:.+}")
+    public String getUserEdit(Model model,
+                              @PathVariable("id") String userId) {
+
+        System.out.println("削除ボタンの処理");
+
+        //削除実行
+        boolean result = userService.deleteOne(userId);
+
+        if (result == true) {
+
+            model.addAttribute("result", "削除しました");
+
+        } else {
+
+            model.addAttribute("result", "削除失敗");
+
+        }
+
+        //ユーザー一覧画面を表示
+        return getUserList(model);
+
     }
 
     /**
@@ -124,6 +151,7 @@ public class UserController {
         // 登録結果の判定
         if (result == true) {
             System.out.println("ユーザーinsert成功");
+            model.addAttribute("result", form.getUserName() + " を登録しました");
         } else {
             System.out.println("ユーザーinsert失敗");
         }
@@ -158,16 +186,26 @@ public class UserController {
             boolean result = userService.updateOne(user);
 
             if (result == true) {
-                model.addAttribute("result", "更新成功");
+                model.addAttribute("result", "更新しました");
             } else {
                 model.addAttribute("result", "更新失敗");
             }
 
         } catch(DataAccessException e) {
 
-            model.addAttribute("result", "更新失敗");
+            model.addAttribute("result", "更新に失敗しました");
 
         }
+
+        //ユーザー一覧画面を表示
+        return getUserList(model);
+    }
+
+    /**
+     * ユーザー更新画面の戻るボタン処理
+     */
+    @PostMapping(value = "/userEdit", params = "back")
+    public String postUserDetailBack(Model model) {
 
         //ユーザー一覧画面を表示
         return getUserList(model);

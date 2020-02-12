@@ -31,7 +31,11 @@
                                 <td th:text="${user.role}"></td>
                                 <td>
                                     <!-- 編集ボタン -->
-                                    <a class="btn btn-primary" th:href="@{'/userEdit/' + ${user.userId}}">編集</a>
+                                    <a class="btn btn-primary"th:href="@{'/userEdit/' + ${user.userId}}">編集</a>
+                                    <!-- 削除ボタン -->
+                                    <a class="btn btn-danger" style="margin-left: 15px"
+                                       onclick="return confirm('本当に削除してもいいですか？')"
+                                       th:href="@{'/userDelete/' + ${user.userId}}">削除</a>
                                 </td>
                             </tr>
                         </table>

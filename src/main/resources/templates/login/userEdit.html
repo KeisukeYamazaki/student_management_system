@@ -20,23 +20,23 @@
                             <th class="info col-sm-2">ユーザー名</th>
                             <th class="info col-sm-2">パスワード</th>
                             <th class="info col-sm-2">権限</th>
-                            <th class="info col-sm-2">表示用パス</th>
+                            <!--<th class="info col-sm-2">表示用パス</th>-->
                         </tr>
                         <tr>
-                            <td>
-                                <div class="form-group">
+                            <td th:text="*{userId}">
+                                <!--<div class="form-group">
                                     <input type="text" class="form-control" th:field="*{userId}"/>
-                                </div>
+                                </div>-->
                             </td>
-                            <td>
-                                <div class="form-group">
+                            <td th:text="*{userName}">
+                               <!-- <div class="form-group">
                                     <input type="text" class="form-control" th:field="*{userName}"/>
-                                </div>
+                                </div>-->
                             </td>
-                            <td>
-                                <div class="form-group">
+                            <td th:text="*{reallyPass}">
+                                <!--<div class="form-group">
                                     <input type="text" class="form-control" th:field="*{password}"/>
-                                </div>
+                                </div>-->
                             </td>
                             <td>
                                 <select id="role" name="role" class="form-control">
@@ -45,16 +45,22 @@
                                             th:selected="${role.value} == *{role}"></option>
                                 </select>
                             </td>
-                            <td>
+                            <!--<td>
                                 <div class="form-group">
                                     <input type="text" class="form-control" th:field="*{reallyPass}"/>
                                 </div>
-                            </td>
+                            </td>-->
                         </tr>
                     </table>
+                    <input type="hidden" th:field="*{userId}" />
+                    <input type="hidden" th:field="*{userName}" />
+                    <input type="hidden" th:field="*{password}" />
+                    <input type="hidden" th:field="*{reallyPass}" />
                     <div class="row col-sm-12">
+                        <!-- 戻るボタン -->
+                        <button class="btn btn-default btn-lg" style="margin: 0 20px 0 20px; border-color: #9d9d9d" name="back" type="submit">戻る</button>
                         <!-- 更新ボタン -->
-                        <button class="btn btn-primary btn-lg" type="submit" name="update">更新</button>
+                        <button class="btn btn-primary btn-lg" style="margin: 0 20px 0 20px; border-color: #9d9d9d" name="update" type="submit">更新</button>
                         <!-- 削除ボタン -->
                         <button class="btn btn-danger btn-lg pull-right"
                                 onclick="return confirm('本当に削除してもいいですか？')" type="submit" name="delete">削除
