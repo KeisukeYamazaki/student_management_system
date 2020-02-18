@@ -115,7 +115,7 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
      * @throws
      */
     @Override
-    public List<SchoolRecordWithName> selectRecordMany(String school, String grade, String termName) throws DataAccessException {
+    public List<SchoolRecordWithName> selectRecordManyForRegistry(String grade, String termName) throws DataAccessException {
 
         String startNum = grade.equals("中３") ? "2201" : grade.equals("中２") ? "2301" : "2401";
         String endNum = grade.equals("中３") ? "2299" : grade.equals("中２") ? "2399" : "2499";
@@ -143,14 +143,13 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                     + " FROM student"
                     + " LEFT OUTER JOIN school_record"
                     + " ON student.student_id = school_record.student_id"
-                        + " AND student.grade = school_record.grade"
-                        + " AND student.grade = ?"
-                        + " AND (school_record.record_id = 1 OR school_record.record_id = 2)"
+                    + " AND student.grade = school_record.grade"
+                    + " AND student.grade = ?"
+                    + " AND (school_record.record_id = 1 OR school_record.record_id = 2)"
                     + " LEFT OUTER JOIN record_group"
                     + " ON school_record.record_id = record_group.id"
-                    + " WHERE student.school = ?"
-                        + " AND student.student_id BETWEEN ? AND ?"
-                        + " AND char_length(student.student_id) = 4"
+                    + " WHERE student.student_id BETWEEN ? AND ?"
+                    + " AND char_length(student.student_id) = 4"
                     + " ORDER BY student.student_id";
 
         } else if (termName.equals("２学期")) {
@@ -172,14 +171,13 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                     + " FROM student"
                     + " LEFT OUTER JOIN school_record"
                     + " ON student.student_id = school_record.student_id"
-                        + " AND student.grade = school_record.grade"
-                        + " AND student.grade = ?"
-                        + " AND school_record.record_id = 3"
+                    + " AND student.grade = school_record.grade"
+                    + " AND student.grade = ?"
+                    + " AND school_record.record_id = 3"
                     + " LEFT OUTER JOIN record_group"
                     + " ON school_record.record_id = record_group.id"
-                    + " WHERE student.school = ?"
-                        + " AND student.student_id BETWEEN ? AND ?"
-                        + " AND char_length(student.student_id) = 4"
+                    + " WHERE student.student_id BETWEEN ? AND ?"
+                    + " AND char_length(student.student_id) = 4"
                     + " ORDER BY student.student_id";
 
         } else {
@@ -201,23 +199,21 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                     + " FROM student"
                     + " LEFT OUTER JOIN school_record"
                     + " ON student.student_id = school_record.student_id"
-                        + " AND student.grade = school_record.grade"
-                        + " AND student.grade = ?"
-                        + " AND (school_record.record_id = 4 OR school_record.record_id = 5)"
+                    + " AND student.grade = school_record.grade"
+                    + " AND student.grade = ?"
+                    + " AND (school_record.record_id = 4 OR school_record.record_id = 5)"
                     + " LEFT OUTER JOIN record_group"
                     + " ON school_record.record_id = record_group.id"
-                    + " WHERE student.school = ?"
-                        + " AND student.student_id BETWEEN ? AND ?"
-                        + " AND char_length(student.student_id) = 4"
+                    + " WHERE student.student_id BETWEEN ? AND ?"
+                    + " AND char_length(student.student_id) = 4"
                     + " ORDER BY student.student_id";
-
         }
 
         // RowMapperの生成
         RowMapper<SchoolRecordWithName> rowMapper = new BeanPropertyRowMapper<>(SchoolRecordWithName.class);
 
         // SQL実行
-        return jdbc.query(sql, rowMapper, grade, school, startNum, endNum);
+        return jdbc.query(sql, rowMapper, grade, startNum, endNum);
     }
 
     /**
