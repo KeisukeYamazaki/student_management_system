@@ -164,14 +164,20 @@ public class StudentController {
                     futurePathData.getThirdChoice());
 
             // 必要内申、成績(実際とのギャップ)のリストを取得
-            if(highSchoolIdList.get(0) != null) {
+            if(highSchoolIdList.get(0) != null) {  // 高校リストの１つ目がnull = 志望校登録が１つもない、と判断
                 List<List<String>> gapList
                         = entranceExamCalculation.publicHighSchoolCalculation(highSchoolIdList, allRecordList);
 
                 for (int i = 0; i <= 2; i++) {
-                    model.addAttribute("neededRecord" + i, gapList.get(i).get(0));
-                    model.addAttribute("aveScore" + i, gapList.get(i).get(1));
-                    model.addAttribute("borScore" + i, gapList.get(i).get(2));
+                    // 志望校が３つない場合(１つ、または２つの場合)は例外が発生する
+                    // →「NullPointerException」か「IndexOutOfBoundsException」
+                    try {
+                        model.addAttribute("neededRecord" + i, gapList.get(i).get(0));
+                        model.addAttribute("aveScore" + i, gapList.get(i).get(1));
+                        model.addAttribute("borScore" + i, gapList.get(i).get(2));
+                    } catch (RuntimeException e) {
+                        // 何もせずに飛ばす
+                    }
                 }
             }
 

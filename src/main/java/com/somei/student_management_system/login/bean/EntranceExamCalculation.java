@@ -307,6 +307,11 @@ public class EntranceExamCalculation {
             // 公立高校を取得
             PublicHighSchool publicHighSchool = highSchoolService.getPublicHighSchoolOne(highschoolIdList.get(i));
 
+            // 志望校の登録がなかった場合はループを飛ばす
+            if(publicHighSchool == null) {
+                continue;
+            }
+
             // 平均内申を double に変換してリストに格納する
             List<Double> schoolReports = new ArrayList<>();
             try {
@@ -360,7 +365,8 @@ public class EntranceExamCalculation {
             } catch (RuntimeException e) {
                 // 何もせずに飛ばす
             }
-            // // af+bg(S値) の平均を算出
+
+            // af+bg(S値) の平均を算出
             double averageSscore = getAverage(sScoreList);
             // A値を取得
             double aScore = getAScore(allList);
@@ -396,6 +402,7 @@ public class EntranceExamCalculation {
             } catch (RuntimeException e) {
                 // 何もせずに飛ばす
             }
+
             // ボーダーの平均を算出
             double averageBorder = getAverage(borderScoreList);
             // ボーダーの変数の初期化
