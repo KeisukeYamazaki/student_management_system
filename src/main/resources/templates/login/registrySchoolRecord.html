@@ -52,12 +52,12 @@
     </div>
     <div th:if="${ByGrade}" class="panel panel-container col-sm-12" style="margin-top: 15px">
         <form method="post" th:action="@{/registry/schoolRecord/way/ByGrade}">
-            <div style="margin-bottom: 17px">成績を登録する学年・学期を選択してください</div>
+            <div style="margin-bottom: 15px">登録したい学年と学期を選択してください。（学年を選択すると学期の選択ができます。）</div>
             <div class="form-group">
                 <label for="grade" class="control-label col-xs-1"
-                       style="text-align: right; margin: 7px 0 0 20px">学年：</label>
-                <div class="col-sm-2 col-xs-4">
-                    <select class="form-control" id="grade" name="grade">
+                       style="text-align: center; margin: 7px 0 0 0px; padding: 0">学年：</label>
+                <div class="col-sm-1 col-xs-2" style="padding: 0">
+                    <select class="form-control" id="grade" name="grade" onchange="this.form.submit()">
                         <option value="">学年</option>
                         <option value="中３" th:selected="${grade} == '中３'">中３</option>
                         <option value="中２" th:selected="${grade} == '中２'">中２</option>
@@ -65,19 +65,22 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="termName" class="control-label col-xs-1"
-                       style="text-align: right; margin: 7px 0 0 20px">学期：</label>
-                <div class="col-sm-2 col-xs-4">
+        </form>
+        <form method="post" th:action="@{/registry/schoolRecord/way/ByGrade/term}">
+            <div th:if="${terms}" class="form-group">
+                <label for="grade" class="control-label col-xs-1"
+                       style="text-align: center; margin: 7px 0 0 20px; padding: 0">学期：</label>
+                <div class="col-sm-2 col-xs-4" style="padding: 0">
                     <select class="form-control" id="termName" name="termName">
                         <option value="">学期</option>
-                        <option value="１学期・前期" th:selected="${termName} == '１学期・前期'">１学期・前期</option>
-                        <option value="２学期" th:selected="${termName} == '２学期'">２学期</option>
-                        <option value="３学期・後期" th:selected="${termName} == '３学期・後期'">３学期・後期</option>
+                        <option th:each="term : ${terms}" th:value="${term.value}"
+                                th:text="${term.key}"
+                                th:selected="${term.value} == ${termName}"></option>
                     </select>
                 </div>
+                <input type="hidden" name="grade" th:value="${grade}">
+                <button class="btn btn-primary" type="submit" style="margin-left: 60px">表示</button>
             </div>
-            <button class="btn btn-primary" type="submit" style="margin-left: 60px">表示</button>
         </form>
         <form method="post" th:action="@{/schoolRecordRegistry}" th:if="${recordList}"
               th:object="${SchoolRecordWithName}">

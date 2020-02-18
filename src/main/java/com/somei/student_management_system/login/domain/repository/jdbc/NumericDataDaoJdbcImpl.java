@@ -154,7 +154,7 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
 
         } else if (termName.equals("２学期")) {
 
-            sql ="SELECT student.student_name,"
+            sql = "SELECT student.student_name,"
                     + " student.student_id,"
                     + " student.grade,"
                     + " record_year,"
@@ -174,6 +174,34 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                     + " AND student.grade = school_record.grade"
                     + " AND student.grade = ?"
                     + " AND school_record.record_id = 3"
+                    + " LEFT OUTER JOIN record_group"
+                    + " ON school_record.record_id = record_group.id"
+                    + " WHERE student.student_id BETWEEN ? AND ?"
+                    + " AND char_length(student.student_id) = 4"
+                    + " ORDER BY student.student_id";
+
+        } else if(termName.equals("２学期・後期")){
+
+            sql ="SELECT student.student_name,"
+                    + " student.student_id,"
+                    + " student.grade,"
+                    + " record_year,"
+                    + " term_name,"
+                    + " english,"
+                    + " math,"
+                    + " japanese,"
+                    + " science,"
+                    + " social_studies,"
+                    + " music,"
+                    + " art,"
+                    + " pe,"
+                    + " tech_home"
+                    + " FROM student"
+                    + " LEFT OUTER JOIN school_record"
+                    + " ON student.student_id = school_record.student_id"
+                    + " AND student.grade = school_record.grade"
+                    + " AND student.grade = ?"
+                    + " AND (school_record.record_id = 3 OR school_record.record_id = 4)"
                     + " LEFT OUTER JOIN record_group"
                     + " ON school_record.record_id = record_group.id"
                     + " WHERE student.student_id BETWEEN ? AND ?"

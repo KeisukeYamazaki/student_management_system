@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -115,7 +116,7 @@ public class RegistryController {
      * @return いずれかの方法を表示する画面に遷移
      */
     @PostMapping("/registry/schoolRecord/way")
-    public String getRegistrySchoolRecordWay(@RequestParam("radioName") String way, Model model) {
+    public String postRegistrySchoolRecordWay(@RequestParam("radioName") String way, Model model) {
 
         // 登録方法によってmodelに登録するものを変える
         if (way.equals("ByGrade")) {
@@ -136,6 +137,45 @@ public class RegistryController {
     }
 
     /**
+     * 成績登録画面：登録方法のPOSTメソッド.
+     *
+     * @param grade   成績を登録する学年
+     * @param model モデル
+     * @return いずれかの方法を表示する画面に遷移
+     */
+    @PostMapping("/registry/schoolRecord/way/ByGrade")
+    public String postRegistrySchoolRecordGrade(@RequestParam("grade") String grade, Model model) {
+
+        // 学年別にチェックをいれておく
+        model.addAttribute("ByGrade", true);
+
+        // 学年の登録
+        model.addAttribute("grade", grade);
+
+        // 成績登録時期のドロップダウンリスト
+        model.addAttribute("terms", getSelectedTermName(grade));
+
+        //コンテンツ部分に生徒一覧を表示するための文字列を登録
+        model.addAttribute("contents", "login/registrySchoolRecord :: registrySchoolRecord_contents");
+
+        return "login/homeLayout";
+    }
+
+    // 学年のドロップダウンリスト
+    public Map<String, String> getSelectedTermName(String grade) {
+        Map<String, String> selectMap = new LinkedHashMap<>();
+        if(grade.equals("中３")) {
+            selectMap.put("１学期・前期", "１学期・前期");
+            selectMap.put("２学期・後期", "２学期・後期");
+        } else {
+            selectMap.put("１学期・前期", "１学期・前期");
+            selectMap.put("２学期", "２学期");
+            selectMap.put("３学期・後期", "３学期・後期");
+        }
+        return selectMap;
+    }
+
+    /**
      * 学年別成績登録画面
      *
      * @param grade    対象の学年
@@ -143,7 +183,7 @@ public class RegistryController {
      * @param model    モデル
      * @return 成績登録画面に遷移
      */
-    @PostMapping("/registry/schoolRecord/way/ByGrade")
+    @PostMapping("/registry/schoolRecord/way/ByGrade/term")
     public String getRegistrySchoolRecordWay(@RequestParam("grade") String grade,
                                              @RequestParam("termName") String termName,
                                              Model model) {
@@ -156,7 +196,10 @@ public class RegistryController {
         // 学年別の場合
         model.addAttribute("ByGrade", true);
 
-        // 校舎・学年・学期
+        // 成績登録時期のドロップダウンリスト
+        model.addAttribute("terms", getSelectedTermName(grade));
+
+        // 学年・学期
         model.addAttribute("grade", grade);
         model.addAttribute("termName", termName);
 
