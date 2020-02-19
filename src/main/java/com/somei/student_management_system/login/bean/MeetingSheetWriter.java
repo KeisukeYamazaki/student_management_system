@@ -114,7 +114,7 @@ public class MeetingSheetWriter {
         poiMethods.getCell(sheet, 1, 22).setCellValue(student.getStudentName());
 
         // 入試の際に必要な数値を取得して、入力する
-        List<Integer> calculatedList = entranceExamCalculation.Calculation(schoolRecordList);
+        List<Integer> calculatedList = HighSchoolRecordUtils.Calculation(schoolRecordList);
         poiMethods.getCell(sheet, 3, 1).setCellValue(calculatedList.get(1));  // /135の値
         poiMethods.getCell(sheet, 5, 1).setCellValue(calculatedList.get(0));  // /45の値
         poiMethods.getCell(sheet, 7, 1).setCellValue(calculatedList.get(3));  // /50の値

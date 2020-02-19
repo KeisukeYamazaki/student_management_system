@@ -43,7 +43,7 @@ public class PrivateHighSchoolCalculation {
         List<String> resultList = new ArrayList<>();
 
         // 対象の生徒のそれぞれの内申の数値を取得(/45, /135, /25, /50, /75, /15, /30 の順でリストを取得）
-        List<Integer> numList = entranceExamCalculation.Calculation(numericDataDao.selectRecordOne(studentId));
+        List<Integer> numList = HighSchoolRecordUtils.Calculation(numericDataDao.selectRecordOne(studentId));
 
         // 基準値を抽出する
         List<String[]> standardList = extractStandards(privateHighSchoolList);
