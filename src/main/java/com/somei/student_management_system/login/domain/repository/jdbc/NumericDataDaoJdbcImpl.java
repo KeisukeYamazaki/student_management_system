@@ -108,7 +108,6 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
     /**
      * 複数の成績を取得（成績登録用）
      *
-     * @param school   対象の校舎
      * @param grade    対象の学年
      * @param termName 対象の学期
      * @return 実行結果のリスト

@@ -41,6 +41,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -139,7 +140,7 @@ public class RegistryController {
     /**
      * 成績登録画面：登録方法のPOSTメソッド.
      *
-     * @param grade   成績を登録する学年
+     * @param grade 成績を登録する学年
      * @param model モデル
      * @return いずれかの方法を表示する画面に遷移
      */
@@ -164,7 +165,7 @@ public class RegistryController {
     // 学年のドロップダウンリスト
     public Map<String, String> getSelectedTermName(String grade) {
         Map<String, String> selectMap = new LinkedHashMap<>();
-        if(grade.equals("中３")) {
+        if (grade.equals("中３")) {
             selectMap.put("１学期・前期", "１学期・前期");
             selectMap.put("２学期・後期", "２学期・後期");
         } else {
@@ -647,7 +648,7 @@ public class RegistryController {
             model.addAttribute("studentName", student.getStudentName());
 
             // 年度(西暦)を送る
-            List<Integer> yearList = Arrays.asList(2017, 2018, 2019);
+            List<Integer> yearList = Arrays.asList(getSchoolYear() - 2 , getSchoolYear() - 1, getSchoolYear());
             if (student.getGrade().equals("中３")) {
                 // 中３の場合は
                 model.addAttribute("year1", yearList.get(0));
@@ -723,6 +724,19 @@ public class RegistryController {
         model.addAttribute("grade", student.getGrade());
 
         return "login/homeLayout";
+    }
+
+    /**
+     * 年度を取得するメソッド
+     *
+     * @return 年度の数字
+     */
+    public int getSchoolYear() {
+        // 現在の日付を取得
+        LocalDate date = LocalDate.now();
+        // 現在が１〜３月なら現在の年 - 1 とする。
+        int year = date.getMonthValue() <= 3 ? date.getYear() -1 : date.getYear();
+        return year;
     }
 
     /**
