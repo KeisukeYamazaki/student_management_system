@@ -1,6 +1,6 @@
 package com.somei.student_management_system.login.bean;
 
-import com.somei.student_management_system.MyTestApp1;
+import com.somei.student_management_system.GoogleSpreadSheetMethods;
 import com.somei.student_management_system.login.domain.model.ImportPracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
 import com.somei.student_management_system.login.domain.model.SchoolRecordWithName;
@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.util.Map.*;
-
 @Component
 public class RegistryProcessing {
 
@@ -30,7 +28,7 @@ public class RegistryProcessing {
     SessionData sessionData;
 
     @Autowired
-    MyTestApp1 myTestApp1;
+    GoogleSpreadSheetMethods googleSpreadSheetMethods;
 
     /**
      * 成績登録メソッド.
@@ -201,18 +199,18 @@ public class RegistryProcessing {
                 Student student = new Student();
                 // 生徒情報の取得
                 try {
-                    student = studentService.selectOne(myTestApp1.getId(strList.get(i).get(1)));
+                    student = studentService.selectOne(googleSpreadSheetMethods.getId(strList.get(i).get(1)));
                 } catch (EmptyResultDataAccessException e) {
                     notRegistryList.add(strList.get(i).get(1));
                     break;
                 }
                 // 試験Idをセットする
                 if (student.getLocalSchool().contains("東野")) {
-                    regularExam.setRegular_id(myTestApp1.searchRegularExamId(strList.get(0).get(3)));
+                    regularExam.setRegular_id(googleSpreadSheetMethods.searchRegularExamId(strList.get(0).get(3)));
                 } else {
-                    regularExam.setRegular_id(myTestApp1.searchRegularExamId(strList.get(0).get(2)));
+                    regularExam.setRegular_id(googleSpreadSheetMethods.searchRegularExamId(strList.get(0).get(2)));
                 }
-                regularExam.setStudentId(myTestApp1.getId(strList.get(i).get(1)));
+                regularExam.setStudentId(googleSpreadSheetMethods.getId(strList.get(i).get(1)));
                 regularExam.setGrade(strList.get(i).get(0));
                 regularExam.setExamYear(strList.get(0).get(1));
                 regularExam.setEnglish(strList.get(i).get(2));
@@ -283,7 +281,7 @@ public class RegistryProcessing {
             ImportPracticeExam practiceExam = new ImportPracticeExam();
 
             // 生徒情報を取得
-            Student student = studentService.selectOne(myTestApp1.getId(newStrList.get(i).get(0)));
+            Student student = studentService.selectOne(googleSpreadSheetMethods.getId(newStrList.get(i).get(0)));
 
             // ImportPracticeExamの各項目をセットする
             practiceExam.setStudentId(student.getStudentId());
@@ -376,16 +374,19 @@ public class RegistryProcessing {
     }
 
     /**
-     * リスト内の数値の合計計算メソッド.
+     * リスト内の数値の合計計算メソッド
      *
      * @param subjects ５科目の成績のリスト
      * @return ５科目の合計
      */
-    private int sumSubjects(List<String> subjects) {
-
-        return subjects.stream()
-                .mapToInt(Integer::parseInt)
-                .sum();
+    public static int sumSubjects(List<String> subjects) {
+        int sum = 0;
+        for(String subject : subjects ) {
+            if(subject != null) {
+                sum += Integer.parseInt(subject);
+            }
+        }
+        return sum;
     }
 
     /**

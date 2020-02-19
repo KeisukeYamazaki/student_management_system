@@ -2,7 +2,7 @@ package com.somei.student_management_system.login.controller;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
-import com.somei.student_management_system.MyTestApp1;
+import com.somei.student_management_system.GoogleSpreadSheetMethods;
 import com.somei.student_management_system.login.bean.ByOneStudentRegistryProcessing;
 import com.somei.student_management_system.login.bean.IOCsv;
 import com.somei.student_management_system.login.bean.RegistryProcessing;
@@ -25,7 +25,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,14 +32,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,7 +68,7 @@ public class RegistryController {
     SessionData sessionData;
 
     @Autowired
-    MyTestApp1 myTestApp1;
+    GoogleSpreadSheetMethods googleSpreadSheetMethods;
 
     @Autowired
     ZenkenExcelProcessing zenkenExcelProcessing;
@@ -383,7 +378,7 @@ public class RegistryController {
                 for (IkushinPracticeExam ikushinPracticeExam : (List<IkushinPracticeExam>) exams) {
                     Student student = new Student();
                     try {
-                        student = studentService.selectOne(myTestApp1.getId(ikushinPracticeExam.getStudentName()));
+                        student = studentService.selectOne(googleSpreadSheetMethods.getId(ikushinPracticeExam.getStudentName()));
                     } catch (EmptyResultDataAccessException e) {
                         System.out.println(ikushinPracticeExam.getStudentName() + "を登録できませんでした");
                         notRegistryList.add(ikushinPracticeExam.getStudentName().replace("　", ""));
@@ -488,15 +483,14 @@ public class RegistryController {
         return getRegistryPracticeExamWay("ByZenkenSite", model);
     }
 
-    /*
     // 定期試験のグーグルシートでの登録メソッド
-    @GetMapping
+    @PostMapping("/registry/regularExam/google")
     public String getRegistryRegularExamByGoogle(Model model) {
 
         List<RegularExam> regularExamList = new ArrayList<>();
 
         try {
-            regularExamList = myTestApp1.getRegularByGoogle();
+            regularExamList = googleSpreadSheetMethods.getRegularByGoogle();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (GeneralSecurityException e2) {
@@ -513,7 +507,6 @@ public class RegistryController {
 
         return getRegistryRegularExam(model);
     }
-    */
 
     /**
      * 定期試験結果登録メソッド
@@ -522,7 +515,7 @@ public class RegistryController {
      * @param model    モデル
      * @return 模試登録確認画面へ遷移
      */
-    @PostMapping("/registryRegularExam")
+    @PostMapping("/registry/regularExam")
     public String postRegistryRegularExam(@RequestParam("regulars") String regulars, Model model) {
 
         // regularを定期試験データのリストにして取得

@@ -541,8 +541,8 @@ public class NumericDataDaoJdbcImpl implements NumericDataDao {
                     + " tech = ?,"
                     + " home = ?;"
             , regularExam.getStudentId()
-            , regularExam.getGrade()
-            , regularExam.getExamYear()
+            , Integer.parseInt(regularExam.getGrade())
+            , Integer.parseInt(regularExam.getExamYear())
             , regularExam.getRegular_id()
             , regularExam.getEnglish()
             , regularExam.getMath()

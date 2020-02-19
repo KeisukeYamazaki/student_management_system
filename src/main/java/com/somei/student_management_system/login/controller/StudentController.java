@@ -1,6 +1,6 @@
 package com.somei.student_management_system.login.controller;
 
-import com.somei.student_management_system.MyTestApp1;
+import com.somei.student_management_system.GoogleSpreadSheetMethods;
 import com.somei.student_management_system.login.bean.EntranceExamCalculation;
 import com.somei.student_management_system.login.domain.model.FuturePath;
 import com.somei.student_management_system.login.domain.model.FuturePathWithData;
@@ -50,7 +50,7 @@ public class StudentController {
     signupController signupController;
 
     @Autowired
-    MyTestApp1 myTestApp1;
+    GoogleSpreadSheetMethods googleSpreadSheetMethods;
 
     @Autowired
     EntranceExamCalculation entranceExamCalculation;

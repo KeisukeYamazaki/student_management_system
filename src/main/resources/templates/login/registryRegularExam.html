@@ -38,11 +38,16 @@
               style="margin: 10px 0 0 15px; font-weight: bold"></span><br/>
     </div>
     <div class="panel panel-container col-sm-10" style="margin-top: 15px; padding-top: 7px; padding-left: 5px">
-        <form method="post" th:action="@{/registryRegularExam}">
+        <form method="post" th:action="@{/registry/regularExam}">
             <div style="margin-bottom: 5px">スプレッドシートをコピーして、下のスペースに貼り付けてください</div>
             <div style="margin-bottom: 17px">※ 登録されていない生徒・削除された生徒の結果は登録されません。</div>
             <textarea id="textarea1" class="form-control" rows="20" name="regulars" style="width: 600px"></textarea>
             <button class="btn btn-primary btn-lg" type="submit" style="margin-top: 20px">登録</button>
+        </form>
+    </div>
+    <div class="panel panel-container col-sm-10" style="margin-top: 15px; padding-top: 7px; padding-left: 5px">
+        <form method="post" th:action="@{/registry/regularExam/google}">
+            <button class="btn btn-primary btn-lg" type="submit" style="margin-top: 20px">スプレッドシートで登録</button>
         </form>
     </div>
 </div>

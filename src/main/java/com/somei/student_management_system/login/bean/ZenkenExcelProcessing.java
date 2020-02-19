@@ -1,6 +1,6 @@
 package com.somei.student_management_system.login.bean;
 
-import com.somei.student_management_system.MyTestApp1;
+import com.somei.student_management_system.GoogleSpreadSheetMethods;
 import com.somei.student_management_system.login.domain.model.ZenkenExcelData;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -23,7 +23,7 @@ public class ZenkenExcelProcessing {
     PoiMethods poiMethods;
 
     @Autowired
-    MyTestApp1 myTestApp1;
+    GoogleSpreadSheetMethods googleSpreadSheetMethods;
 
     /**
      * 受け取ったエクセルファイルを成績リストに変換する
@@ -99,7 +99,7 @@ public class ZenkenExcelProcessing {
             zkeDate.setExamYear((String) table[j][columnMap.get("実施年度")]);
             zkeDate.setMonthName(extractMonth(table[j][columnMap.get("実施日")]));
             zkeDate.setGrade((String) table[j][columnMap.get("学年")]);
-            String id = myTestApp1.getId((String) table[j][columnMap.get("氏名")]);
+            String id = googleSpreadSheetMethods.getId((String) table[j][columnMap.get("氏名")]);
             zkeDate.setStudentId(id);
             zkeDate.setEnglishScore((String) table[j][columnMap.get("得点英語")]);
             zkeDate.setMathScore((String) table[j][columnMap.get("得点数学")]);

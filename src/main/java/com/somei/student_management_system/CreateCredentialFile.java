@@ -26,7 +26,7 @@ public class CreateCredentialFile {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
 
-        MyTestApp1.getGoogleService().authorize();
+        GoogleSpreadSheetMethods.getGoogleService().authorize();
         LOGGER.info("Credentialファイルを保存しました。");
     }
 }
