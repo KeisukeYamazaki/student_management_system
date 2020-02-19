@@ -1,5 +1,6 @@
 package com.somei.student_management_system.login.bean;
 
+import com.somei.student_management_system.login.controller.RegistryController;
 import com.somei.student_management_system.login.domain.model.FuturePathWithData;
 import com.somei.student_management_system.login.domain.model.PracticeExam;
 import com.somei.student_management_system.login.domain.model.RegularExam;
@@ -102,16 +103,19 @@ public class MeetingSheetWriter {
         FuturePathWithData futurePathData = studentService.selectPathDataOne(student.getStudentId());
 
         //ブックの再計算を許可
-        //wb.setForceFormulaRecalculation(true);
+        wb.setForceFormulaRecalculation(true);
 
         // シートの取得
         XSSFSheet sheet = wb.getSheetAt(0);
 
         //シートの再計算を許可
-        //sheet.setForceFormulaRecalculation(true);
+        sheet.setForceFormulaRecalculation(true);
 
         // 名前の入力
         poiMethods.getCell(sheet, 1, 22).setCellValue(student.getStudentName());
+
+        // 年度の入力
+        poiMethods.getCell(sheet, 0, 0).setCellValue(RegistryController.getSchoolYear() + "年度");
 
         // 入試の際に必要な数値を取得して、入力する
         List<Integer> calculatedList = HighSchoolRecordUtils.Calculation(schoolRecordList);
@@ -273,10 +277,16 @@ public class MeetingSheetWriter {
             }
         }
 
-        // 3:5, 4:4, 5:3の数値をセッションから取り出して入力する
-        poiMethods.getCell(sheet, 13, 1).setCellValue(sessionData.getNum35());  // /3:5の値
-        poiMethods.getCell(sheet, 15, 1).setCellValue(sessionData.getNum44());  // /3:5の値
-        poiMethods.getCell(sheet, 17, 1).setCellValue(sessionData.getNum53());  // /3:5の値
+        // 3:5, 4:4, 5:3の数値をセッションから取り出して入力する(中１か中２・３で分岐する)
+        if(student.getGrade().equals("中１")) {
+            poiMethods.getCell(sheet, 11, 1).setCellValue(sessionData.getNum35());  // /3:5の値
+            poiMethods.getCell(sheet, 13, 1).setCellValue(sessionData.getNum44());  // /3:5の値
+            poiMethods.getCell(sheet, 15, 1).setCellValue(sessionData.getNum53());  // /3:5の値
+        } else {
+            poiMethods.getCell(sheet, 13, 1).setCellValue(sessionData.getNum35());  // /3:5の値
+            poiMethods.getCell(sheet, 15, 1).setCellValue(sessionData.getNum44());  // /3:5の値
+            poiMethods.getCell(sheet, 17, 1).setCellValue(sessionData.getNum53());  // /3:5の値
+        }
 
         return wb;
     }

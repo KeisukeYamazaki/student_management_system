@@ -222,7 +222,7 @@ public class MeetingSheetPracticeExamWriter {
         }
         try {
             double sumAll = Double.parseDouble(list.get(listNum).getSumAll());
-            // 3:5の数値を小数第一位の値で変数に代入
+            // 4:4の数値を小数第一位の値で変数に代入
             double bNum = sumAll / 500.0;
             double num44 = 4.0 * aNum + 4.0 * (bNum * 100.0);
             BigDecimal bdNum44 = BigDecimal.valueOf(num44).setScale(1, RoundingMode.HALF_UP);
@@ -233,7 +233,7 @@ public class MeetingSheetPracticeExamWriter {
         }
         try {
             double sumAll = Double.parseDouble(list.get(listNum).getSumAll());
-            // 3:5の数値を小数第一位の値で変数に代入
+            // 5:3の数値を小数第一位の値で変数に代入
             double bNum = sumAll / 500.0;
             double num53 = 5.0 * aNum + 3.0 * (bNum * 100.0);
             BigDecimal bdNum53 = BigDecimal.valueOf(num53).setScale(1, RoundingMode.HALF_UP);

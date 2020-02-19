@@ -731,7 +731,7 @@ public class RegistryController {
      *
      * @return 年度の数字
      */
-    public int getSchoolYear() {
+    public static int getSchoolYear() {
         // 現在の日付を取得
         LocalDate date = LocalDate.now();
         // 現在が１〜３月なら現在の年 - 1 とする。
