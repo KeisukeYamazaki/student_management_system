@@ -1,6 +1,7 @@
 HELP.md
 google_client_secret.json
 application.properties
+google_client_secret.json
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
