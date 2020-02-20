@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvException;
 import com.somei.student_management_system.GoogleSpreadSheetMethods;
 import com.somei.student_management_system.login.bean.ByOneStudentRegistryProcessing;
 import com.somei.student_management_system.login.bean.IOCsv;
+import com.somei.student_management_system.login.bean.MakeGoogleClientSecret;
 import com.somei.student_management_system.login.bean.RegistryProcessing;
 import com.somei.student_management_system.login.bean.ZenkenExcelProcessing;
 import com.somei.student_management_system.login.bean.excelProcessing;
@@ -486,6 +487,8 @@ public class RegistryController {
     // 定期試験のグーグルシートでの登録メソッド
     @PostMapping("/registry/regularExam/google")
     public String getRegistryRegularExamByGoogle(Model model) {
+
+        MakeGoogleClientSecret.makeGoogleClientSecret();
 
         List<RegularExam> regularExamList = new ArrayList<>();
 
